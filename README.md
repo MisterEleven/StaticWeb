@@ -7,19 +7,26 @@ This repository hosts multiple static websites served from different directories
 ```
 StaticWeb/
 ├── index.html              # Root landing page (lists all sites)
-├── site1/                  # First website
+├── ca2/                    # WebXR 3D Model Viewer
+│   ├── a03_extra_webxr.html
+│   ├── a03_design-project.glb
+│   └── skybox_360.jpg
+├── site1/                  # Portfolio website
 │   ├── index.html
-│   ├── CNAME              # Optional: custom domain for this site
-│   └── assets/
-├── site2/                  # Second website
+│   └── CNAME.example
+├── site2/                  # Documentation website
 │   ├── index.html
-│   └── assets/
-├── site3/                  # Third website
+│   └── CNAME.example
+├── site3/                  # Landing page website
 │   ├── index.html
-│   └── assets/
-└── .github/
-    └── workflows/
-        └── deploy.yml      # GitHub Actions deployment
+│   └── CNAME.example
+├── .github/
+│   └── workflows/
+│       └── deploy.yml      # GitHub Actions deployment
+├── README.md
+├── SETUP.md
+├── .gitignore
+└── CNAME.example
 ```
 
 ## 🌐 How It Works
