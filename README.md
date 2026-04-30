@@ -33,6 +33,7 @@ StaticWeb/
 
 ### URL Structure
 - **Root**: `https://yourusername.github.io/StaticWeb/`
+- **Leaf Pavilion (WebXR)**: `https://yourusername.github.io/StaticWeb/ca2/a03_extra_webxr.html`
 - **Site 1**: `https://yourusername.github.io/StaticWeb/site1/`
 - **Site 2**: `https://yourusername.github.io/StaticWeb/site2/`
 - **Site 3**: `https://yourusername.github.io/StaticWeb/site3/`
