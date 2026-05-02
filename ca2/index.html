@@ -369,17 +369,20 @@
             }
 
             .controls-info {
-                position: relative;
-                top: auto;
-                left: auto;
-                margin: 10px;
+                position: absolute;
+                top: 10px;
+                left: 10px;
+                right: 10px;
+                margin: 0;
                 padding: 12px 15px;
                 border-radius: 12px;
-                transition: opacity 0.3s ease-out;
+                transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+                z-index: 1001;
             }
 
             .controls-info.hidden {
                 opacity: 0;
+                visibility: hidden;
                 pointer-events: none;
             }
 
@@ -400,19 +403,21 @@
             }
 
             .info-panel {
-                position: relative;
-                bottom: auto;
-                left: auto;
-                margin: 10px;
+                position: absolute;
+                bottom: 80px; /* Space for AR button */
+                left: 10px;
+                right: 10px;
+                margin: 0;
                 padding: 15px;
                 max-width: none;
                 border-radius: 15px;
-                margin-bottom: 80px; /* Add space for AR button */
-                transition: opacity 0.3s ease-out;
+                transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+                z-index: 1001;
             }
 
             .info-panel.hidden {
                 opacity: 0;
+                visibility: hidden;
                 pointer-events: none;
             }
 
@@ -451,7 +456,6 @@
             .viewer-container {
                 overflow-y: auto;
                 -webkit-overflow-scrolling: touch;
-                padding-bottom: 80px; /* Space for AR button */
             }
 
             /* Stack layout for mobile */
@@ -460,7 +464,7 @@
             }
 
             model-viewer {
-                min-height: 40vh;
+                min-height: 60vh;
                 height: auto;
                 pointer-events: auto;
             }
@@ -520,16 +524,26 @@
                 padding: 5px 10px;
             }
 
-            .info-panel,
             .controls-info {
+                position: absolute;
+                top: 8px;
+                left: 8px;
+                right: 8px;
                 max-height: 30vh;
                 overflow-y: auto;
-                margin: 8px;
+                margin: 0;
                 padding: 10px;
             }
 
             .info-panel {
-                margin-bottom: 70px; /* Space for AR button */
+                position: absolute;
+                bottom: 70px; /* Space for AR button */
+                left: 8px;
+                right: 8px;
+                max-height: 30vh;
+                overflow-y: auto;
+                margin: 0;
+                padding: 10px;
             }
 
             .info-panel h3,
@@ -567,11 +581,12 @@
             }
 
             .viewer-container {
-                padding-bottom: 70px; /* Space for AR button */
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
             }
 
             model-viewer {
-                min-height: 60vh;
+                min-height: 100vh;
                 height: auto;
             }
 
