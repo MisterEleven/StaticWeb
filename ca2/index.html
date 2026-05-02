@@ -363,6 +363,7 @@
                 padding: 6px 12px;
             }
 
+            /* Hide QR code on mobile - not needed */
             #qr-container {
                 display: none;
             }
@@ -448,6 +449,16 @@
                 min-height: 50vh;
                 height: auto;
             }
+
+            /* Fix AR button position on mobile - move it to bottom right and ensure it's clickable */
+            model-viewer::part(default-ar-button) {
+                bottom: 20px !important;
+                right: 20px !important;
+                top: auto !important;
+                left: auto !important;
+                z-index: 9999 !important;
+                position: fixed !important;
+            }
         }
 
         @media (min-width: 769px) and (max-width: 1024px) {
@@ -484,21 +495,83 @@
         /* Landscape mobile */
         @media (max-width: 768px) and (orientation: landscape) {
             .header {
-                padding: 10px 15px;
+                padding: 8px 15px;
             }
 
             .title-section h1 {
-                font-size: 18px;
+                font-size: 16px;
+            }
+
+            .title-section p {
+                font-size: 11px;
+            }
+
+            .info-pills {
+                gap: 6px;
+            }
+
+            .pill {
+                font-size: 10px;
+                padding: 5px 10px;
             }
 
             .info-panel,
             .controls-info {
-                max-height: 40vh;
+                max-height: 35vh;
                 overflow-y: auto;
+                margin: 8px;
+                padding: 10px;
+            }
+
+            .info-panel h3,
+            .controls-info h4 {
+                font-size: 14px;
+                margin-bottom: 8px;
+            }
+
+            .structure-item {
+                padding: 8px;
+                margin-bottom: 6px;
+            }
+
+            .structure-item h4 {
+                font-size: 12px;
+            }
+
+            .structure-item p {
+                font-size: 10px;
+            }
+
+            .control-item {
+                font-size: 10px;
+                margin: 4px 0;
+            }
+
+            .tech-stack {
+                gap: 5px;
+                margin-top: 8px;
+            }
+
+            .tech-badge {
+                font-size: 9px;
+                padding: 4px 8px;
             }
 
             model-viewer {
                 min-height: 100vh;
+            }
+
+            /* Ensure AR button is accessible in landscape */
+            model-viewer::part(default-ar-button) {
+                bottom: 15px !important;
+                right: 15px !important;
+                z-index: 9999 !important;
+                position: fixed !important;
+            }
+
+            /* Hide QR code in landscape too */
+            #qr-container {
+                display: none !important;
             }
         }
 
