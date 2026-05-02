@@ -7,8 +7,14 @@ This repository hosts multiple static websites served from different directories
 ```
 StaticWeb/
 ├── index.html              # Root landing page (lists all sites)
+├── root/                   # Personal Portfolio (feddern.dev)
+│   ├── index.html
+│   ├── index.css
+│   ├── index.js
+│   ├── favicon.ico
+│   └── CNAME              # feddern.dev
 ├── ca2/                    # WebXR 3D Model Viewer
-│   ├── a03_extra_webxr.html
+│   ├── index.html
 │   ├── a03_design-project.glb
 │   └── skybox_360.jpg
 ├── site1/                  # Portfolio website
@@ -32,17 +38,30 @@ StaticWeb/
 ## 🌐 How It Works
 
 ### URL Structure
-- **Root**: `https://yourusername.github.io/StaticWeb/`
-- **Leaf Pavilion (WebXR)**: `https://yourusername.github.io/StaticWeb/ca2/a03_extra_webxr.html`
+- **Root Hub**: `https://yourusername.github.io/StaticWeb/`
+- **Personal Portfolio**: `https://feddern.dev` (custom domain) or `https://yourusername.github.io/StaticWeb/root/`
+- **Leaf Pavilion (WebXR)**: `https://yourusername.github.io/StaticWeb/ca2/`
 - **Site 1**: `https://yourusername.github.io/StaticWeb/site1/`
 - **Site 2**: `https://yourusername.github.io/StaticWeb/site2/`
 - **Site 3**: `https://yourusername.github.io/StaticWeb/site3/`
 
-### Custom Domains (Optional)
+### Custom Domains
+
+#### feddern.dev (Personal Portfolio)
+The `root/` directory is configured with a custom domain:
+- **CNAME file**: `root/CNAME` contains `feddern.dev`
+- **DNS Configuration**: Point your domain to GitHub Pages
+  - Type: A records or CNAME
+  - Value: GitHub Pages IPs or `yourusername.github.io`
+- **GitHub Settings**: Enable custom domain in repository settings
+
+#### Additional Custom Domains (Optional)
 Each subdirectory can have its own custom domain:
 1. Add a `CNAME` file in the site directory (e.g., `site1/CNAME`)
 2. Configure DNS records to point to GitHub Pages
 3. Enable custom domain in repository settings
+
+**Note**: GitHub Pages supports one custom domain per repository by default. For multiple custom domains, consider using DNS redirects or deploying sites as separate repositories.
 
 ## 🚀 Deployment
 

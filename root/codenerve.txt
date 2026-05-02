@@ -1,0 +1,34 @@
+<span id="a">timo@feddern.dev</span>:<span id="b">~</span><span id="c">$</span> cd TimoFeddern/<!-- kjsdfhkjdhsfkjdshfkj -->About_Me
+<span id="a">timo@feddern.dev</span>:<span id="b">~/TimoFeddern/About_Me</span><span id="c">$</span> cat <!-- kjsdfhkjdhsfkjdshfkj -->timofeddern.txt<br/><br/>
+
+Hey There! I'm Timo
+<p>Cloud Fullstack Developer @ IBM CIC Switzerland | Master's Student @ ETH Zürich</p>
+<p>I build and scale cloud-native applications with OpenShift, automate infrastructure with Ansible & GitOps, and architect containerized solutions. Currently pursuing my Master's in Integrated Building Systems at ETH Zürich while working on cutting-edge cloud technologies.</p><!-- kjdhjhgdgldjhgdwtoiewotwotjdfkjdfffsf -->
+
+<p><strong>What I Do:</strong><br>
+Cloud & DevOps: OpenShift, Kubernetes, Docker/Podman, CI/CD (GitLab/GitHub)<br>
+Infrastructure: Linux/Windows sysadmin, Ansible automation, network architecture<br>
+Development: Python, Bash, GitOps workflows, infrastructure as code<br>
+Digital Construction: BIM tools (Revit, Dynamo), 3D modeling (Rhino, Grasshopper, Blender), LifeCycleTwin<br>
+Privacy Tech: Building decentralized networks with Fed(d)erated Networks</p>
+
+<p><strong>Background:</strong><br>
+Started as a carpenter, evolved into a digital construction specialist, now architecting cloud infrastructure. This unique journey from physical craftsmanship to digital systems gives me a holistic perspective on building—whether it's buildings or software.</p>
+
+<p><strong>Previously:</strong><br>
+• Co-Lead Digital Lab @ HSLU (2022-2025) - Built HA infrastructure, automated workflows<br>
+• BIM & Digital Twins @ Siemens SI - Automated processes with Python, managed LifeCycleTwin<br>
+• IT Consultant - Network architecture & setup for SMEs</p>
+
+<p><strong>Featured Project:</strong><br>
+<a href="https://github.com/MisterEleven/TASK-alavista">TASK-alavista</a> - An innovative task management solution showcasing my development skills</p>
+
+<p><strong>Side Quests:</strong><br>
+DJ'ing at concerts, parties & bars<br>
+Building privacy-focused decentralized networks<br>
+IT consulting for SMEs and private clients</p>
+
+<p><br>Let's connect! Reach out via <a href="mailto:timo@feddern.dev">timo@feddern.dev</a>, <a href="https://www.linkedin.com/in/adhs/">LinkedIn</a>, or check out my work on <a href="https://github.com/MisterEleven">GitHub</a>.</p>
+
+
+<p>Cheers!</p>

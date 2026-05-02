@@ -56,7 +56,48 @@ git push -u origin main
 
 ## 🌐 Custom Domain Setup
 
-### Option 1: Custom Domain for Root
+### feddern.dev Setup (Already Configured)
+
+The `root/` directory is already configured with feddern.dev:
+
+1. **CNAME file exists**: `root/CNAME` contains `feddern.dev`
+
+2. **Configure DNS at your domain registrar:**
+   
+   **Option A - Using A Records (Apex domain):**
+   ```
+   Type: A
+   Name: @
+   Value: 185.199.108.153
+   
+   Type: A
+   Name: @
+   Value: 185.199.109.153
+   
+   Type: A
+   Name: @
+   Value: 185.199.110.153
+   
+   Type: A
+   Name: @
+   Value: 185.199.111.153
+   ```
+   
+   **Option B - Using CNAME (if supported):**
+   ```
+   Type: CNAME
+   Name: @
+   Value: yourusername.github.io
+   ```
+
+3. **Enable in GitHub:**
+   - Go to Settings → Pages
+   - Custom domain: `feddern.dev`
+   - Check "Enforce HTTPS" (after DNS propagates)
+
+4. **Wait for DNS propagation** (up to 48 hours, usually faster)
+
+### Option 1: Custom Domain for Root Hub
 
 To use a custom domain for the entire repository:
 

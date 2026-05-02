@@ -1,0 +1,401 @@
+:root {
+  --bg-color: #0a0a0a;
+  --text-color: #fff;
+  --link-color: #0bc;
+  --prompt-user: #0f0;
+  --prompt-path: #ff0096;
+  --prompt-symbol: #0bc;
+  --console-width: 750px;
+  --console-font-size: 14px;
+  --glass-bg: rgba(20, 20, 20, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: rgba(0, 0, 0, 0.3);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #16213e 100%);
+  background-attachment: fixed;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 100px;
+  position: relative;
+}
+
+/* Animated background particles effect */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(0, 188, 212, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(255, 0, 150, 0.05) 0%, transparent 50%),
+    radial-gradient(circle at 40% 20%, rgba(0, 255, 0, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#console {
+  font-family: 'Courier New', Courier, monospace;
+  color: var(--text-color);
+  width: min(var(--console-width), 90vw);
+  font-size: var(--console-font-size);
+  line-height: 1.6;
+  word-wrap: break-word;
+  position: relative;
+  z-index: 1;
+  
+  /* Glassmorphism effect */
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 
+    0 8px 32px 0 var(--glass-shadow),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  
+  /* Subtle animation on load */
+  animation: fadeInGlass 0.8s ease-out;
+}
+
+@keyframes fadeInGlass {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Glow effect on hover */
+#console:hover {
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 
+    0 8px 32px 0 var(--glass-shadow),
+    0 0 20px rgba(0, 188, 212, 0.1),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.3s ease;
+}
+
+a {
+  color: var(--link-color);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  position: relative;
+}
+
+a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--link-color);
+  transition: width 0.3s ease;
+}
+
+a:hover {
+  color: #0ef;
+  text-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+}
+
+a:hover::after {
+  width: 100%;
+}
+
+#a {
+  color: var(--prompt-user);
+  text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+#b {
+  color: var(--prompt-path);
+  text-shadow: 0 0 5px rgba(255, 0, 150, 0.3);
+}
+
+#c {
+  color: var(--prompt-symbol);
+  text-shadow: 0 0 5px rgba(0, 188, 212, 0.3);
+}
+
+#k {
+  animation: flash 1s ease-in-out;
+}
+
+#op {
+  color: #888;
+}
+
+strong {
+  color: var(--link-color);
+  font-weight: 600;
+}
+
+@keyframes flash {
+  0% {
+    color: var(--prompt-user);
+    text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+  }
+  50% {
+    color: var(--prompt-user);
+    text-shadow: 0 0 20px rgba(0, 255, 0, 0.8);
+  }
+  99% {
+    color: var(--bg-color);
+    text-shadow: none;
+  }
+}
+
+/* Retro Mode Toggle Button */
+.retro-toggle {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  padding: 12px 20px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  color: var(--text-color);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px var(--glass-shadow);
+}
+
+.retro-toggle:hover {
+  background: rgba(30, 30, 30, 0.8);
+  border-color: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px var(--glass-shadow);
+}
+
+.retro-toggle:active {
+  transform: translateY(0);
+}
+
+/* ============================================
+   RETRO MODE STYLES (90s/Early 2000s Web)
+   ============================================ */
+
+body.retro-mode {
+  background: #c0c0c0 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAFElEQVQIW2P8////fwYGBgZGBgYGAA7+Av7yczgKAAAAAElFTkSuQmCC') repeat !important;
+  background-attachment: fixed !important;
+}
+
+body.retro-mode::before {
+  display: none;
+}
+
+body.retro-mode #console {
+  background: #ffffff !important;
+  border: 5px ridge #808080 !important;
+  border-radius: 0 !important;
+  box-shadow: 
+    5px 5px 0 #000,
+    inset 2px 2px 0 #fff,
+    inset -2px -2px 0 #808080 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  padding: 20px !important;
+  animation: none !important;
+}
+
+body.retro-mode #console:hover {
+  box-shadow: 
+    5px 5px 0 #000,
+    inset 2px 2px 0 #fff,
+    inset -2px -2px 0 #808080 !important;
+}
+
+body.retro-mode #console {
+  font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive !important;
+  color: #000 !important;
+  font-size: 16px !important;
+  line-height: 1.8 !important;
+}
+
+/* WordArt style headers */
+body.retro-mode #console span#a,
+body.retro-mode #console span#b,
+body.retro-mode #console span#c {
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  font-weight: bold !important;
+  text-shadow: 
+    2px 2px 0 #ff00ff,
+    4px 4px 0 #00ffff,
+    6px 6px 0 #ffff00 !important;
+  letter-spacing: 2px !important;
+  animation: none !important;
+}
+
+body.retro-mode #console span#a {
+  color: #ff0000 !important;
+}
+
+body.retro-mode #console span#b {
+  color: #0000ff !important;
+}
+
+body.retro-mode #console span#c {
+  color: #00ff00 !important;
+}
+
+body.retro-mode #console strong {
+  font-family: Impact, 'Arial Black', sans-serif !important;
+  color: #ff00ff !important;
+  font-size: 1.2em !important;
+  text-shadow: 2px 2px 0 #ffff00 !important;
+  letter-spacing: 1px !important;
+}
+
+body.retro-mode #console a {
+  color: #0000ff !important;
+  text-decoration: underline !important;
+  font-weight: bold !important;
+  text-shadow: none !important;
+  transition: none !important;
+}
+
+body.retro-mode #console a::after {
+  display: none !important;
+}
+
+body.retro-mode #console a:hover {
+  color: #ff00ff !important;
+  text-shadow: none !important;
+  background: #ffff00 !important;
+}
+
+body.retro-mode #console a:visited {
+  color: #800080 !important;
+}
+
+body.retro-mode #console p {
+  margin: 10px 0 !important;
+}
+
+/* Retro button style */
+body.retro-mode .retro-toggle {
+  background: #c0c0c0 !important;
+  border: 3px outset #fff !important;
+  border-radius: 0 !important;
+  box-shadow: 2px 2px 0 #000 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  font-family: 'Comic Sans MS', cursive !important;
+  font-weight: bold !important;
+  color: #000 !important;
+}
+
+body.retro-mode .retro-toggle:hover {
+  background: #d0d0d0 !important;
+  border: 3px outset #fff !important;
+  transform: none !important;
+  box-shadow: 2px 2px 0 #000 !important;
+}
+
+body.retro-mode .retro-toggle:active {
+  border: 3px inset #808080 !important;
+  box-shadow: inset 1px 1px 0 #000 !important;
+}
+
+/* Disable animations in retro mode */
+body.retro-mode * {
+  animation: none !important;
+  transition: none !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  body {
+    padding-top: 30px;
+  }
+  
+  #console {
+    font-size: 12px;
+    padding: 20px;
+    border-radius: 8px;
+  }
+  
+  .retro-toggle {
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 16px;
+    font-size: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #k,
+  #console {
+    animation: none;
+  }
+  
+  a::after {
+    transition: none;
+  }
+}
+
+/* Scrollbar styling for webkit browsers */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Retro scrollbar */
+body.retro-mode::-webkit-scrollbar {
+  width: 16px;
+}
+
+body.retro-mode::-webkit-scrollbar-track {
+  background: #c0c0c0;
+  border: 1px solid #808080;
+}
+
+body.retro-mode::-webkit-scrollbar-thumb {
+  background: #808080;
+  border: 2px outset #fff;
+  border-radius: 0;
+}
+
+body.retro-mode::-webkit-scrollbar-thumb:hover {
+  background: #a0a0a0;
+}
+
+/* Made with Bob */
