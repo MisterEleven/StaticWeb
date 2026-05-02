@@ -53,8 +53,3 @@ logs/
 tmp/
 temp/
 *.tmp
-
-# CNAME files (keep examples, ignore actual CNAME files)
-CNAME
-site*/CNAME
-!*.example
