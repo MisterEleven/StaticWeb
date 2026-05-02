@@ -834,35 +834,29 @@
                 console.error('❌ Error loading 3D model:', event);
             });
 
-            // Auto-hide controls and info panel on mobile after 5 seconds
+            // Auto-hide ONLY controls info on mobile after 5 seconds (keep design concept visible)
             function isMobileDevice() {
                 return window.innerWidth <= 768;
             }
 
             if (isMobileDevice()) {
                 const controlsInfo = document.querySelector('.controls-info');
-                const infoPanel = document.querySelector('.info-panel');
                 
                 setTimeout(() => {
                     if (controlsInfo) {
                         controlsInfo.classList.add('hidden');
                     }
-                    if (infoPanel) {
-                        infoPanel.classList.add('hidden');
-                    }
-                }, 5000); // Hide after 5 seconds
+                }, 5000); // Hide controls after 5 seconds
 
                 // Show controls again on tap/interaction
                 const viewerContainer = document.querySelector('.viewer-container');
                 viewerContainer.addEventListener('click', () => {
                     if (controlsInfo && controlsInfo.classList.contains('hidden')) {
                         controlsInfo.classList.remove('hidden');
-                        infoPanel.classList.remove('hidden');
                         
-                        // Hide again after 5 seconds
+                        // Hide controls again after 5 seconds
                         setTimeout(() => {
                             controlsInfo.classList.add('hidden');
-                            infoPanel.classList.add('hidden');
                         }, 5000);
                     }
                 });
