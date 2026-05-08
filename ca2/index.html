@@ -909,6 +909,20 @@
                     switcherButton.innerHTML = '🔄 View Original Design';
                     currentModel = 'final_hexmesh.glb';
                 }
+                
+                // Reset camera to center on the new model after it loads
+                modelViewer.addEventListener('load', function recenterCamera() {
+                    // Reset camera orbit to default position
+                    modelViewer.resetTurntableRotation();
+                    modelViewer.cameraOrbit = '180deg 70deg auto';
+                    modelViewer.fieldOfView = '45deg';
+                    
+                    // Frame the model to fit in view
+                    modelViewer.jumpCameraToGoal();
+                    
+                    // Remove this listener after it fires once
+                    modelViewer.removeEventListener('load', recenterCamera);
+                }, { once: true });
             });
             
             document.body.appendChild(switcherButton);
