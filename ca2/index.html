@@ -862,13 +862,18 @@
                 });
             }
 
-            // Model switcher functionality
-            let currentModel = 'final_hexmesh.glb'; // Default to new model
+            // Model switcher functionality with 3 models
+            const models = [
+                { file: 'final_hexmesh.glb', name: 'Final Design (Animated)' },
+                { file: 'final_hexmesh_static.glb', name: 'Final Design (Static)' },
+                { file: 'a03_design-project.glb', name: 'Original Design' }
+            ];
+            let currentModelIndex = 0; // Start with final_hexmesh.glb
             
             // Create model switcher button
             const switcherButton = document.createElement('button');
             switcherButton.id = 'model-switcher';
-            switcherButton.innerHTML = '🔄 View Original Design';
+            switcherButton.innerHTML = '🔄 Next Model';
             switcherButton.style.cssText = `
                 position: fixed;
                 top: 20px;
@@ -887,6 +892,26 @@
                 font-family: 'Georgia', serif;
             `;
             
+            // Create model label to show current model
+            const modelLabel = document.createElement('div');
+            modelLabel.id = 'model-label';
+            modelLabel.innerHTML = `📐 ${models[currentModelIndex].name}`;
+            modelLabel.style.cssText = `
+                position: fixed;
+                top: 70px;
+                right: 20px;
+                background: rgba(245, 237, 220, 0.95);
+                color: #3E2723;
+                border: 2px solid rgba(139, 115, 85, 0.3);
+                padding: 8px 16px;
+                border-radius: 15px;
+                font-size: 12px;
+                font-weight: 600;
+                z-index: 10000;
+                box-shadow: 0 3px 12px rgba(74, 63, 53, 0.3);
+                font-family: 'Georgia', serif;
+            `;
+            
             // Add hover effect
             switcherButton.addEventListener('mouseenter', () => {
                 switcherButton.style.transform = 'scale(1.05)';
@@ -898,17 +923,17 @@
                 switcherButton.style.boxShadow = '0 4px 16px rgba(74, 63, 53, 0.4)';
             });
             
-            // Toggle between models
+            // Cycle through models
             switcherButton.addEventListener('click', () => {
-                if (currentModel === 'final_hexmesh.glb') {
-                    modelViewer.src = 'a03_design-project.glb';
-                    switcherButton.innerHTML = '🔄 View Final Design';
-                    currentModel = 'a03_design-project.glb';
-                } else {
-                    modelViewer.src = 'final_hexmesh.glb';
-                    switcherButton.innerHTML = '🔄 View Original Design';
-                    currentModel = 'final_hexmesh.glb';
-                }
+                // Move to next model
+                currentModelIndex = (currentModelIndex + 1) % models.length;
+                const nextModel = models[currentModelIndex];
+                
+                // Update model viewer
+                modelViewer.src = nextModel.file;
+                
+                // Update label
+                modelLabel.innerHTML = `📐 ${nextModel.name}`;
                 
                 // Reset camera to center on the new model after it loads
                 modelViewer.addEventListener('load', function recenterCamera() {
@@ -926,13 +951,19 @@
             });
             
             document.body.appendChild(switcherButton);
+            document.body.appendChild(modelLabel);
             
-            // Adjust button position on mobile
+            // Adjust button and label position on mobile
             if (isMobileDevice()) {
                 switcherButton.style.top = '80px';
                 switcherButton.style.right = '10px';
                 switcherButton.style.fontSize = '12px';
                 switcherButton.style.padding = '10px 16px';
+                
+                modelLabel.style.top = '125px';
+                modelLabel.style.right = '10px';
+                modelLabel.style.fontSize = '11px';
+                modelLabel.style.padding = '6px 12px';
             }
         });
     </script>
