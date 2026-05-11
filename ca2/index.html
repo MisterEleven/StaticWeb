@@ -1,12 +1,16 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>ETH CA2 - Design Project - WebXR 3D Model Viewer</title>
+    <title>HardLeaf | Computational Architecture Design Project</title>
+    <meta name="description" content="ETH Zurich Computational Architecture II - HardLeaf: A biomimetic timber pavilion integrating vegetation and optimizing solar shading for sustainable garden design.">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
@@ -17,33 +21,41 @@
         <div class="header">
             <div class="header-content">
                 <div class="title-section">
-                    <div>
-                        <h1>🌿 Leaf Pavilion</h1>
-                        <p>Organic Integration with Existing Vegetation | 40m² Covered Area</p>
+                    <div class="logo-title">
+                        <div class="logo">
+                            <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M30 10 L45 25 L40 45 L30 50 L20 45 L15 25 Z" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
+                                <path d="M30 18 L38 28 L35 40 L30 43 L25 40 L22 28 Z" fill="currentColor" opacity="0.2"/>
+                                <path d="M30 25 L35 30 L33 37 L30 39 L27 37 L25 30 Z" fill="currentColor" opacity="0.4"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <h1><strong>Hard</strong>Leaf</h1>
+                            <p class="subtitle">Computational Architecture II | ETH Zurich</p>
+                            <p class="project-meta">Group 03 | Spring 2026</p>
+                        </div>
                     </div>
                     <div class="model-switcher-section">
                         <div id="model-label" class="pill model-label">
-                            <span class="pill-icon">📐</span>
-                            <span id="model-name">Final Model (Hex Meshing)</span>
+                            <span id="model-name">Final Design Model</span>
                         </div>
                         <button id="model-switcher" class="pill model-switcher-btn">
-                            <span class="pill-icon">🔄</span>
-                            <span>Next Model</span>
+                            <span>Switch Model</span>
                         </button>
                     </div>
                 </div>
                 <div class="info-pills">
                     <div class="pill">
-                        <span class="pill-icon">🌳</span>
-                        <span>Vegetation Integrated</span>
+                        <span>Biomimetic Design</span>
                     </div>
                     <div class="pill">
-                        <span class="pill-icon">☀️</span>
-                        <span>Optimized Shading</span>
-                    </div>
-                    <div class="pill">
-                        <span class="pill-icon">🏗️</span>
                         <span>Timber Structure</span>
+                    </div>
+                    <div class="pill">
+                        <span>Solar Optimized</span>
+                    </div>
+                    <div class="pill">
+                        <span>40m² Coverage</span>
                     </div>
                 </div>
             </div>
@@ -53,32 +65,33 @@
         <div class="viewer-container">
             <div class="loading-overlay">
                 <div class="loader"></div>
+                <p class="loading-text">Loading 3D Model...</p>
             </div>
 
             <!-- Controls Info -->
             <div class="controls-info">
-                <h4>🎮 Controls</h4>
+                <h4>Viewer Controls</h4>
                 <div class="control-item">
-                    <span class="control-icon">🖱️ Drag</span>
+                    <span class="control-icon">Drag</span>
                     <span>Rotate model</span>
                 </div>
                 <div class="control-item">
-                    <span class="control-icon">🔍 Scroll</span>
+                    <span class="control-icon">Scroll</span>
                     <span>Zoom in/out</span>
                 </div>
                 <div class="control-item">
-                    <span class="control-icon">📱 AR Button</span>
-                    <span>View in AR</span>
+                    <span class="control-icon">AR</span>
+                    <span>View in augmented reality</span>
                 </div>
             </div>
 
             <!-- QR Code Container -->
             <div id="qr-container">
-                <h3>📱 View in AR</h3>
+                <h3>View in AR</h3>
                 <div id="qrcode"></div>
                 <p class="qr-text" id="qr-url-text"></p>
                 <div class="qr-instructions">
-                    <p><span class="step-number">1</span> Scan QR code with phone</p>
+                    <p><span class="step-number">1</span> Scan QR code with mobile device</p>
                     <p><span class="step-number">2</span> Tap AR button on mobile</p>
                     <p><span class="step-number">3</span> Place model in your space</p>
                 </div>
@@ -88,36 +101,54 @@
             <!-- Info Panel -->
             <div class="info-panel">
                 <div class="info-panel-header">
-                    <h3>Design Concept</h3>
-                    <button class="minimize-btn" title="Minimize panel">▼</button>
+                    <h3>Project Overview</h3>
+                    <button class="minimize-btn" title="Minimize panel">−</button>
                 </div>
                 
                 <div class="info-panel-content">
-                    <div class="structure-item">
-                        <h4>🌳 Vegetation Integration</h4>
-                        <p>Designed to preserve and integrate existing vegetation, particularly the plum tree and banana trees, as valued elements of the garden.</p>
+                    <div class="structure-item featured">
+                        <h4>Design Brief</h4>
+                        <p>HardLeaf is a biomimetic timber pavilion designed for a private garden in Zurich. The structure integrates existing vegetation while providing optimal shading and flexible outdoor living space for architects and landscape designers.</p>
                     </div>
 
                     <div class="structure-item">
-                        <h4>🍃 Leaf-Shaped Configuration</h4>
-                        <p>Maximizes shaded area through organic form with height variations. Two load-bearing sides: longer at back (parallel to fence), shorter at front (opening to garden).</p>
+                        <h4>Vegetation Integration</h4>
+                        <p>The design preserves and celebrates existing garden elements including plum trees, banana trees, and kiwi plants. The structure wraps organically around vegetation, treating plants as integral architectural features rather than obstacles.</p>
                     </div>
 
                     <div class="structure-item">
-                        <h4>☀️ Solar Optimization</h4>
-                        <p>South side: lower height for stronger shading with plum tree. North side: taller, more open configuration. Significant shade coverage, especially in early afternoon.</p>
+                        <h4>Leaf-Inspired Form</h4>
+                        <p>The organic leaf-shaped configuration maximizes shaded area through natural height variations. Two load-bearing edges define the structure: a longer rear edge parallel to the fence and a shorter front edge opening to the garden.</p>
                     </div>
 
                     <div class="structure-item">
-                        <h4>🏗️ Flexible Interior</h4>
-                        <p>Wide, open covered space (40m²) ensures adaptability. Accommodates various uses and plant positioning, including potential kiwi plant relocation along structural base.</p>
+                        <h4>Solar Performance</h4>
+                        <p>The south side features lower height for enhanced shading, working in conjunction with the plum tree. The north side rises taller with a more open configuration. The design is optimized for afternoon shade coverage during peak summer months.</p>
+                    </div>
+
+                    <div class="structure-item">
+                        <h4>Structural System</h4>
+                        <p>Hexagonal mesh timber structure with computational optimization provides 40m² of covered area. The column-free interior space remains flexible and adaptable for various uses including dining, lounging, and garden activities.</p>
+                    </div>
+
+                    <div class="structure-item">
+                        <h4>Technical Approach</h4>
+                        <p>Developed using Grasshopper and Karamba3D for structural analysis and optimization. Hexagonal meshing ensures efficient load distribution while maintaining the organic aesthetic required for garden integration.</p>
                     </div>
 
                     <div class="tech-stack">
-                        <span class="tech-badge">Timber System</span>
-                        <span class="tech-badge">40m² Coverage</span>
-                        <span class="tech-badge">Organic Form</span>
+                        <span class="tech-badge">Grasshopper</span>
+                        <span class="tech-badge">Karamba3D</span>
+                        <span class="tech-badge">Hexagonal Meshing</span>
+                        <span class="tech-badge">Timber Construction</span>
                         <span class="tech-badge">Solar Analysis</span>
+                        <span class="tech-badge">Parametric Design</span>
+                    </div>
+
+                    <div class="team-info">
+                        <h4>Project Team</h4>
+                        <p><strong>Group 03</strong> | ETH Zurich | Computational Architecture II | Spring 2026</p>
+                        <p class="team-note">Designed for architects and landscape designers seeking sustainable, vegetation-integrated outdoor structures.</p>
                     </div>
                 </div>
             </div>
@@ -131,7 +162,7 @@
                 camera-controls
                 auto-rotate
                 shadow-intensity="2"
-                alt="A03 Design Project 3D Model"
+                alt="HardLeaf Pavilion 3D Model"
                 exposure="1"
                 shadow-softness="0.3"
                 camera-orbit="180deg 70deg 15m"

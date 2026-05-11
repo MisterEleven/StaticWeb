@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     
                     qrUrl = window.location.protocol + '//' + networkIp + path;
                     document.getElementById('qr-url-text').innerText = qrUrl;
-                    document.getElementById('qr-hint-text').innerText = '✅ Ready for mobile AR scanning!';
+                    document.getElementById('qr-hint-text').innerText = 'Ready for mobile AR scanning';
                     
                     // Regenerate QR code with network IP
                     document.getElementById('qrcode').innerHTML = '';
@@ -35,8 +35,8 @@ document.addEventListener("DOMContentLoaded", function () {
                         text: qrUrl,
                         width: 150,
                         height: 150,
-                        colorDark: "#5D4E37",
-                        colorLight: "#F5EDDC",
+                        colorDark: "#2D5016",
+                        colorLight: "#FFFFFF",
                         correctLevel: QRCode.CorrectLevel.M
                     });
                 } else {
@@ -46,10 +46,10 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch((error) => {
                 console.log('Using localhost for QR code:', error.message);
                 // Fallback if fetch fails
-                document.getElementById('qr-hint-text').innerText = '💡 For mobile AR, use the Network URL from the Python server console.';
+                document.getElementById('qr-hint-text').innerText = '';
             });
     } else {
-        document.getElementById('qr-hint-text').innerText = '✅ Ready for mobile AR scanning!';
+        document.getElementById('qr-hint-text').innerText = 'Ready for mobile AR scanning';
     }
 
     document.getElementById('qr-url-text').innerText = qrUrl;
@@ -58,8 +58,8 @@ document.addEventListener("DOMContentLoaded", function () {
         text: qrUrl,
         width: 150,
         height: 150,
-        colorDark: "#5D4E37",
-        colorLight: "#F5EDDC",
+        colorDark: "#2D5016",
+        colorLight: "#FFFFFF",
         correctLevel: QRCode.CorrectLevel.M
     });
 
@@ -67,11 +67,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const modelViewer = document.querySelector('model-viewer');
     
     modelViewer.addEventListener('load', () => {
-        console.log('✅ 3D Model loaded successfully');
+        console.log('3D Model loaded successfully');
     });
     
     modelViewer.addEventListener('error', (event) => {
-        console.error('❌ Error loading 3D model:', event);
+        console.error('Error loading 3D model:', event);
     });
 
     // Auto-hide controls on ALL devices after 5 seconds
@@ -104,23 +104,23 @@ document.addEventListener("DOMContentLoaded", function () {
         minimizeBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             infoPanel.classList.toggle('minimized');
-            minimizeBtn.textContent = infoPanel.classList.contains('minimized') ? '▲' : '▼';
+            minimizeBtn.textContent = infoPanel.classList.contains('minimized') ? '+' : '−';
         });
 
         // Click on minimized panel to expand
         infoPanel.addEventListener('click', () => {
             if (infoPanel.classList.contains('minimized')) {
                 infoPanel.classList.remove('minimized');
-                minimizeBtn.textContent = '▼';
+                minimizeBtn.textContent = '−';
             }
         });
     }
 
     // Model switcher functionality with 3 models
     const models = [
-        { file: 'final_hexmesh.glb', name: 'Final Model (Hex Meshing)' },
-        { file: 'final_hexmesh_statics.glb', name: 'Static Analysis (Hex Mesh)' },
-        { file: 'a03_design-project.glb', name: 'Old Model (Quad Meshing)' }
+        { file: 'final_hexmesh.glb', name: 'Final Design Model' },
+        { file: 'final_hexmesh_statics.glb', name: 'Structural Analysis' },
+        { file: 'a03_design-project.glb', name: 'Design Development' }
     ];
     let currentModelIndex = 0; // Start with final_hexmesh.glb
     
