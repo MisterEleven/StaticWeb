@@ -634,6 +634,17 @@ model-viewer {
         display: none !important;
     }
 
+    .footer {
+        bottom: 4px;
+        right: 12px;
+        padding: 6px 12px;
+        border-radius: 6px;
+    }
+
+    .footer p {
+        font-size: 9px;
+    }
+
     .controls-info {
         top: 12px;
         left: 12px;
@@ -762,6 +773,27 @@ model-viewer {
     .structure-item {
         padding: 16px;
     }
+}
+
+/* Footer */
+.footer {
+    position: absolute;
+    bottom: 8px;
+    right: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    padding: 8px 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px var(--shadow);
+    z-index: 999;
+    border: 1px solid var(--accent-green);
+}
+
+.footer p {
+    font-size: 11px;
+    color: var(--medium-gray);
+    margin: 0;
+    font-weight: 400;
 }
 
 /* Landscape mobile */
