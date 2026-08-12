@@ -1,0 +1,38 @@
+# Timo Feddern — Projects
+
+> Landing page and index of selected work by Timo Feddern — cloud fullstack developer at IBM Client Innovation Center Switzerland and master's student in Integrated Building Systems at ETH Zürich. Background: carpenter → digital construction specialist → cloud infrastructure. This site (git.feddern.dev) links out to the personal portfolio, an academic pavilion project, a study-guidance product, an event site, and an electronic-music label.
+
+## Person
+
+- **Name:** Timo Feddern
+- **Role:** Cloud Fullstack Developer @ IBM CIC Switzerland
+- **Education:** M.Sc. Integrated Building Systems, ETH Zürich (in progress)
+- **Focus:** Cloud-native infrastructure (OpenShift, Kubernetes, Ansible, GitOps), digital construction (BIM, Rhino, Dynamo), privacy-focused decentralised networks
+- **Location:** Zürich, Switzerland
+- **Contact:** timo@feddern.dev
+
+## Projects on this hub
+
+- [Personal portfolio (feddern.dev)](https://feddern.dev): Terminal-style personal site with a live console. Details on work, background, featured GitHub repos.
+- [HardLeaf](https://git.feddern.dev/ca2/): ETH Zürich Computational Architecture II studio project — biomimetic timber pavilion optimising solar shading through vegetation. Interactive WebXR viewer with AR support.
+- [StudyCompass](https://studycompass.ch): Product — a platform helping students find the study path that actually fits them.
+- [GymRave](https://gymrave.ch): Event site — "Eine Rave. Im Gym." One-night rave at Sportcenter Ägeri on 25.09.2026 with T-Møse × NIRO.
+- [Passabel Kollektiv](https://passabelk.ch): Independent electronic-music label organising rave events.
+
+## Featured GitHub repositories
+
+- [climatePlots](https://github.com/MisterEleven/climatePlots): Python toolkit for 8760-hour building environmental data — 20+ visualisation types including ASHRAE 55 thermal comfort (PMV/PPD).
+- [EPW-upgrader](https://github.com/MisterEleven/EPW-upgrader): CLI + Python API that morphs EPW weather files toward projected climate scenarios (Belcher 2005, SSP5-8.5 / SSP2-4.5).
+- [Gameserver-Operator](https://github.com/MisterEleven/Gameserver-Operator): Kubernetes-native operator for self-hosted game servers.
+- [TASK-alavista](https://github.com/MisterEleven/TASK-alavista): Obsidian plugin that turns #schedule tasks into a local .ics for read-only Apple Calendar sync.
+
+## Elsewhere
+
+- [LinkedIn](https://www.linkedin.com/in/timofed/)
+- [GitHub](https://github.com/MisterEleven)
+- [Personal portfolio](https://feddern.dev)
+
+## Resources
+
+- [Sitemap XML](https://git.feddern.dev/sitemap.xml): All indexable URLs on this hub.
+- [OG Image](https://git.feddern.dev/assets/og.jpg): 1200×630 social preview image.

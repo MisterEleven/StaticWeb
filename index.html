@@ -3,13 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Selected work by Timo Feddern — portfolio, academic projects, and event sites.">
-    <meta name="theme-color" content="#0a0a0a">
     <title>Timo Feddern — Projects</title>
+    <meta name="description" content="Selected work by Timo Feddern — cloud fullstack developer at IBM CIC Switzerland and master's student at ETH Zürich. Personal portfolio, the HardLeaf pavilion (ETH), StudyCompass, GymRave, and Passabel Kollektiv.">
+    <meta name="theme-color" content="#0a0a0a">
+
+    <!-- SEO -->
+    <link rel="canonical" href="https://git.feddern.dev/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1">
+    <meta name="author" content="Timo Feddern">
+    <meta name="publisher" content="Timo Feddern">
+    <meta name="language" content="en">
+    <meta name="keywords" content="Timo Feddern, portfolio, cloud fullstack developer, IBM CIC Switzerland, ETH Zürich, Integrated Building Systems, digital construction, OpenShift, Kubernetes, HardLeaf, StudyCompass, GymRave, Passabel Kollektiv">
+
+    <!-- GEO -->
+    <meta name="geo.region" content="CH-ZH">
+    <meta name="geo.placename" content="Zürich, Switzerland">
+    <meta name="geo.position" content="47.3769;8.5417">
+    <meta name="ICBM" content="47.3769, 8.5417">
+
+    <!-- Generative Engine hints: llms.txt is an emerging convention for AI crawlers -->
+    <link rel="alternate" type="text/plain" title="LLM-friendly summary" href="/llms.txt">
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="alternate icon" href="/favicon.ico">
+
+    <!-- OpenGraph -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Timo Feddern">
+    <meta property="og:title" content="Timo Feddern — Projects">
+    <meta property="og:description" content="Selected work — personal portfolio, HardLeaf pavilion (ETH Zürich), StudyCompass, GymRave, and Passabel Kollektiv.">
+    <meta property="og:url" content="https://git.feddern.dev/">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:image" content="https://git.feddern.dev/assets/og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="654">
+    <meta property="og:image:alt" content="Timo Feddern — projects index. Matte-black backdrop with cyan, green, berry, red and violet aurora glows and the name in white sans-serif typography.">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Timo Feddern — Projects">
+    <meta name="twitter:description" content="Selected work — portfolio, ETH pavilion, StudyCompass, GymRave, Passabel Kollektiv.">
+    <meta name="twitter:image" content="https://git.feddern.dev/assets/og.jpg">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+    <!-- JSON-LD: Person + ItemList of the projects -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "Person",
+          "@id": "https://feddern.dev/#person",
+          "name": "Timo Feddern",
+          "url": "https://feddern.dev",
+          "jobTitle": "Cloud Fullstack Developer",
+          "worksFor": {
+            "@type": "Organization",
+            "name": "IBM Client Innovation Center Switzerland"
+          },
+          "alumniOf": {
+            "@type": "CollegeOrUniversity",
+            "name": "ETH Zürich"
+          },
+          "email": "timo@feddern.dev",
+          "sameAs": [
+            "https://feddern.dev",
+            "https://www.linkedin.com/in/timofed/",
+            "https://github.com/MisterEleven"
+          ],
+          "knowsAbout": [
+            "Cloud infrastructure",
+            "OpenShift",
+            "Kubernetes",
+            "GitOps",
+            "Ansible",
+            "Digital construction",
+            "Building Information Modeling",
+            "Integrated Building Systems"
+          ]
+        },
+        {
+          "@type": "CollectionPage",
+          "@id": "https://git.feddern.dev/#collection",
+          "url": "https://git.feddern.dev/",
+          "name": "Timo Feddern — Projects",
+          "description": "Selected work by Timo Feddern.",
+          "inLanguage": "en",
+          "isPartOf": { "@id": "https://feddern.dev/#person" },
+          "about": { "@id": "https://feddern.dev/#person" },
+          "mainEntity": {
+            "@type": "ItemList",
+            "itemListOrder": "https://schema.org/ItemListOrderAscending",
+            "numberOfItems": 5,
+            "itemListElement": [
+              {
+                "@type": "ListItem", "position": 1,
+                "item": {
+                  "@type": "WebSite",
+                  "name": "Timo Feddern — Portfolio",
+                  "url": "https://feddern.dev",
+                  "description": "Terminal-style personal portfolio."
+                }
+              },
+              {
+                "@type": "ListItem", "position": 2,
+                "item": {
+                  "@type": "CreativeWork",
+                  "name": "HardLeaf",
+                  "url": "https://git.feddern.dev/ca2/",
+                  "description": "Biomimetic timber pavilion — ETH Zürich Computational Architecture II. Interactive WebXR viewer."
+                }
+              },
+              {
+                "@type": "ListItem", "position": 3,
+                "item": {
+                  "@type": "WebSite",
+                  "name": "StudyCompass",
+                  "url": "https://studycompass.ch",
+                  "description": "A platform that helps students find the study path that actually fits them."
+                }
+              },
+              {
+                "@type": "ListItem", "position": 4,
+                "item": {
+                  "@type": "MusicEvent",
+                  "name": "GymRave №1",
+                  "url": "https://gymrave.ch",
+                  "startDate": "2026-09-25T19:00:00+02:00",
+                  "location": {
+                    "@type": "Place",
+                    "name": "Sportcenter Ägeri",
+                    "address": "Zugerstrasse 79, 6314 Unterägeri, CH"
+                  }
+                }
+              },
+              {
+                "@type": "ListItem", "position": 5,
+                "item": {
+                  "@type": "Organization",
+                  "name": "Passabel Kollektiv",
+                  "url": "https://passabelk.ch",
+                  "description": "Independent electronic-music label organising rave events."
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+    </script>
 
     <style>
         :root {
