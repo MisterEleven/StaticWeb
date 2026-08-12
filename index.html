@@ -3,180 +3,830 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Website Hub</title>
+    <meta name="description" content="Selected work by Timo Feddern — portfolio, academic projects, and event sites.">
+    <meta name="theme-color" content="#0a0a0a">
+    <title>Timo Feddern — Projects</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,400;1,500&family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #0a0a0a;
+            --bg-elev: #111114;
+            --surface: rgba(255, 255, 255, 0.025);
+            --surface-hover: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.08);
+            --border-strong: rgba(255, 255, 255, 0.16);
+            --text: #f5f5f5;
+            --text-dim: #a8a8a8;
+            --text-muted: #6b6b6b;
+            --accent-feddern: #00d1ff;
+            --accent-hardleaf: #8fce4b;
+            --accent-studycompass: #c47ba0;
+            --accent-gymrave: #ff2e3d;
+            --accent-passabel: #a855f7;
+            --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html, body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(20px, 4vw, 40px);
+            position: relative;
+        }
+
+        /* Ambient background — animated auroras */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: -20%;
+            background:
+                radial-gradient(ellipse 45% 35% at 10% 15%, rgba(0, 209, 255, 0.10), transparent 60%),
+                radial-gradient(ellipse 35% 30% at 90% 30%, rgba(143, 206, 75, 0.05), transparent 60%),
+                radial-gradient(ellipse 30% 30% at 60% 55%, rgba(196, 123, 160, 0.06), transparent 60%),
+                radial-gradient(ellipse 35% 30% at 15% 85%, rgba(255, 46, 61, 0.05), transparent 60%),
+                radial-gradient(ellipse 35% 30% at 85% 90%, rgba(168, 85, 247, 0.06), transparent 60%);
+            filter: blur(40px);
+            pointer-events: none;
+            z-index: 0;
+            animation: drift 24s ease-in-out infinite alternate;
+        }
+
+        @keyframes drift {
+            0%   { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(2%, -3%) rotate(3deg); }
+        }
+
+        /* Subtle grain */
+        body::after {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.06 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.5;
+            mix-blend-mode: overlay;
+        }
+
+        main {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: clamp(32px, 6vh, 64px);
+            flex: 1;
+        }
+
+        /* Header */
+        .hero-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-top: clamp(20px, 5vh, 48px);
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .hero-header .mark {
+            font-family: var(--font-mono);
+            font-size: 13px;
+            color: var(--text-dim);
+            letter-spacing: 0.02em;
+        }
+
+        .hero-header .mark .dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            background: var(--accent-feddern);
+            border-radius: 50%;
+            margin-right: 8px;
+            vertical-align: middle;
+            box-shadow: 0 0 10px var(--accent-feddern);
+            animation: pulse 2.4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; box-shadow: 0 0 10px var(--accent-feddern); }
+            50%      { opacity: 0.5; box-shadow: 0 0 4px var(--accent-feddern); }
+        }
+
+        .hero-header .meta {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .visually-hidden {
+            position: absolute; width: 1px; height: 1px;
+            padding: 0; margin: -1px; overflow: hidden;
+            clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+        }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: clamp(16px, 2vw, 24px);
+        }
+
+        /* Card base */
+        .card {
+            --accent: var(--border-strong);
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+            padding: 0;
+            background: var(--bg-elev);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            text-decoration: none;
+            color: inherit;
+            overflow: hidden;
+            isolation: isolate;
+            transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1),
+                        border-color 260ms ease;
+            min-height: 260px;
+        }
+
+        .card.hero {
+            grid-column: 1 / -1;
+            grid-template-columns: 1.15fr 1fr;
+            min-height: 360px;
+        }
+
+        .card--feddern      { --accent: var(--accent-feddern); }
+        .card--hardleaf     { --accent: var(--accent-hardleaf); }
+        .card--studycompass { --accent: var(--accent-studycompass); }
+        .card--gymrave      { --accent: var(--accent-gymrave); }
+        .card--passabel     { --accent: var(--accent-passabel); }
+
+        .card:hover,
+        .card:focus-visible {
+            transform: translateY(-3px);
+            border-color: var(--accent);
+            outline: none;
+        }
+
+        /* Accent glow — brightens on hover */
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            padding: 1px;
+            background: linear-gradient(135deg, transparent 20%, color-mix(in srgb, var(--accent) 60%, transparent) 100%);
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+                    mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 260ms ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .card:hover::before,
+        .card:focus-visible::before {
+            opacity: 1;
+        }
+
+        /* Corner tick */
+        .card::after {
+            content: '';
+            position: absolute;
+            top: 16px; right: 16px;
+            width: 12px; height: 12px;
+            border-top: 1px solid transparent;
+            border-right: 1px solid transparent;
+            transition: border-color 260ms ease;
+            z-index: 3;
+        }
+
+        .card:hover::after,
+        .card:focus-visible::after {
+            border-top-color: var(--accent);
+            border-right-color: var(--accent);
+        }
+
+        /* --- Card text side --- */
+        .card__body {
+            padding: clamp(28px, 3.2vw, 40px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card__index {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--accent);
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .card__title {
+            font-family: var(--font-sans);
+            font-weight: 700;
+            font-size: clamp(1.75rem, 3vw, 2.5rem);
+            line-height: 1.05;
+            letter-spacing: -0.025em;
+            margin: 16px 0 12px;
+            color: var(--text);
+        }
+
+        .card.hero .card__title {
+            font-size: clamp(2.4rem, 5vw, 3.8rem);
+            font-weight: 800;
+        }
+
+        .card__desc {
+            color: var(--text-dim);
+            font-size: 15px;
+            line-height: 1.55;
+            max-width: 44ch;
+        }
+
+        .card.hero .card__desc {
+            font-size: 16.5px;
+            max-width: 50ch;
+        }
+
+        .card__foot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid var(--border);
+            gap: 16px;
+        }
+
+        .card__tags {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .card__tag {
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            font-weight: 500;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 4px 9px;
+            border: 1px solid var(--border);
+            border-radius: 999px;
+            transition: color 260ms ease, border-color 260ms ease, background 260ms ease;
+        }
+
+        .card:hover .card__tag {
+            color: var(--text);
+            border-color: color-mix(in srgb, var(--accent) 40%, transparent);
+        }
+
+        .card__cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            font-family: var(--font-mono);
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent);
+            white-space: nowrap;
+        }
+
+        .card__cta .arrow {
+            display: inline-block;
+            transition: transform 260ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card--internal:hover .card__cta .arrow,
+        .card--internal:focus-visible .card__cta .arrow { transform: translateX(4px); }
+
+        .card--external:hover .card__cta .arrow,
+        .card--external:focus-visible .card__cta .arrow { transform: translate(3px, -3px); }
+
+        /* --- Visual side (right on desktop, top on mobile) --- */
+        .card__visual {
+            position: relative;
+            overflow: hidden;
+            border-left: 1px solid var(--border);
+            min-height: 260px;
+        }
+
+        .card.hero .card__visual { min-height: 360px; }
+
+        /* Feddern — CSS terminal */
+        .visual-terminal {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 20%, rgba(0, 209, 255, 0.12), transparent 60%),
+                linear-gradient(135deg, #0d1420 0%, #0a0a0a 100%);
+            padding: 28px;
+            font-family: var(--font-mono);
+            font-size: 12.5px;
+            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .visual-terminal .term-bar {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+        .visual-terminal .term-bar span {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: rgba(255, 255, 255, 0.15);
+        }
+        .visual-terminal .term-bar span:nth-child(1) { background: #ff5f56; }
+        .visual-terminal .term-bar span:nth-child(2) { background: #ffbd2e; }
+        .visual-terminal .term-bar span:nth-child(3) { background: #27c93f; }
+
+        .visual-terminal .prompt { color: var(--text-muted); }
+        .visual-terminal .user { color: #6bff6b; }
+        .visual-terminal .path { color: #ff5eb4; }
+        .visual-terminal .sym  { color: var(--accent-feddern); }
+        .visual-terminal .out  { color: var(--text-dim); padding-left: 0; }
+        .visual-terminal .key  { color: var(--accent-feddern); }
+        .visual-terminal .val  { color: #f5f5f5; }
+        .visual-terminal .cur {
+            display: inline-block;
+            width: 8px; height: 14px;
+            background: var(--accent-feddern);
+            vertical-align: text-bottom;
+            margin-left: 4px;
+            animation: blink 1s steps(2) infinite;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+
+        /* HardLeaf — SVG leaf pattern */
+        .visual-leaf {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 70% 40%, rgba(143, 206, 75, 0.20), transparent 65%),
+                linear-gradient(135deg, #0f1408 0%, #0a0a0a 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 20px;
+            overflow: hidden;
         }
 
-        .container {
+        .visual-leaf svg {
+            width: 78%;
+            max-width: 340px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(143, 206, 75, 0.25));
+            transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card:hover .visual-leaf svg { transform: rotate(6deg) scale(1.04); }
+
+        .visual-leaf .hex-mesh {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(30deg, transparent 47%, rgba(143, 206, 75, 0.08) 47%, rgba(143, 206, 75, 0.08) 53%, transparent 53%),
+                linear-gradient(-30deg, transparent 47%, rgba(143, 206, 75, 0.08) 47%, rgba(143, 206, 75, 0.08) 53%, transparent 53%),
+                linear-gradient(90deg, transparent 47%, rgba(143, 206, 75, 0.08) 47%, rgba(143, 206, 75, 0.08) 53%, transparent 53%);
+            background-size: 34px 60px;
+            opacity: 0.5;
+        }
+
+        /* GymRave — hero image */
+        .visual-gym {
+            position: absolute;
+            inset: 0;
+            background-color: #180608;
+            background-image:
+                linear-gradient(135deg, rgba(24, 6, 8, 0.55) 0%, rgba(255, 46, 61, 0.15) 100%),
+                url("./assets/gymrave-hero.webp");
+            background-size: cover;
+            background-position: center;
+            transition: transform 600ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card:hover .visual-gym { transform: scale(1.04); }
+
+        .visual-gym::after {
+            content: 'GYMRAVE';
+            position: absolute;
+            top: 20px; left: 20px;
+            font-family: var(--font-mono);
+            font-size: 10.5px;
+            font-weight: 600;
+            letter-spacing: 0.28em;
+            color: #fff;
+            padding: 4px 10px;
+            background: rgba(255, 46, 61, 0.85);
+            backdrop-filter: blur(6px);
+            border-radius: 3px;
+        }
+
+        .visual-gym .date-stamp {
+            position: absolute;
+            bottom: 20px; right: 20px;
+            font-family: var(--font-mono);
+            font-size: 26px;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1;
+            text-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
+        }
+        .visual-gym .date-stamp small {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: rgba(255, 255, 255, 0.7);
+            margin-top: 4px;
+        }
+
+        /* StudyCompass — compass rose */
+        .visual-compass {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 70% 40%, rgba(196, 123, 160, 0.24), transparent 65%),
+                linear-gradient(135deg, #1c1720 0%, #0a0a0a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .visual-compass svg {
+            width: 68%;
+            max-width: 260px;
+            height: auto;
+            filter: drop-shadow(0 0 24px rgba(196, 123, 160, 0.25));
+        }
+
+        .visual-compass .needle {
+            transform-origin: 60px 60px;
+            transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card:hover .visual-compass .needle,
+        .card:focus-visible .visual-compass .needle {
+            transform: rotate(72deg);
+        }
+
+        .visual-compass::after {
+            content: 'find your path';
+            position: absolute;
+            bottom: 20px; left: 20px;
+            font-family: 'Fraunces', 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 12px;
+            color: rgba(196, 123, 160, 0.6);
+            letter-spacing: 0.02em;
+        }
+
+        /* Passabel — equalizer bars */
+        .visual-passabel {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 30%, rgba(168, 85, 247, 0.18), transparent 70%),
+                linear-gradient(180deg, #14081f 0%, #0a0a0a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            overflow: hidden;
+        }
+
+        .visual-passabel .eq {
+            display: flex;
+            align-items: flex-end;
+            gap: 8px;
+            height: 130px;
+        }
+
+        .visual-passabel .eq-bar {
+            width: 10px;
+            border-radius: 2px;
+            background: var(--eq-color, #a855f7);
+            box-shadow: 0 0 12px color-mix(in srgb, var(--eq-color, #a855f7) 60%, transparent);
+            animation: eq-bounce 1.6s ease-in-out infinite;
+            animation-play-state: paused;
+        }
+
+        .card:hover .visual-passabel .eq-bar,
+        .card:focus-visible .visual-passabel .eq-bar {
+            animation-play-state: running;
+        }
+
+        .visual-passabel .eq-bar:nth-child(1) { --eq-color: #c084fc; height: 46%; animation-delay: 0s;    }
+        .visual-passabel .eq-bar:nth-child(2) { --eq-color: #a855f7; height: 64%; animation-delay: 0.15s; }
+        .visual-passabel .eq-bar:nth-child(3) { --eq-color: #9333ea; height: 82%; animation-delay: 0.3s;  }
+        .visual-passabel .eq-bar:nth-child(4) { --eq-color: #6b21a8; height: 98%; animation-delay: 0.45s; }
+        .visual-passabel .eq-bar:nth-child(5) { --eq-color: #9333ea; height: 82%; animation-delay: 0.3s;  }
+        .visual-passabel .eq-bar:nth-child(6) { --eq-color: #a855f7; height: 64%; animation-delay: 0.15s; }
+        .visual-passabel .eq-bar:nth-child(7) { --eq-color: #c084fc; height: 46%; animation-delay: 0s;    }
+
+        @keyframes eq-bounce {
+            0%, 100% { transform: scaleY(1); }
+            50%      { transform: scaleY(0.5); transform-origin: bottom; }
+        }
+
+        .visual-passabel .wordmark {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 14px;
+            letter-spacing: 0.62em;
+            color: #f5f5f5;
+            padding-left: 0.62em;
+            border-top: 1px solid rgba(124, 58, 237, 0.4);
+            padding-top: 10px;
+        }
+
+        .visual-passabel .wordmark small {
+            display: block;
+            font-size: 8px;
+            font-weight: 400;
+            letter-spacing: 0.5em;
+            color: #7c3aed;
+            padding-left: 0.5em;
+            margin-top: 4px;
+        }
+
+        /* Footer */
+        footer.page-foot {
+            position: relative;
+            z-index: 1;
             max-width: 1200px;
             width: 100%;
+            margin: clamp(40px, 6vh, 72px) auto 0;
+            padding-top: 24px;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+            font-family: var(--font-mono);
+            font-size: 12px;
+            color: var(--text-muted);
         }
 
-        .header {
-            text-align: center;
-            color: white;
-            margin-bottom: 50px;
-        }
-
-        .header h1 {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
-        }
-
-        .header p {
-            font-size: 1.2rem;
-            opacity: 0.9;
-        }
-
-        .sites-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-bottom: 40px;
-        }
-
-        .site-card {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        footer.page-foot a {
+            color: var(--text-dim);
             text-decoration: none;
-            color: inherit;
-            display: block;
+            transition: color 220ms ease;
         }
+        footer.page-foot a:hover { color: var(--text); }
 
-        .site-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-        }
-
-        .site-card h2 {
-            color: #667eea;
-            margin-bottom: 15px;
-            font-size: 1.8rem;
-        }
-
-        .site-card p {
-            color: #666;
-            line-height: 1.6;
-            margin-bottom: 20px;
-        }
-
-        .site-card .badge {
-            display: inline-block;
-            background: #667eea;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            margin-right: 10px;
-            margin-bottom: 10px;
-        }
-
-        .site-card .arrow {
-            color: #667eea;
-            font-size: 1.5rem;
-            float: right;
-        }
-
-        .footer {
-            text-align: center;
-            color: white;
-            opacity: 0.8;
-            margin-top: 40px;
-        }
-
-        .footer a {
-            color: white;
-            text-decoration: underline;
-        }
-
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 2rem;
-            }
-
-            .header p {
-                font-size: 1rem;
-            }
-
-            .sites-grid {
+        /* --- Responsive --- */
+        @media (max-width: 900px) {
+            .card,
+            .card.hero {
                 grid-template-columns: 1fr;
             }
+            .card__visual,
+            .card.hero .card__visual {
+                min-height: 180px;
+                border-left: none;
+                border-bottom: 1px solid var(--border);
+                order: -1;
+            }
+        }
+
+        @media (max-width: 720px) {
+            .grid { grid-template-columns: 1fr; }
+            .card__foot {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 16px;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body::before, .hero-header .mark .dot,
+            .visual-terminal .cur,
+            .visual-passabel .eq-bar { animation: none !important; }
+            .card, .card::after, .card__cta .arrow,
+            .visual-leaf svg, .visual-gym,
+            .visual-compass .needle { transition: none; }
+            .card:hover, .card:focus-visible { transform: none; }
+            .card:hover .visual-leaf svg,
+            .card:hover .visual-gym,
+            .card:hover .visual-compass .needle { transform: none; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>🌐 Multi-Website Hub</h1>
-            <p>Welcome to my collection of static websites</p>
-        </div>
+    <main>
+        <header class="hero-header">
+            <div class="mark"><span class="dot"></span>timo.feddern / projects</div>
+            <div class="meta">Selected work · 2024 — 26</div>
+        </header>
 
-        <div class="sites-grid">
-            <a href="./root/" class="site-card">
-                <h2>👨‍💻 Timo Feddern</h2>
-                <p>Personal portfolio - Cloud Fullstack Developer & Digital Construction Specialist. Available at feddern.dev</p>
-                <span class="badge">Portfolio</span>
-                <span class="badge">Personal</span>
-                <span class="badge">feddern.dev</span>
-                <span class="arrow">→</span>
+        <h1 class="visually-hidden">Timo Feddern — Projects</h1>
+
+        <section class="grid" aria-label="Projects">
+
+            <!-- 01 · Personal portfolio -->
+            <a class="card card--internal card--feddern hero" href="./root/">
+                <div class="card__body">
+                    <div>
+                        <div class="card__index">01 / Portfolio</div>
+                        <h2 class="card__title">Timo Feddern</h2>
+                        <p class="card__desc">Cloud fullstack developer at IBM CIC Switzerland and Master's student at ETH Zürich. Building cloud-native infrastructure, automating construction workflows, and exploring the space between physical craft and digital systems.</p>
+                    </div>
+                    <div class="card__foot">
+                        <div class="card__tags">
+                            <span class="card__tag">2026</span>
+                        </div>
+                        <span class="card__cta">Enter <span class="arrow">→</span></span>
+                    </div>
+                </div>
+                <div class="card__visual">
+                    <div class="visual-terminal" aria-hidden="true">
+                        <div class="term-bar"><span></span><span></span><span></span></div>
+                        <div><span class="user">timo</span><span class="prompt">@</span><span class="path">feddern.dev</span><span class="prompt">:</span><span class="path">~</span><span class="sym">$</span> whoami</div>
+                        <div class="out">→ cloud fullstack · digital construction</div>
+                        <div style="height: 10px;"></div>
+                        <div><span class="user">timo</span><span class="prompt">@</span><span class="path">feddern.dev</span><span class="prompt">:</span><span class="path">~</span><span class="sym">$</span> cat stack.yml</div>
+                        <div class="out"><span class="key">cloud:</span> <span class="val">openshift, k8s, ansible</span></div>
+                        <div class="out"><span class="key">code:</span>&nbsp; <span class="val">python, bash, yaml</span></div>
+                        <div class="out"><span class="key">bim:</span>&nbsp;&nbsp; <span class="val">revit, dynamo, rhino</span></div>
+                        <div style="height: 10px;"></div>
+                        <div><span class="user">timo</span><span class="prompt">@</span><span class="path">feddern.dev</span><span class="prompt">:</span><span class="path">~</span><span class="sym">$</span> <span class="cur"></span></div>
+                    </div>
+                </div>
             </a>
 
-            <a href="./ca2/" class="site-card">
-                <h2>🌿 Leaf Pavilion</h2>
-                <p>Interactive 3D WebXR model viewer for architectural design project with AR support.</p>
-                <span class="badge">WebXR</span>
-                <span class="badge">3D Model</span>
-                <span class="badge">AR</span>
-                <span class="arrow">→</span>
+            <!-- 02 · HardLeaf -->
+            <a class="card card--internal card--hardleaf" href="./ca2/">
+                <div class="card__body">
+                    <div>
+                        <div class="card__index">02 / Academic</div>
+                        <h2 class="card__title">HardLeaf</h2>
+                        <p class="card__desc">ETH Zürich studio project — a biomimetic timber pavilion that integrates vegetation and optimizes solar shading. Interactive 3D viewer with AR support.</p>
+                    </div>
+                    <div class="card__foot">
+                        <div class="card__tags">
+                            <span class="card__tag">2026</span>
+                        </div>
+                        <span class="card__cta">View <span class="arrow">→</span></span>
+                    </div>
+                </div>
+                <div class="card__visual">
+                    <div class="visual-leaf" aria-hidden="true">
+                        <div class="hex-mesh"></div>
+                        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M60 15 L95 40 L88 82 L60 95 L32 82 L25 40 Z"
+                                  fill="none" stroke="#8fce4b" stroke-width="1.4" stroke-linejoin="round"/>
+                            <path d="M60 28 L82 45 L77 76 L60 84 L43 76 L38 45 Z"
+                                  fill="#8fce4b" opacity="0.18"/>
+                            <path d="M60 42 L72 51 L69 68 L60 73 L51 68 L48 51 Z"
+                                  fill="#c8e89a" opacity="0.5"/>
+                            <line x1="60" y1="15" x2="60" y2="95" stroke="#8fce4b" stroke-width="0.5" opacity="0.4"/>
+                            <line x1="25" y1="40" x2="88" y2="82" stroke="#8fce4b" stroke-width="0.4" opacity="0.25"/>
+                            <line x1="95" y1="40" x2="32" y2="82" stroke="#8fce4b" stroke-width="0.4" opacity="0.25"/>
+                        </svg>
+                    </div>
+                </div>
             </a>
 
-            <a href="./site1/" class="site-card">
-                <h2>Site 1</h2>
-                <p>A beautiful portfolio website showcasing creative projects and design work.</p>
-                <span class="badge">Portfolio</span>
-                <span class="badge">Design</span>
-                <span class="arrow">→</span>
+            <!-- 03 · StudyCompass -->
+            <a class="card card--external card--studycompass" href="https://studycompass.ch" target="_blank" rel="noopener">
+                <div class="card__body">
+                    <div>
+                        <div class="card__index">03 / Product</div>
+                        <h2 class="card__title">StudyCompass</h2>
+                        <p class="card__desc">A platform that helps students find the study path that actually fits them. Live at studycompass.ch.</p>
+                    </div>
+                    <div class="card__foot">
+                        <div class="card__tags">
+                            <span class="card__tag">2026</span>
+                        </div>
+                        <span class="card__cta">studycompass.ch <span class="arrow">↗</span></span>
+                    </div>
+                </div>
+                <div class="card__visual">
+                    <div class="visual-compass" aria-hidden="true">
+                        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- outer ring -->
+                            <circle cx="60" cy="60" r="50" fill="none" stroke="#c47ba0" stroke-width="0.8" opacity="0.5"/>
+                            <circle cx="60" cy="60" r="42" fill="none" stroke="#c47ba0" stroke-width="0.5" opacity="0.35"/>
+                            <!-- tick marks -->
+                            <g stroke="#c47ba0" stroke-width="0.8" opacity="0.7">
+                                <line x1="60" y1="10" x2="60" y2="16"/>
+                                <line x1="60" y1="104" x2="60" y2="110"/>
+                                <line x1="10" y1="60" x2="16" y2="60"/>
+                                <line x1="104" y1="60" x2="110" y2="60"/>
+                            </g>
+                            <g stroke="#c47ba0" stroke-width="0.5" opacity="0.4">
+                                <line x1="24.6" y1="24.6" x2="28.1" y2="28.1"/>
+                                <line x1="91.9" y1="24.6" x2="95.4" y2="28.1"/>
+                                <line x1="24.6" y1="95.4" x2="28.1" y2="91.9"/>
+                                <line x1="91.9" y1="95.4" x2="95.4" y2="91.9"/>
+                            </g>
+                            <!-- direction labels -->
+                            <text x="60" y="9" font-size="6.5" fill="#c47ba0" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-style="italic">N</text>
+                            <text x="60" y="118" font-size="6.5" fill="#c47ba0" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-style="italic">S</text>
+                            <text x="6" y="63" font-size="6.5" fill="#c47ba0" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-style="italic">W</text>
+                            <text x="114" y="63" font-size="6.5" fill="#c47ba0" text-anchor="middle" font-family="'Fraunces', Georgia, serif" font-style="italic">E</text>
+                            <!-- rose -->
+                            <g class="needle">
+                                <path d="M60 20 L64 60 L60 62 L56 60 Z" fill="#e8c8dc"/>
+                                <path d="M60 100 L56 60 L60 58 L64 60 Z" fill="#95d9da" opacity="0.5"/>
+                                <circle cx="60" cy="60" r="3" fill="#522b47" stroke="#e8c8dc" stroke-width="0.8"/>
+                            </g>
+                        </svg>
+                    </div>
+                </div>
             </a>
 
-            <a href="./site2/" class="site-card">
-                <h2>Site 2</h2>
-                <p>Documentation hub with comprehensive guides and API references.</p>
-                <span class="badge">Documentation</span>
-                <span class="badge">Technical</span>
-                <span class="arrow">→</span>
+            <!-- 04 · GymRave -->
+            <a class="card card--external card--gymrave" href="https://gymrave.ch" target="_blank" rel="noopener">
+                <div class="card__body">
+                    <div>
+                        <div class="card__index">04 / Event</div>
+                        <h2 class="card__title">GymRave</h2>
+                        <p class="card__desc">Eine Rave. Im Gym. A one-night event at Sportcenter Ägeri on 25.09.2026 with T-Møse × NIRO.</p>
+                    </div>
+                    <div class="card__foot">
+                        <div class="card__tags">
+                            <span class="card__tag">2026</span>
+                        </div>
+                        <span class="card__cta">gymrave.ch <span class="arrow">↗</span></span>
+                    </div>
+                </div>
+                <div class="card__visual">
+                    <div class="visual-gym" aria-hidden="true">
+                        <div class="date-stamp">25.09.26<small>Ägeri · 19:00</small></div>
+                    </div>
+                </div>
             </a>
 
-            <a href="./site3/" class="site-card">
-                <h2>Site 3</h2>
-                <p>Landing page for a product or service with modern design elements.</p>
-                <span class="badge">Landing Page</span>
-                <span class="badge">Marketing</span>
-                <span class="arrow">→</span>
+            <!-- 05 · Passabel Kollektiv -->
+            <a class="card card--external card--passabel" href="https://passabelk.ch" target="_blank" rel="noopener">
+                <div class="card__body">
+                    <div>
+                        <div class="card__index">05 / Music</div>
+                        <h2 class="card__title">Passabel <span style="opacity:0.55;font-weight:500;">Kollektiv</span></h2>
+                        <p class="card__desc">Independent electronic-music label organising innovative rave events across Switzerland.</p>
+                    </div>
+                    <div class="card__foot">
+                        <div class="card__tags">
+                            <span class="card__tag">2026</span>
+                        </div>
+                        <span class="card__cta">passabelk.ch <span class="arrow">↗</span></span>
+                    </div>
+                </div>
+                <div class="card__visual">
+                    <div class="visual-passabel" aria-hidden="true">
+                        <div class="eq">
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                            <div class="eq-bar"></div>
+                        </div>
+                        <div class="wordmark">PASSABEL<small>KOLLEKTIV</small></div>
+                    </div>
+                </div>
             </a>
-        </div>
+        </section>
+    </main>
 
-        <div class="footer">
-            <p>Powered by <a href="https://pages.github.com/" target="_blank">GitHub Pages</a></p>
-            <p>View the <a href="https://github.com/yourusername/StaticWeb" target="_blank">source code</a></p>
-        </div>
-    </div>
+    <footer class="page-foot">
+        <span>© Timo Feddern</span>
+        <a href="https://github.com/MisterEleven/StaticWeb" target="_blank" rel="noopener">github.com/MisterEleven/StaticWeb ↗</a>
+    </footer>
 </body>
 </html>

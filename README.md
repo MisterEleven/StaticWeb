@@ -1,31 +1,26 @@
-# Multi-Website GitHub Pages Repository
+# Timo Feddern — Projects
 
-This repository hosts multiple static websites served from different directories, all under one GitHub Pages deployment.
+This repository hosts a landing page and a small collection of static sites served together from GitHub Pages. `index.html` is a project index that links out to each site.
 
 ## 🏗️ Repository Structure
 
 ```
 StaticWeb/
-├── index.html              # Root landing page (lists all sites)
+├── index.html              # Hub landing page (project index)
 ├── root/                   # Personal Portfolio (feddern.dev)
 │   ├── index.html
 │   ├── index.css
 │   ├── index.js
 │   ├── favicon.ico
 │   └── CNAME              # feddern.dev
-├── ca2/                    # WebXR 3D Model Viewer
+├── ca2/                    # HardLeaf — WebXR pavilion viewer (ETH CA II)
 │   ├── index.html
+│   ├── styles.css
+│   ├── script.js
 │   ├── a03_design-project.glb
+│   ├── final_hexmesh.glb
 │   └── skybox_360.jpg
-├── site1/                  # Portfolio website
-│   ├── index.html
-│   └── CNAME.example
-├── site2/                  # Documentation website
-│   ├── index.html
-│   └── CNAME.example
-├── site3/                  # Landing page website
-│   ├── index.html
-│   └── CNAME.example
+├── site1/, site2/, site3/  # Scratch slots — not linked from the hub
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml      # GitHub Actions deployment
@@ -35,15 +30,17 @@ StaticWeb/
 └── CNAME.example
 ```
 
+> **GymRave** (event site at [gymrave.ch](https://gymrave.ch)) is featured on the hub but lives in a **separate repository** — it is only linked out from `index.html`, not hosted here.
+
 ## 🌐 How It Works
 
 ### URL Structure
-- **Root Hub**: `https://yourusername.github.io/StaticWeb/`
-- **Personal Portfolio**: `https://feddern.dev` (custom domain) or `https://yourusername.github.io/StaticWeb/root/`
-- **Leaf Pavilion (WebXR)**: `https://yourusername.github.io/StaticWeb/ca2/`
-- **Site 1**: `https://yourusername.github.io/StaticWeb/site1/`
-- **Site 2**: `https://yourusername.github.io/StaticWeb/site2/`
-- **Site 3**: `https://yourusername.github.io/StaticWeb/site3/`
+- **Hub**: `https://mistereleven.github.io/StaticWeb/`
+- **Personal Portfolio**: [`feddern.dev`](https://feddern.dev) (custom domain) or `https://mistereleven.github.io/StaticWeb/root/`
+- **HardLeaf (WebXR)**: `https://mistereleven.github.io/StaticWeb/ca2/`
+- **GymRave** (external, separate repo): [`gymrave.ch`](https://gymrave.ch)
+
+`site1/`, `site2/`, `site3/` remain reachable by direct URL but are intentionally not linked from the hub.
 
 ### Custom Domains
 

@@ -197,6 +197,58 @@ strong {
   transform: translateY(0);
 }
 
+/* Hub back-link footer */
+.site-footer {
+  position: fixed;
+  bottom: 20px;
+  left: 20px;
+  z-index: 1000;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 12px;
+  color: var(--text-color);
+  opacity: 0.55;
+  transition: opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.site-footer:hover {
+  opacity: 1;
+}
+
+.site-footer .hub-link {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+.site-footer .hub-link::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--link-color);
+  transition: width 0.3s ease;
+}
+
+.site-footer .hub-link:hover::after {
+  width: 100%;
+}
+
+.site-footer .sep {
+  color: var(--text-muted, rgba(255, 255, 255, 0.3));
+}
+
+@media (max-width: 640px) {
+  .site-footer {
+    bottom: 12px;
+    left: 12px;
+    font-size: 11px;
+  }
+}
+
 /* ============================================
    RETRO MODE STYLES (90s/Early 2000s Web)
    ============================================ */

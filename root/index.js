@@ -162,4 +162,14 @@ if (document.readyState === 'loading') {
   RetroMode.init();
 }
 
+// Double-click to instantly reveal the whole thing
+function revealAll() {
+  if (!Typer.text) return;
+  clearInterval(timer);
+  Typer.index = Typer.text.length;
+  var rtn = new RegExp('\n', 'g');
+  document.getElementById('console').innerHTML = Typer.text.replace(rtn, '<br/>');
+}
+document.addEventListener('dblclick', revealAll);
+
 // Made with Bob

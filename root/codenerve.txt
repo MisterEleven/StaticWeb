@@ -20,15 +20,20 @@ Started as a carpenter, evolved into a digital construction specialist, now arch
 • BIM & Digital Twins @ Siemens SI - Automated processes with Python, managed LifeCycleTwin<br>
 • IT Consultant - Network architecture & setup for SMEs</p>
 
-<p><strong>Featured Project:</strong><br>
-<a href="https://github.com/MisterEleven/TASK-alavista">TASK-alavista</a> - An innovative task management solution showcasing my development skills</p>
+<p><strong>Featured Projects:</strong><br>
+<a href="https://studycompass.ch">StudyCompass</a> — a platform helping students find the study path that actually fits them<br>
+<a href="https://passabelk.ch">Passabel Kollektiv</a> — independent electronic-music label organising innovative rave events<br>
+<a href="https://github.com/MisterEleven/TASK-alavista">TASK-alavista</a> — Obsidian plugin that turns #schedule tasks into a local .ics for read-only Apple Calendar sync, with obsidian:// deep links back to your notes<br>
+<a href="https://github.com/MisterEleven/climatePlots">climatePlots</a> — Python toolkit for 8760-hour building environmental data: 20+ visualisation types including ASHRAE 55 thermal comfort (PMV/PPD)<br>
+<a href="https://github.com/MisterEleven/EPW-upgrader">EPW-upgrader</a> — CLI + Python API that morphs EPW weather files toward projected climate scenarios (Belcher 2005, SSP5-8.5 / SSP2-4.5)<br>
+<a href="https://github.com/MisterEleven/Gameserver-Operator">Gameserver-Operator</a> — Kubernetes-native operator for self-hosted game servers; two CRDs reconcile into Deployment / PVC / Service</p>
 
 <p><strong>Side Quests:</strong><br>
 DJ'ing at concerts, parties & bars<br>
 Building privacy-focused decentralized networks<br>
 IT consulting for SMEs and private clients</p>
 
-<p><br>Let's connect! Reach out via <a href="mailto:timo@feddern.dev">timo@feddern.dev</a>, <a href="https://www.linkedin.com/in/adhs/">LinkedIn</a>, or check out my work on <a href="https://github.com/MisterEleven">GitHub</a>.</p>
+<p><br>Let's connect! Reach out via <a href="mailto:timo@feddern.dev">timo@feddern.dev</a>, <a href="https://www.linkedin.com/in/timofed/">LinkedIn</a>, or check out my work on <a href="https://github.com/MisterEleven">GitHub</a>.</p>
 
 
 <p>Cheers!</p>
