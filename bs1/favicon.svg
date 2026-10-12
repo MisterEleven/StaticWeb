@@ -1,0 +1,8 @@
+<svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+    <rect width="60" height="60" fill="#2D5016"/>
+    <path d="M30 10 L45 25 L40 45 L30 50 L20 45 L15 25 Z" fill="none" stroke="#E8F5E1" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M30 18 L38 28 L35 40 L30 43 L25 40 L22 28 Z" fill="#6B9F4A" opacity="0.6"/>
+    <path d="M30 25 L35 30 L33 37 L30 39 L27 37 L25 30 Z" fill="#E8F5E1" opacity="0.8"/>
+</svg>
+
+<!-- Made with Bob -->

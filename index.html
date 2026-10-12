@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Timo Feddern — Projects</title>
-    <meta name="description" content="Selected work by Timo Feddern — cloud fullstack developer at IBM CIC Switzerland and master's student at ETH Zürich. Personal portfolio, the HardLeaf pavilion (ETH), StudyCompass, GymRave, and Passabel Kollektiv.">
+    <meta name="description" content="Selected work by Timo Feddern — cloud fullstack developer at IBM CIC Switzerland and master's student at ETH Zürich. Personal portfolio, the HardLeaf pavilion (ETH), Building Systems 1 (ETH), StudyCompass, GymRave, and Passabel Kollektiv.">
     <meta name="theme-color" content="#0a0a0a">
 
     <!-- SEO -->
@@ -13,7 +13,7 @@
     <meta name="author" content="Timo Feddern">
     <meta name="publisher" content="Timo Feddern">
     <meta name="language" content="en">
-    <meta name="keywords" content="Timo Feddern, portfolio, cloud fullstack developer, IBM CIC Switzerland, ETH Zürich, Integrated Building Systems, digital construction, OpenShift, Kubernetes, HardLeaf, StudyCompass, GymRave, Passabel Kollektiv">
+    <meta name="keywords" content="Timo Feddern, portfolio, cloud fullstack developer, IBM CIC Switzerland, ETH Zürich, Integrated Building Systems, digital construction, OpenShift, Kubernetes, HardLeaf, Building Systems 1, StudyCompass, GymRave, Passabel Kollektiv">
 
     <!-- GEO -->
     <meta name="geo.region" content="CH-ZH">
@@ -98,7 +98,7 @@
           "mainEntity": {
             "@type": "ItemList",
             "itemListOrder": "https://schema.org/ItemListOrderAscending",
-            "numberOfItems": 5,
+            "numberOfItems": 6,
             "itemListElement": [
               {
                 "@type": "ListItem", "position": 1,
@@ -121,6 +121,15 @@
               {
                 "@type": "ListItem", "position": 3,
                 "item": {
+                  "@type": "CreativeWork",
+                  "name": "Building Systems 1",
+                  "url": "https://git.feddern.dev/bs1/",
+                  "description": "ETH Zürich Building Systems 1 — interactive 3D model viewer."
+                }
+              },
+              {
+                "@type": "ListItem", "position": 4,
+                "item": {
                   "@type": "WebSite",
                   "name": "StudyCompass",
                   "url": "https://studycompass.ch",
@@ -128,7 +137,7 @@
                 }
               },
               {
-                "@type": "ListItem", "position": 4,
+                "@type": "ListItem", "position": 5,
                 "item": {
                   "@type": "MusicEvent",
                   "name": "GymRave №1",
@@ -142,7 +151,7 @@
                 }
               },
               {
-                "@type": "ListItem", "position": 5,
+                "@type": "ListItem", "position": 6,
                 "item": {
                   "@type": "Organization",
                   "name": "Passabel Kollektiv",
@@ -170,6 +179,7 @@
             --text-muted: #6b6b6b;
             --accent-feddern: #00d1ff;
             --accent-hardleaf: #8fce4b;
+            --accent-bs: #f5a524;
             --accent-studycompass: #c47ba0;
             --accent-gymrave: #ff2e3d;
             --accent-passabel: #a855f7;
@@ -324,6 +334,7 @@
 
         .card--feddern      { --accent: var(--accent-feddern); }
         .card--hardleaf     { --accent: var(--accent-hardleaf); }
+        .card--bs           { --accent: var(--accent-bs); }
         .card--studycompass { --accent: var(--accent-studycompass); }
         .card--gymrave      { --accent: var(--accent-gymrave); }
         .card--passabel     { --accent: var(--accent-passabel); }
@@ -564,6 +575,29 @@
             background-size: 34px 60px;
             opacity: 0.5;
         }
+
+        /* Building Systems 1 — isometric block */
+        .visual-bs {
+            position: absolute;
+            inset: 0;
+            background:
+                radial-gradient(ellipse at 30% 40%, rgba(245, 165, 36, 0.18), transparent 65%),
+                linear-gradient(135deg, #141006 0%, #0a0a0a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .visual-bs svg {
+            width: 72%;
+            max-width: 320px;
+            height: auto;
+            filter: drop-shadow(0 0 30px rgba(245, 165, 36, 0.22));
+            transition: transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .card:hover .visual-bs svg { transform: translateY(-4px) scale(1.04); }
 
         /* GymRave — hero image */
         .visual-gym {
@@ -865,11 +899,42 @@
                 </div>
             </a>
 
-            <!-- 03 · StudyCompass -->
+            <!-- 03 · Building Systems 1 -->
+            <a class="card card--internal card--bs" href="./bs1/">
+                <div class="card__body">
+                    <div>
+                        <div class="card__index">03 / Academic</div>
+                        <h2 class="card__title">Building Systems 1</h2>
+                        <p class="card__desc">ETH Zürich coursework — explore the building model in an interactive 3D viewer with AR support.</p>
+                    </div>
+                    <div class="card__foot">
+                        <div class="card__tags">
+                            <span class="card__tag">2026</span>
+                        </div>
+                        <span class="card__cta">View <span class="arrow">→</span></span>
+                    </div>
+                </div>
+                <div class="card__visual">
+                    <div class="visual-bs" aria-hidden="true">
+                        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- isometric block -->
+                            <path d="M60 22 L98 44 L60 66 L22 44 Z" fill="#f5a524" opacity="0.22" stroke="#f5a524" stroke-width="1.2" stroke-linejoin="round"/>
+                            <path d="M22 44 L22 78 L60 100 L60 66 Z" fill="#f5a524" opacity="0.10" stroke="#f5a524" stroke-width="1.2" stroke-linejoin="round"/>
+                            <path d="M98 44 L98 78 L60 100 L60 66 Z" fill="#f5a524" opacity="0.05" stroke="#f5a524" stroke-width="1.2" stroke-linejoin="round"/>
+                            <!-- floor lines -->
+                            <path d="M22 61 L60 83 L98 61" fill="none" stroke="#f5a524" stroke-width="0.5" opacity="0.45"/>
+                            <!-- services run -->
+                            <path d="M41 33 L41 50 L79 72 L79 89" fill="none" stroke="#ffd58a" stroke-width="0.9" stroke-dasharray="2 2" opacity="0.8"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+
+            <!-- 04 · StudyCompass -->
             <a class="card card--external card--studycompass" href="https://studycompass.ch" target="_blank" rel="noopener">
                 <div class="card__body">
                     <div>
-                        <div class="card__index">03 / Product</div>
+                        <div class="card__index">04 / Product</div>
                         <h2 class="card__title">StudyCompass</h2>
                         <p class="card__desc">A platform that helps students find the study path that actually fits them. Live at studycompass.ch.</p>
                     </div>
@@ -915,11 +980,11 @@
                 </div>
             </a>
 
-            <!-- 04 · GymRave -->
+            <!-- 05 · GymRave -->
             <a class="card card--external card--gymrave" href="https://gymrave.ch" target="_blank" rel="noopener">
                 <div class="card__body">
                     <div>
-                        <div class="card__index">04 / Event</div>
+                        <div class="card__index">05 / Event</div>
                         <h2 class="card__title">GymRave</h2>
                         <p class="card__desc">Eine Rave. Im Gym. A one-night event at Sportcenter Ägeri on 25.09.2026 with T-Møse × NIRO.</p>
                     </div>
@@ -937,11 +1002,11 @@
                 </div>
             </a>
 
-            <!-- 05 · Passabel Kollektiv -->
+            <!-- 06 · Passabel Kollektiv -->
             <a class="card card--external card--passabel" href="https://passabelk.ch" target="_blank" rel="noopener">
                 <div class="card__body">
                     <div>
-                        <div class="card__index">05 / Music</div>
+                        <div class="card__index">06 / Music</div>
                         <h2 class="card__title">Passabel <span style="opacity:0.55;font-weight:500;">Kollektiv</span></h2>
                         <p class="card__desc">Independent electronic-music label organising innovative rave events across Switzerland.</p>
                     </div>

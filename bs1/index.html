@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Building Systems 1 | ETH Zurich</title>
+    <meta name="description" content="ETH Zurich Building Systems 1 — interactive 3D model viewer.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Model Viewer -->
+        <div class="viewer-container">
+            <model-viewer
+                id="model-viewer"
+                src="model1.gltf"
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                camera-controls
+                auto-rotate
+                shadow-intensity="2"
+                alt="Building Systems 1 3D Model"
+                exposure="1"
+                shadow-softness="0.3"
+                camera-orbit="180deg 55deg auto"
+                min-camera-orbit="auto auto 1m"
+                max-camera-orbit="auto auto 100m"
+                field-of-view="45deg"
+                max-field-of-view="60deg"
+                min-field-of-view="20deg"
+                interaction-prompt="none"
+                orientation="0deg -90deg 0deg"
+                loading="eager">
+            </model-viewer>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p><a href="../" class="hub-link">← All projects</a> &nbsp;·&nbsp; &copy; 2026 Timo Feddern</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // The exporter writes alpha 0.25 on the outer shell but omits alphaMode,
+        // so glTF defaults to OPAQUE and ignores it. Enable blending at load.
+        const modelViewer = document.querySelector('model-viewer');
+        modelViewer.addEventListener('load', () => {
+            const shell = modelViewer.model.materials[0];
+            shell.setAlphaMode('BLEND');
+        });
+    </script>
+</body>
+
+</html>

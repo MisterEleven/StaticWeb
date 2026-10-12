@@ -1,6 +1,6 @@
 # Timo Feddern — Projects
 
-> Landing page and index of selected work by Timo Feddern — cloud fullstack developer at IBM Client Innovation Center Switzerland and master's student in Integrated Building Systems at ETH Zürich. Background: carpenter → digital construction specialist → cloud infrastructure. This site (git.feddern.dev) links out to the personal portfolio, an academic pavilion project, a study-guidance product, an event site, and an electronic-music label.
+> Landing page and index of selected work by Timo Feddern — cloud fullstack developer at IBM Client Innovation Center Switzerland and master's student in Integrated Building Systems at ETH Zürich. Background: carpenter → digital construction specialist → cloud infrastructure. This site (git.feddern.dev) links out to the personal portfolio, two academic ETH projects, a study-guidance product, an event site, and an electronic-music label.
 
 ## Person
 
@@ -15,6 +15,7 @@
 
 - [Personal portfolio (feddern.dev)](https://feddern.dev): Terminal-style personal site with a live console. Details on work, background, featured GitHub repos.
 - [HardLeaf](https://git.feddern.dev/ca2/): ETH Zürich Computational Architecture II studio project — biomimetic timber pavilion optimising solar shading through vegetation. Interactive WebXR viewer with AR support.
+- [Building Systems 1](https://git.feddern.dev/bs1/): ETH Zürich Building Systems 1 coursework — interactive 3D model viewer with AR support.
 - [StudyCompass](https://studycompass.ch): Product — a platform helping students find the study path that actually fits them.
 - [GymRave](https://gymrave.ch): Event site — "Eine Rave. Im Gym." One-night rave at Sportcenter Ägeri on 25.09.2026 with T-Møse × NIRO.
 - [Passabel Kollektiv](https://passabelk.ch): Independent electronic-music label organising rave events.
