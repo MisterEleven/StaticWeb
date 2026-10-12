@@ -1,8 +1,8 @@
-# Timo Feddern — Projects
+# Timo Feddern | Projects
 
 This repository hosts a landing page and a small collection of static sites served together from GitHub Pages. `index.html` is a project index that links out to each site.
 
-## 🏗️ Repository Structure
+## Repository Structure
 
 ```
 StaticWeb/
@@ -13,14 +13,14 @@ StaticWeb/
 │   ├── index.js
 │   ├── favicon.ico
 │   └── CNAME              # feddern.dev
-├── ca2/                    # HardLeaf — WebXR pavilion viewer (ETH CA II)
+├── ca2/                    # HardLeaf: WebXR pavilion viewer (ETH CA II)
 │   ├── index.html
 │   ├── styles.css
 │   ├── script.js
 │   ├── a03_design-project.glb
 │   ├── final_hexmesh.glb
 │   └── skybox_360.jpg
-├── site1/, site2/, site3/  # Scratch slots — not linked from the hub
+├── site1/, site2/, site3/  # Scratch slots, not linked from the hub
 ├── .github/
 │   └── workflows/
 │       └── deploy.yml      # GitHub Actions deployment
@@ -30,9 +30,9 @@ StaticWeb/
 └── CNAME.example
 ```
 
-> **GymRave** (event site at [gymrave.ch](https://gymrave.ch)) is featured on the hub but lives in a **separate repository** — it is only linked out from `index.html`, not hosted here.
+> **GymRave** (event site at [gymrave.ch](https://gymrave.ch)) is featured on the hub but lives in a **separate repository**. It is only linked out from `index.html`, not hosted here.
 
-## 🌐 How It Works
+## How It Works
 
 ### URL Structure
 - **Hub**: `https://mistereleven.github.io/StaticWeb/`
@@ -60,7 +60,7 @@ Each subdirectory can have its own custom domain:
 
 **Note**: GitHub Pages supports one custom domain per repository by default. For multiple custom domains, consider using DNS redirects or deploying sites as separate repositories.
 
-## 🚀 Deployment
+## Deployment
 
 ### Automatic Deployment
 This repository uses GitHub Actions to automatically deploy to GitHub Pages on every push to the `main` branch.
@@ -71,14 +71,14 @@ This repository uses GitHub Actions to automatically deploy to GitHub Pages on e
 3. Branch: `gh-pages` (or `main`)
 4. Folder: `/ (root)`
 
-## 📝 Adding a New Site
+## Adding a New Site
 
 1. Create a new directory: `mkdir site-name`
 2. Add an `index.html` file
 3. (Optional) Add a `CNAME` file for custom domain
 4. Commit and push changes
 
-## 🎨 Customization
+## Customization
 
 ### Root Landing Page
 Edit `index.html` to customize the main landing page that lists all your sites.
@@ -89,7 +89,7 @@ Each site directory is independent and can use:
 - Static site generators (build output)
 - Any static content
 
-## 🔧 Custom Domain Configuration
+## Custom Domain Configuration
 
 ### For Individual Sites
 1. Create `CNAME` file in site directory:
@@ -115,7 +115,7 @@ Each site directory is independent and can use:
      - 185.199.110.153
      - 185.199.111.153
 
-## 📚 Use Cases
+## Use Cases
 
 - **Portfolio**: Multiple project showcases
 - **Documentation**: Different product docs
@@ -123,12 +123,12 @@ Each site directory is independent and can use:
 - **Experiments**: Test different designs
 - **Multi-tenant**: Separate sites for different clients/projects
 
-## 🛠️ Technologies
+## Technologies
 
 - GitHub Pages (hosting)
 - GitHub Actions (CI/CD)
 - Static HTML/CSS/JS
 
-## 📄 License
+## License
 
 MIT License - Feel free to use this structure for your projects!

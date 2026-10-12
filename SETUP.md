@@ -2,13 +2,13 @@
 
 This guide will walk you through setting up and deploying your multi-website repository to GitHub Pages.
 
-## 📋 Prerequisites
+## Prerequisites
 
 - A GitHub account
 - Git installed on your computer
 - (Optional) Custom domain(s) for your sites
 
-## 🚀 Quick Start
+## Quick Start
 
 ### Step 1: Create GitHub Repository
 
@@ -54,7 +54,7 @@ git push -u origin main
    https://YOUR_USERNAME.github.io/StaticWeb/
    ```
 
-## 🌐 Custom Domain Setup
+## Custom Domain Setup
 
 ### feddern.dev Setup (Already Configured)
 
@@ -153,7 +153,7 @@ To use different domains for each site directory:
 - Deploy each site as a separate repository, OR
 - Use a reverse proxy/CDN (like Cloudflare Workers)
 
-## 📝 Adding a New Website
+## Adding a New Website
 
 1. **Create a new directory:**
    ```bash
@@ -187,7 +187,7 @@ To use different domains for each site directory:
    git push
    ```
 
-## 🔧 Customization Tips
+## Customization Tips
 
 ### Update Site Links
 
@@ -226,7 +226,7 @@ To use `YOUR_USERNAME.github.io` as the root URL:
    - Site 1: `https://YOUR_USERNAME.github.io/site1/`
    - etc.
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### Site Not Deploying
 
@@ -256,13 +256,13 @@ To use `YOUR_USERNAME.github.io` as the root URL:
 3. Wait a few minutes for CDN to update
 4. Try incognito/private browsing mode
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [GitHub Pages Documentation](https://docs.github.com/en/pages)
 - [Custom Domain Setup](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
-## 💡 Pro Tips
+## Pro Tips
 
 1. **Use branches for testing:** Create a `dev` branch for testing changes before merging to `main`
 2. **Add analytics:** Include Google Analytics or similar in your sites
@@ -271,7 +271,7 @@ To use `YOUR_USERNAME.github.io` as the root URL:
 5. **Regular backups:** Keep local copies of your sites
 6. **Version control:** Use meaningful commit messages for easier tracking
 
-## 🎉 You're All Set!
+## You're All Set!
 
 Your multi-website repository is now live! Visit your site and start customizing.
 

@@ -132,7 +132,7 @@ model-viewer {
     100% { box-shadow: 0 0 0 0 rgba(245, 165, 36, 0), 0 0 20px var(--accent-glow); }
 }
 
-/* Velocity legend — Turbo colormap, sampled from the model's own texture */
+/* Velocity legend: Turbo colormap, sampled from the model's own texture */
 .legend {
     position: absolute;
     top: 24px;

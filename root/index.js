@@ -126,7 +126,7 @@ var RetroMode = {
     document.body.classList.add('retro-mode');
     this.isRetroMode = true;
     var toggleText = document.querySelector('.toggle-text');
-    if (toggleText) toggleText.textContent = '✨ Modern';
+    if (toggleText) toggleText.textContent = 'Modern';
     localStorage.setItem(this.storageKey, 'true');
   },
   
@@ -134,7 +134,7 @@ var RetroMode = {
     document.body.classList.remove('retro-mode');
     this.isRetroMode = false;
     var toggleText = document.querySelector('.toggle-text');
-    if (toggleText) toggleText.textContent = '🕹️ Retro';
+    if (toggleText) toggleText.textContent = 'Retro';
     localStorage.setItem(this.storageKey, 'false');
   }
 };
