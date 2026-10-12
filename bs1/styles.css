@@ -7,7 +7,11 @@
 :root {
     --accent-green: #6B9F4A;
     --medium-gray: #5A5A5A;
+    --primary-green: #2D5016;
+    --secondary-green: #4A7C2C;
+    --dark-gray: #2C2C2C;
     --shadow: rgba(45, 80, 22, 0.15);
+    --shadow-strong: rgba(45, 80, 22, 0.25);
 }
 
 body {
@@ -20,6 +24,7 @@ body {
 .container {
     width: 100vw;
     height: 100vh;
+    height: 100dvh;
     display: flex;
     flex-direction: column;
 }
@@ -29,6 +34,98 @@ body {
     position: relative;
     background: #1a202c;
     overflow: hidden;
+}
+
+/* Top-down plot, floating over the viewer */
+.info-panel {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    width: min(520px, calc(100vw - 48px));
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(245, 245, 245, 0.98) 100%);
+    backdrop-filter: blur(10px);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 8px 32px var(--shadow-strong);
+    z-index: 1000;
+    animation: fadeInLeft 0.8s ease-out;
+    border: 2px solid var(--accent-green);
+    transition: all 0.3s ease;
+}
+
+.info-panel.minimized {
+    width: 240px;
+    padding: 12px 20px;
+    cursor: pointer;
+}
+
+.info-panel.minimized .info-panel-content {
+    display: none;
+}
+
+.info-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 16px;
+}
+
+.info-panel.minimized .info-panel-header {
+    margin-bottom: 0;
+}
+
+.info-panel h3 {
+    font-size: 18px;
+    color: var(--dark-gray);
+    font-weight: 600;
+    font-family: 'Playfair Display', serif;
+    flex: 1;
+    margin: 0;
+}
+
+.minimize-btn {
+    background: linear-gradient(135deg, var(--primary-green) 0%, var(--secondary-green) 100%);
+    color: #fff;
+    border: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px var(--shadow);
+}
+
+.minimize-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 16px var(--shadow-strong);
+}
+
+.info-panel-content {
+    display: block;
+    cursor: zoom-in;
+}
+
+.info-panel-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+@keyframes fadeInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 model-viewer {
@@ -79,5 +176,21 @@ model-viewer {
 
     .footer p {
         font-size: 9px;
+    }
+
+    .info-panel {
+        bottom: 40px;
+        left: 12px;
+        width: calc(100vw - 24px);
+        padding: 14px;
+    }
+
+    .info-panel.minimized {
+        width: 200px;
+        padding: 10px 14px;
+    }
+
+    .info-panel h3 {
+        font-size: 15px;
     }
 }
