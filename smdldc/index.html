@@ -183,10 +183,10 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <div class="fact"><b>65 &#215; 35</b><span>tile grid over Bern</span></div>
       <div class="fact"><b>14</b><span>ordered heat levels</span></div>
       <div class="fact"><b>256 px</b><span>tile size, RGB</span></div>
-      <div class="fact"><b>9.45 px</b><span>heat raster cell</span></div><div class="fact"><b>99.9%</b><span>pixels decoded after cleaning</span></div>
+      <div class="fact"><b>9.45 px</b><span>heat raster cell</span></div><div class="fact"><b>99.2%</b><span>pixels usable for training</span></div>
     </div>
     <nav class="toc" aria-label="Sections">
-      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#cleaning">Cleaning</a><a href="#buildings">Buildings</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
+      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#cleaning">Cleaning</a><a href="#buildings">Buildings</a><a href="#result">Result</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
     </nav>
   </header>
 
@@ -229,7 +229,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
   <section id="method">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">How we analysed it</div>
-      <h2>Seven passes over the data</h2>
+      <h2>Eight passes over the data</h2>
       <p class="muted">Each pass answered a question the previous one raised.</p>
     </div>
     <ol class="steps col">
@@ -238,6 +238,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <li><b>Order the classes</b><p>First estimate: the mean greenness of the photo under each colour. Then the map.bern.ch legend arrived, and we fitted it directly as a semi-transparent blend.</p></li>
       <li><b>Reconstruct the layout</b><p>Compared the edge pixels of neighbouring ids. <code>id+1</code> continues to the right, and <code>id+65</code> sits directly below in 200 of 200 samples. The tiles form one stitched map.</p></li>
       <li><b>Level distribution</b><p>Mapped every pixel to one of the 14 temperature levels and compared the core and Large sets.</p></li>
+      <li><b>Fit the rendering per tile</b><p>Tiles were exported with different layer opacities (0.50 to 0.73) and, in three tiles, a darker building grey. Each tile gets its own fitted palette before decoding.</p></li>
       <li><b>Find the heat raster</b><p>Fitted one grid of cell boundaries over the whole stitched map. 98.55% of cells contain a single colour, so the cells are the true units of the data.</p></li>
       <li><b>Check buildings against the photo</b><p>Compared the heatmap's building outlines with what the photo shows, in both directions: outlines with no building, and buildings with no outline.</p></li>
     </ol>
@@ -327,17 +328,21 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <div class="eyebrow">Finding 5</div>
       <h2>The heat map is a grid of 9.45 px cells, so lines and labels can be painted over</h2>
       <p>The heat values were computed on a coarse raster and then drawn with street lines and names on top. Fitting one grid over the stitched map gives cells of <b>9.45 px</b> in both directions. With that grid, 98.55% of cells hold a single colour.</p>
-      <p>The cleaning rule follows from it. A pixel that already matches a legend colour keeps it. A pixel that does not (line, label, anti-aliasing) takes the most common level of its cell. That changes no correctly coloured pixel. Before cleaning, 4.56% of pixels were unreadable; after, 0.10% remain unknown, mostly in a few tiles with large dark-grey or white patches.</p>
+      <p>The cleaning rule follows from it. A pixel that already matches a legend colour keeps it. A pixel that does not (line, label, anti-aliasing) takes the most common level of its cell. That changes no correctly coloured pixel. Before cleaning, 4.29% of pixels were unreadable; after, 0.077% remain unknown, all in places where the source map has no value.</p>
     </div>
     <div class="pairs">
       <figure>
         <img src="img/clean_382.jpg" alt="Heat map with street names, before and after cleaning">
-        <figcaption><b>id 382, before and after.</b> The worst tile. Street lines and the "Wankdorfstrasse" label are gone. The near-black areas were drawn in a darker grey than any legend colour and stay unknown.</figcaption>
+        <figcaption><b>id 382, before and after.</b> Street lines and the "Wankdorfstrasse" label are gone. This tile was exported at a stronger opacity (0.73) with darker building grey; with its own fitted palette, every pixel decodes.</figcaption>
       </figure>
       <figure>
         <img src="img/clean_1000.jpg" alt="Heat map with outlines, before and after cleaning">
         <figcaption><b>id 1000, before and after.</b> Thin parcel outlines disappear and the cells come out as clean blocks.</figcaption>
       </figure>
+    </div>
+    <div class="callout warn col">
+      <strong>Not every tile was rendered the same way</strong>
+      <p>A first version assumed one palette for all tiles and decoded half of id 382 as unknown, although its buildings are plainly visible. Fitting the layer opacity per tile shows several export batches: 1,411 tiles at 0.64, 360 at 0.55, 96 at 0.63, and a few others. Tiles at the common opacity are unaffected by the fix (0.01% of pixels change). Anyone downloading more tiles later should expect the same variation.</p>
     </div>
     <div class="callout col">
       <strong>One raster for the whole city</strong>
@@ -350,7 +355,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <div class="eyebrow">Finding 6</div>
       <h2>Some buildings exist in only one of the two images</h2>
       <p>The building outlines in the heat map and the photo were made at different times. Some outlines sit on open fields (planned or newer buildings), and some buildings in the photo have no outline, so the heat map gives them a temperature.</p>
-      <p>A first check looked at vegetation under each of the 14,241 outlines. 515 outlines (1.06% of building area) are more than 60% vegetated. That check also catches green roofs, which are real buildings. For a reliable flag in both directions, a small building detector is trained on the photos with spatial cross-validation, so each tile is judged by a model that never saw it. Where the detector confidently disagrees with the heat map, the area is flagged.</p>
+      <p>A first check looked at vegetation under each of the 14,241 outlines. 515 outlines (1.06% of building area) are more than 60% vegetated. That check also catches green roofs, which are real buildings. For a reliable flag in both directions, a small building detector (a U-Net) is trained on the photos in 5 spatial folds, so each tile is judged by a model that never saw its neighbourhood. It reaches a building IoU of 0.62 to 0.66 per fold. Where it confidently disagrees with the heat map, the area is flagged: an outline whose mean building probability is below 0.15, or a region above 0.85 with no outline.</p>
     </div>
     <div class="pairs">
       <figure>
@@ -361,11 +366,44 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
         <img src="img/bld_648.jpg" alt="Green roof that the vegetation check flags">
         <figcaption><b>id 648, false alarm.</b> A large green roof. The vegetation check flags it, but it is a real building. The photo-trained detector is meant to tell these apart.</figcaption>
       </figure>
+      <figure>
+        <img src="img/flags_missing.jpg" alt="New housing block in the photo, flagged where the heat map has no outlines">
+        <figcaption><b>id 2096, buildings without outline.</b> A new housing development with solar roofs. The heat map has no outlines here and gives the roofs a temperature. Flagged areas in turquoise, existing outlines in yellow.</figcaption>
+      </figure>
     </div>
     <div class="callout warn col">
       <strong>How flagged areas are used</strong>
       <p>Flagged regions and a ring of 6 px around them are excluded from training and evaluation, like unknown pixels. The heat next to a mismatch was modelled with a different building layout than the photo shows.</p>
     </div>
+  </section>
+
+  <section id="result">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Result</div>
+      <h2>The cleaned heat map of Bern</h2>
+      <p>All 2,275 tiles decoded to levels, with buildings and the areas to ignore marked. Training and evaluation skip 0.80% of the pixels.</p>
+    </div>
+    <figure>
+      <img src="img/overview_clean.jpg" alt="Cleaned heat map of Bern with ignored areas marked" style="width:100%;border-radius:6px">
+      <figcaption>Heat in the legend colours, buildings grey. Turquoise: building in the photo without outline. Dark teal: outline without building. Teal tint: 6 px ring around a mismatch. Black: no value in the source map (the patch south of the centre is a sports ground).</figcaption>
+    </figure>
+    <figure>
+      <img src="img/overview_crop.jpg" alt="Close-up of the cleaned map in the Breitenrain and Lorraine area" style="width:100%;border-radius:6px">
+      <figcaption>Close-up north of the old town at 128 px per tile. Mismatch flags are small and scattered.</figcaption>
+    </figure>
+    <div class="tablewrap col">
+      <table>
+        <thead><tr><th>Ignored for training</th><th class="num">Regions</th><th class="num">Share of pixels</th></tr></thead>
+        <tbody>
+          <tr><td>No value in the source map</td><td class="num">-</td><td class="num">0.08%</td></tr>
+          <tr><td>Outline without building in the photo</td><td class="num">581</td><td class="num">0.29%</td></tr>
+          <tr><td>Building in the photo without outline</td><td class="num">237</td><td class="num">0.10%</td></tr>
+          <tr><td>Ring of 6 px around a mismatch</td><td class="num">-</td><td class="num">0.33%</td></tr>
+          <tr><td><b>Total</b></td><td class="num"></td><td class="num"><b>0.80%</b></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted col">The flags come from a detector, not from ground truth, so they are suspected mismatches. A sample check found the "building without outline" flags reliable; some small "outline without building" flags sit on sheds and garages the detector misses. They cover little area and were kept.</p>
   </section>
 
   <section id="options">
@@ -431,8 +469,8 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <div class="limit"><h3><span class="sev md">Medium</span>Quantised and overlaid target</h3><p>Values exist only as 14 bins in 9.45 px cells. Street lines and labels can be painted over, but a few large patches stay unknown. Bin edges are uneven (3 &#176;C wide at the cool end, 1 &#176;C at the hot end).</p></div>
       <div class="limit"><h3><span class="sev md">Medium</span>Imbalanced levels</h3><p>23&#8211;26 &#176;C covers 37% of the area and &gt; 43 &#176;C covers 0.7%. Extreme heat is the most relevant level and the rarest one.</p></div>
       <div class="limit"><h3><span class="sev md">Medium</span>Buildings are masked</h3><p>Roofs carry no temperature in this layer, so the model never learns anything about them. Predictions on buildings must be masked out at evaluation too.</p></div>
-      <div class="limit"><h3><span class="sev md">Medium</span>Buildings from different dates</h3><p>Outlines and photo disagree in places. The flags come from a learned detector, so a few mismatches will be missed and a few real buildings flagged.</p></div>
-      <div class="limit"><h3><span class="sev md">Medium</span>Reverse-engineered decoding</h3><p>The palette-to-level mapping comes from a colour fit, not from source data. The fit is tight for 13 of 14 levels. Raw values from the city would remove this step.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Buildings from different dates</h3><p>Outlines and photo disagree in places. The flags come from a learned detector (IoU about 0.64), so a few mismatches will be missed and some small real buildings flagged.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Reverse-engineered decoding</h3><p>The palette-to-level mapping comes from a colour fit, not from source data, and tiles were exported at different opacities. Each tile's palette is fitted separately. Raw values from the city would remove this step.</p></div>
     </div>
   </section>
 
@@ -443,7 +481,8 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <label><input type="checkbox" id="t1" checked> Decode legend and level order</label>
       <label><input type="checkbox" id="t2" checked> Reconstruct the tile grid</label>
       <label><input type="checkbox" id="t10" checked> Fit the heat raster grid and clean all heat maps</label>
-      <label><input type="checkbox" id="t11"> Flag building mismatches in both directions and build the ignore mask</label>
+      <label><input type="checkbox" id="t11" checked> Flag building mismatches in both directions and build the ignore mask</label>
+      <label><input type="checkbox" id="t12" checked> Fit the export opacity per tile</label>
       <label><input type="checkbox" id="t3"> Check the map.bern.ch layer metadata (quantity, time of day, model)</label>
       <label><input type="checkbox" id="t4"> Write <code>make_splits.py</code> with 5 &#215; 5 spatial blocks</label>
       <label><input type="checkbox" id="t5"> Build the dataset loader from the cleaned levels and ignore mask, with flip and rotation augmentation</label>
