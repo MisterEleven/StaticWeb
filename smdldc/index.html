@@ -1,0 +1,488 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>Bern Heat Islands</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a single reading column (~68ch) that steps out to full width for maps and the comparison slider; the heat legend itself is the colour system. */
+:root {
+  --bg: #f7f8f8;
+  --surface: #ffffff;
+  --ink: #15191c;
+  --ink-2: #4a5359;
+  --ink-3: #7a858c;
+  --rule: #dde2e4;
+  --accent: #c8501f;        /* 39&#8211;40 &#176;C step, darkened for text contrast */
+  --accent-soft: #fbe6da;
+  --cool: #3c6fd6;          /* <23 &#176;C step, for the cool end */
+  --note: #eef3f8;
+  --warn-bg: #fff4e5;
+  --warn-ink: #8a4b00;
+  --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
+  --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --step--1: 0.84rem;
+  --step-0: 1.06rem;
+  --step-1: 1.3rem;
+  --step-2: 1.75rem;
+  --step-3: clamp(2.3rem, 6vw, 3.6rem);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121618; --surface: #1a1f22; --ink: #eef1f2; --ink-2: #b4bdc2; --ink-3: #85919a;
+    --rule: #2c3438; --accent: #f08a55; --accent-soft: #3a2419; --cool: #7fa2f0;
+    --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121618; --surface: #1a1f22; --ink: #eef1f2; --ink-2: #b4bdc2; --ink-3: #85919a;
+  --rule: #2c3438; --accent: #f08a55; --accent-soft: #3a2419; --cool: #7fa2f0;
+  --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink);
+  font-family: var(--font-body); font-size: var(--step-0); line-height: 1.6;
+  padding: 0 20px;
+}
+main { max-width: 1120px; margin: 0 auto; padding-block: 48px 96px; display: grid; gap: 72px; }
+.col { max-width: 68ch; }
+section { display: grid; gap: 20px; min-width: 0; }
+h1, h2, h3 { font-family: var(--font-display); line-height: 1.15; text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+h1 { font-size: var(--step-3); font-weight: 700; }
+h2 { font-size: var(--step-2); font-weight: 700; }
+h3 { font-size: var(--step-1); font-weight: 500; }
+p { margin: 0; }
+.eyebrow { font-family: var(--font-mono); font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+.lede { font-size: var(--step-1); color: var(--ink-2); line-height: 1.5; }
+.muted { color: var(--ink-2); }
+.small { font-size: var(--step--1); }
+code, .mono { font-family: var(--font-mono); font-size: 0.88em; }
+code { background: var(--note); padding: 0.05em 0.35em; border-radius: 4px; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* hero */
+header.hero { display: grid; gap: 22px; }
+.heatbar { display: grid; grid-template-columns: repeat(14, 1fr); height: 14px; border-radius: 3px; overflow: hidden; }
+.heatbar span { display: block; }
+.heatbar-labels { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-3); margin-top: 6px; }
+.facts { display: flex; flex-wrap: wrap; gap: 12px 40px; padding-top: 8px; border-top: 1px solid var(--rule); }
+.fact { display: grid; }
+.fact b { font-family: var(--font-display); font-size: var(--step-2); font-weight: 700; font-variant-numeric: tabular-nums; }
+.fact span { font-size: var(--step--1); color: var(--ink-2); font-family: var(--font-mono); }
+
+/* nav */
+nav.toc { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--font-mono); font-size: var(--step--1); }
+nav.toc a { color: var(--ink-2); text-decoration: none; border: 1px solid var(--rule); padding: 4px 10px; border-radius: 999px; }
+nav.toc a:hover { color: var(--ink); border-color: var(--ink-3); }
+
+/* tables */
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--step--1); font-variant-numeric: tabular-nums; }
+th, td { text-align: left; padding: 9px 12px 9px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-family: var(--font-mono); font-weight: 500; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; font-size: 0.76rem; }
+td.num, th.num { text-align: right; }
+.sw { display: inline-block; width: 22px; height: 14px; border-radius: 2px; vertical-align: -2px; border: 1px solid rgba(0,0,0,.12); }
+
+/* callouts */
+.callout { background: var(--note); border-radius: 8px; padding: 16px 20px; display: grid; gap: 6px; }
+.callout.warn { background: var(--warn-bg); }
+.callout.warn strong { color: var(--warn-ink); }
+.callout strong { font-family: var(--font-display); font-weight: 700; }
+
+/* process steps */
+ol.steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; counter-reset: s; }
+ol.steps li { counter-increment: s; display: grid; grid-template-columns: 44px 1fr; gap: 4px 16px; padding: 16px 0; border-top: 1px solid var(--rule); }
+ol.steps li::before { content: counter(s); font-family: var(--font-display); font-weight: 700; font-size: var(--step-1); color: var(--accent); grid-row: span 2; }
+ol.steps li b { font-family: var(--font-display); font-weight: 500; font-size: var(--step-0); }
+ol.steps li p { grid-column: 2; color: var(--ink-2); font-size: 0.97rem; }
+
+/* compare slider */
+.compare { position: relative; width: 100%; max-width: 100%; aspect-ratio: 65 / 35; border-radius: 6px; overflow: hidden; background: var(--rule); user-select: none; }
+.compare img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+.compare .top { clip-path: inset(0 calc(100% - var(--pos, 50%)) 0 0); }
+.compare .handle { position: absolute; top: 0; bottom: 0; left: var(--pos, 50%); width: 2px; background: #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.35); pointer-events: none; }
+.compare .tag { position: absolute; top: 10px; font-family: var(--font-mono); font-size: 0.74rem; background: rgba(10,14,16,.72); color: #fff; padding: 3px 8px; border-radius: 4px; }
+.compare .tag.l { left: 10px; } .compare .tag.r { right: 10px; }
+.slider-row { display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); }
+.slider-row input { flex: 1; accent-color: var(--accent); }
+
+/* figures */
+figure { margin: 0; display: grid; gap: 10px; min-width: 0; }
+figcaption { font-size: var(--step--1); color: var(--ink-2); max-width: 68ch; }
+.pairs { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 28px; }
+.pairs img { width: 100%; border-radius: 4px; display: block; }
+
+/* chart */
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.chart .tick, .chart .axis-label { fill: var(--ink-3); font-family: var(--font-mono); font-size: 11px; }
+.chart .grid { stroke: var(--rule); stroke-width: 1; }
+.chart .base { stroke: var(--ink-3); stroke-width: 1; }
+.chart .marker { stroke: var(--ink); stroke-width: 2; }
+.chart .band { fill: var(--ink-2); font-family: var(--font-mono); font-size: 10.5px; text-transform: uppercase; letter-spacing: .06em; }
+.chart .bandline { stroke: var(--rule); stroke-width: 1; }
+.chart .direct { fill: var(--ink); font-family: var(--font-mono); font-size: 11px; font-weight: 500; }
+.tip { position: absolute; pointer-events: none; background: var(--surface); color: var(--ink); border: 1px solid var(--rule); box-shadow: 0 4px 16px rgba(0,0,0,.12); padding: 8px 10px; border-radius: 6px; font-family: var(--font-mono); font-size: 12px; line-height: 1.45; white-space: nowrap; }
+.legend-row { display: flex; flex-wrap: wrap; gap: 6px 20px; font-family: var(--font-mono); font-size: var(--step--1); color: var(--ink-2); align-items: center; }
+.legend-row i { display: inline-block; width: 14px; height: 10px; border-radius: 2px; margin-right: 6px; vertical-align: 0; }
+.legend-row i.line { height: 2px; width: 16px; background: var(--ink); vertical-align: 3px; border-radius: 0; }
+.toggle { font-family: var(--font-mono); font-size: var(--step--1); background: none; border: 1px solid var(--rule); color: var(--ink-2); border-radius: 999px; padding: 4px 12px; cursor: pointer; justify-self: start; }
+.toggle:hover { border-color: var(--ink-3); color: var(--ink); }
+
+/* option cards */
+.options { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+.opt { border: 1px solid var(--rule); border-radius: 8px; padding: 18px 20px; display: grid; gap: 10px; align-content: start; background: var(--surface); }
+.opt.pick { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.opt h3 { font-size: var(--step-0); font-weight: 700; }
+.opt dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; font-size: var(--step--1); }
+.opt dt { font-family: var(--font-mono); color: var(--ink-3); }
+.opt dd { margin: 0; }
+.pill { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: .06em; padding: 2px 8px; border-radius: 999px; justify-self: start; }
+.pill.go { background: var(--accent-soft); color: var(--accent); }
+.pill.base { background: var(--note); color: var(--ink-2); }
+.pill.no { border: 1px solid var(--rule); color: var(--ink-3); }
+
+/* limitations */
+.limits { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 0 40px; }
+.limit { padding: 16px 0; border-top: 1px solid var(--rule); display: grid; gap: 6px; }
+.limit h3 { font-size: var(--step-0); font-weight: 700; display: flex; gap: 10px; align-items: baseline; }
+.sev { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: .06em; padding: 1px 7px; border-radius: 3px; }
+.sev.hi { background: var(--warn-bg); color: var(--warn-ink); }
+.sev.md { background: var(--note); color: var(--ink-2); }
+.limit p { color: var(--ink-2); font-size: 0.97rem; }
+
+ul.clean { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.todo { display: grid; gap: 10px; }
+.todo label { display: flex; gap: 10px; align-items: baseline; }
+.todo input { accent-color: var(--accent); }
+footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font-mono); border-top: 1px solid var(--rule); padding-top: 16px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<main>
+  <header class="hero">
+    <div class="eyebrow">ETH SMDLDC &#183; Project &#183; Data analysis</div>
+    <h1>Bern Heat Islands</h1>
+    <p class="lede col">Learning to predict the city's heat-stress map from aerial photographs. This page records what is in the dataset, how we took it apart, what the heatmaps actually encode, and the modelling plan that follows from it.</p>
+    <div>
+      <div class="heatbar" id="heatbar" aria-label="Heat legend from below 23 &#176;C to above 43 &#176;C"></div>
+      <div class="heatbar-labels"><span>&lt; 23 &#176;C</span><span>keine &#8594; extreme W&#228;rmebelastung</span><span>&gt; 43 &#176;C</span></div>
+    </div>
+    <div class="facts">
+      <div class="fact"><b>2,275</b><span>core tile pairs</span></div>
+      <div class="fact"><b>65 &#215; 35</b><span>tile grid over Bern</span></div>
+      <div class="fact"><b>14</b><span>ordered heat levels</span></div>
+      <div class="fact"><b>256 px</b><span>tile size, RGB</span></div>
+      <div class="fact"><b>~95%</b><span>pixels decodable</span></div>
+    </div>
+    <nav class="toc" aria-label="Sections">
+      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
+    </nav>
+  </header>
+
+  <section id="brief" class="col">
+    <div class="eyebrow">The brief</div>
+    <h2>Predict heat islands from aerial images</h2>
+    <ul class="clean">
+      <li>Train image-to-image models on data from <a href="https://map.bern.ch" target="_blank" rel="noopener">map.bern.ch</a>.</li>
+      <li>Compare the performance of different vision models.</li>
+      <li>Analyse how the models perform outside of Bern.</li>
+    </ul>
+    <p class="muted">Takeaways the supervisors are after: working with image2image models, and evaluating performance <em>and</em> generalisability. Supervisors: Rafael Bischof, Andreas M&#252;ller.</p>
+  </section>
+
+  <section id="data">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">What we were given</div>
+      <h2>The dataset folders</h2>
+      <p>Every image is a 256 &#215; 256 RGB PNG and pairs with its partner by id. Most folders are derived from one core set.</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Folder</th><th class="num">Pairs</th><th>What it is</th><th>Use</th></tr></thead>
+        <tbody>
+          <tr><td><code>Satellite/</code> + <code>Heatmap/</code></td><td class="num">2,275</td><td>Core tiles, ids 1&#8211;2275</td><td><b>Train / val / test</b></td></tr>
+          <tr><td><code>SatelliteMirror/</code> + <code>HeatmapMirror/</code></td><td class="num">~2,275</td><td>Exact horizontal flips of the core (pixel difference 0.0)</td><td>Replace with on-the-fly flips</td></tr>
+          <tr><td><code>Satellite_Large/</code> + <code>Heatmap_Large/</code></td><td class="num">~364</td><td>Zoomed out, about 2&#215; the ground width per tile</td><td>Scale-transfer test</td></tr>
+          <tr><td><code>*Mirror_Large/</code></td><td class="num">365</td><td>Flips of the Large set</td><td>Skip</td></tr>
+          <tr><td><code>00AllSatellite/</code> + <code>00AllHeatmap/</code></td><td class="num">~5,300</td><td>Union of everything above, plus 70 duplicate files named <code>(1)</code>, <code>(2)</code></td><td>Avoid</td></tr>
+          <tr><td><code>heat_islands.zip</code></td><td class="num">-</td><td>The same <code>Images/</code> tree with <code>__MACOSX</code> metadata, 1.5 GB</td><td>Archive</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout warn col">
+      <strong>Leakage trap</strong>
+      <p>A random split over <code>00All*</code> puts a tile in training and its mirror image in the test set. The scores would measure memorisation. We work from the core set only and flip during training.</p>
+    </div>
+  </section>
+
+  <section id="method">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">How we analysed it</div>
+      <h2>Five passes over the data</h2>
+      <p class="muted">Each pass answered a question the previous one raised.</p>
+    </div>
+    <ol class="steps col">
+      <li><b>Colour census</b><p>Counted every RGB value across all 2,275 heatmaps (149 M pixels, 2,311 distinct colours). Twelve colours cover 90% of pixels and the rest are anti-aliasing and drawn-on street lines.</p></li>
+      <li><b>Snap to palette</b><p>Assigned each pixel to its nearest main colour and flagged anything more than 12 RGB units away as overlay. About 95% of pixels per tile snap cleanly.</p></li>
+      <li><b>Order the classes</b><p>First estimate: the mean greenness of the photo under each colour. Then the map.bern.ch legend arrived, and we fitted it directly as a semi-transparent blend.</p></li>
+      <li><b>Reconstruct the layout</b><p>Compared the edge pixels of neighbouring ids. <code>id+1</code> continues to the right, and <code>id+65</code> sits directly below in 200 of 200 samples. The tiles form one stitched map.</p></li>
+      <li><b>Level distribution</b><p>Mapped every pixel to one of the 14 temperature levels and compared the core and Large sets.</p></li>
+    </ol>
+  </section>
+
+  <section id="grid">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Finding 1</div>
+      <h2>The tiles are one continuous map of Bern</h2>
+      <p>Tile <code>idN</code> sits at row <code>(N&#8722;1) // 65</code>, column <code>(N&#8722;1) % 65</code>. Stitched together, the 2,275 tiles cover the city from the Wohlensee loop in the west to the Aare bend around the old town. Drag the slider to compare photo and heat map.</p>
+    </div>
+    <figure>
+      <div class="compare" id="compare">
+        <img src="img/mosaic_hm.jpg" alt="Stitched heat map of Bern">
+        <img class="top" src="img/mosaic_sat.jpg" alt="Stitched aerial photo of Bern">
+        <div class="handle"></div>
+        <span class="tag l">Aerial</span><span class="tag r">Heat map</span>
+      </div>
+      <div class="slider-row"><label for="cmp">Aerial</label><input id="cmp" type="range" min="0" max="100" value="50" aria-label="Reveal aerial photo or heat map"><span>Heat</span></div>
+      <figcaption>Downsampled 32 px per tile. The hottest large areas sit on the farmland in the west and south-west, not in the dense old town.</figcaption>
+    </figure>
+  </section>
+
+  <section id="legend">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Finding 2</div>
+      <h2>The pastel colours are the official legend at 60% opacity</h2>
+      <p>The tiles show softer colours than the legend. Blending each legend swatch with a near-white background (<span class="mono">0.6 &#183; legend + 0.4 &#183; 250</span>) and matching it to the observed colours gives a one-to-one assignment with a mean error of 12.5 RGB units. So the target is an <b>ordered temperature scale</b>, not a set of unrelated classes.</p>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:32px;align-items:start">
+      <div class="tablewrap">
+        <table id="legendTable">
+          <thead><tr><th>Level</th><th>Range</th><th>Legend</th><th>In tiles</th><th class="num">Fit error</th><th>W&#228;rmebelastung</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <figure>
+        <img src="img/legend.png" alt="map.bern.ch heat-stress legend" style="max-width:300px;border-radius:4px;border:1px solid var(--rule)">
+        <figcaption>Legend from map.bern.ch. Grey <span class="sw" style="background:#787878"></span> is the building mask and carries no temperature.</figcaption>
+      </figure>
+    </div>
+    <p class="small muted col">The worst fit is <b>&gt; 43 &#176;C</b> (error 39.8): dark purple loses the most in a blend. It is still the only plausible partner, and it covers just 0.7% of pixels.</p>
+  </section>
+
+  <section id="dist">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Finding 3</div>
+      <h2>The temperatures cluster in two groups</h2>
+      <p>Excluding buildings and overlay pixels, over half of the area sits at 23&#8211;29 &#176;C (forest, parks, water edges). A second peak sits at 38&#8211;42 &#176;C (sealed surfaces, rail, open fields). The middle levels are thin. This shape decides the loss: a plain mean-squared regression would hedge towards 32 &#176;C where it is unsure, a value that is rare in the data.</p>
+    </div>
+    <div class="legend-row"><span><i style="background:linear-gradient(90deg,#6c8cf7,#fffb5c,#eb4e4a,#5d11a9)"></i>Core set, bar coloured by its legend level</span><span><i class="line"></i>Large set</span></div>
+    <div class="chart" id="distChart"></div>
+    <button class="toggle" id="distToggle" aria-expanded="false" aria-controls="distTable">Show as table</button>
+    <div class="tablewrap" id="distTable" hidden>
+      <table><thead><tr><th>Level</th><th class="num">Core %</th><th class="num">Large %</th><th class="num">Diff (pp)</th></tr></thead><tbody></tbody></table>
+    </div>
+    <p class="small muted col">The core and Large sets have nearly the same distribution (at most 0.4 percentage points apart per level), so training on one scale and testing on the other is a fair experiment. Raster cells measure about 8 px in core tiles and 4 px in Large tiles.</p>
+  </section>
+
+  <section id="examples">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Finding 4</div>
+      <h2>Where photo and heat map disagree</h2>
+    </div>
+    <div class="pairs">
+      <figure>
+        <img src="img/pair_farm_1434.jpg" alt="Green crop field next to a heat map showing 40&#8211;41 &#176;C">
+        <figcaption><b>id 1434, farmland.</b> The photo shows a green field and the heat map says 40&#8211;41 &#176;C. The heat model was probably computed for bare or harvested fields. No model can read that from this photo, so this is label noise that limits every model.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/pair_382.jpg" alt="Residential tile with street names drawn on the heat map">
+        <figcaption><b>id 382, overlay.</b> Street lines and names ("Wankdorfstrasse") are drawn into the heat map. 43% of this tile does not snap to the palette. These pixels go into an ignore mask.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/pair_1541.jpg" alt="Industrial tile with road and building yard">
+        <figcaption><b>id 1541, mixed.</b> Roads and a gravel yard against sparse buildings. Heat follows surface material at roughly 8 px resolution, much coarser than the photo.</figcaption>
+      </figure>
+      <figure>
+        <img src="img/pair_large_60.jpg" alt="Large-scale tile pair">
+        <figcaption><b>Large id 60.</b> Twice the ground width per tile: finer heat cells relative to the image, less context per building.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="options">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">How we could go forth</div>
+      <h2>Three ways to frame the output</h2>
+      <p>All three share the same backbones (U-Net, DeepLabV3+, SegFormer) and differ only in the output head and loss. Every option ignores building and overlay pixels in the loss.</p>
+    </div>
+    <div class="options">
+      <div class="opt">
+        <span class="pill base">Baseline</span>
+        <h3>A &#183; Classification</h3>
+        <dl><dt>Output</dt><dd>14 logits per pixel</dd><dt>Loss</dt><dd>Class-weighted cross-entropy</dd><dt>Metric</dt><dd>mIoU, accuracy</dd></dl>
+        <p class="small muted">Standard and easy to set up. It treats 40 &#176;C as just as wrong as 24 &#176;C when the truth is 41 &#176;C.</p>
+      </div>
+      <div class="opt pick">
+        <span class="pill go">Recommended</span>
+        <h3>B &#183; Ordinal</h3>
+        <dl><dt>Output</dt><dd>13 "hotter than level k" sigmoids (CORAL / CORN)</dd><dt>Loss</dt><dd>Sum of binary cross-entropies</dd><dt>Metric</dt><dd>MAE in &#176;C, &#177;1-level accuracy</dd></dl>
+        <p class="small muted">Respects the order and doesn't average across the two peaks. A one-level miss costs little and a ten-level miss costs a lot.</p>
+      </div>
+      <div class="opt">
+        <span class="pill no">Comparison</span>
+        <h3>C &#183; Scalar regression</h3>
+        <dl><dt>Output</dt><dd>1 channel in &#176;C (bin midpoints)</dd><dt>Loss</dt><dd>L1</dd><dt>Metric</dt><dd>MAE in &#176;C</dd></dl>
+        <p class="small muted">Simplest output. It blurs towards middle values where it is unsure, which the bimodal data punishes.</p>
+      </div>
+      <div class="opt">
+        <span class="pill no">Not chosen</span>
+        <h3>RGB regression (pix2pix)</h3>
+        <dl><dt>Output</dt><dd>3 colour channels</dd><dt>Loss</dt><dd>L1 + GAN</dd><dt>Metric</dt><dd>MSE, SSIM</dd></dl>
+        <p class="small muted">Distance in RGB is not distance in &#176;C, and the model would also learn to paint street names.</p>
+      </div>
+    </div>
+    <div class="callout col">
+      <strong>Shared evaluation</strong>
+      <p>Reported for every model: MAE in &#176;C, accuracy within &#177;1 level, and accuracy on the five W&#228;rmebelastung categories, which non-specialists can read. Metrics are also computed at the heat map's own grid resolution, since pixel-exact borders are not reachable.</p>
+    </div>
+  </section>
+
+  <section id="split" class="col">
+    <div class="eyebrow">Evaluation design</div>
+    <h2>Splitting by spatial block</h2>
+    <p>The tiles are neighbours on one map, and neighbours look alike. A random split would put near-twins on both sides and flatter the scores somewhat. Our plan:</p>
+    <ul class="clean">
+      <li>Cut the 65 &#215; 35 grid into 5 &#215; 5-tile blocks and assign whole blocks at random to train, validation and test (about 70 / 15 / 15).</li>
+      <li>Use the <b>Large</b> tiles as a measured transfer test: a different scale, with ground truth.</li>
+      <li>Use aerial imagery from outside Bern (for example swisstopo SWISSIMAGE) for the generalisation task. Without heat maps there, this check is qualitative, unless another city publishes a comparable map.</li>
+    </ul>
+    <p class="muted">The in-Bern test asks "how good on unseen tiles of this city". The outside imagery asks "does it work elsewhere at all". The report needs both, and only the first produces error numbers.</p>
+  </section>
+
+  <section id="limits">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Limitations</div>
+      <h2>What the data cannot tell us</h2>
+    </div>
+    <div class="limits">
+      <div class="limit"><h3><span class="sev hi">High</span>Photo and heat map from different times</h3><p>Fields that look green are labelled 40 &#176;C. Seasonal and land-use mismatch sets a ceiling on achievable accuracy, especially in the agricultural west.</p></div>
+      <div class="limit"><h3><span class="sev hi">High</span>No ground truth outside Bern</h3><p>Generalisation to other cities can only be judged visually unless we find a comparable heat-stress map elsewhere.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>One city, one map</h3><p>2,275 tiles from one city cover few building styles and little topography. The effective number of independent samples is smaller than the tile count.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Unclear physical quantity</h3><p>"W&#228;rmebelastung" in &#176;C suggests a modelled thermal-comfort index such as PET, not measured surface temperature. The layer metadata should confirm the quantity, the time of day and the model used.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Quantised and overlaid target</h3><p>Values exist only as 14 bins at about 8 px resolution, with street lines and labels burned in. Bin edges are uneven (3 &#176;C wide at the cool end, 1 &#176;C at the hot end).</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Imbalanced levels</h3><p>23&#8211;26 &#176;C covers 37% of the area and &gt; 43 &#176;C covers 0.7%. Extreme heat is the most relevant level and the rarest one.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Buildings are masked</h3><p>Roofs carry no temperature in this layer, so the model never learns anything about them. Predictions on buildings must be masked out at evaluation too.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Reverse-engineered decoding</h3><p>The palette-to-level mapping comes from a colour fit, not from source data. The fit is tight for 13 of 14 levels. Raw values from the city would remove this step.</p></div>
+    </div>
+  </section>
+
+  <section id="next" class="col">
+    <div class="eyebrow">Next steps</div>
+    <h2>Open items</h2>
+    <div class="todo">
+      <label><input type="checkbox" id="t1" checked> Decode legend and level order</label>
+      <label><input type="checkbox" id="t2" checked> Reconstruct the tile grid</label>
+      <label><input type="checkbox" id="t3"> Check the map.bern.ch layer metadata (quantity, time of day, model)</label>
+      <label><input type="checkbox" id="t4"> Write <code>make_splits.py</code> with 5 &#215; 5 spatial blocks</label>
+      <label><input type="checkbox" id="t5"> Build the dataset loader: snap to levels, ignore mask, flip and rotation augmentation</label>
+      <label><input type="checkbox" id="t6"> Train baseline (A) and ordinal (B) heads on a U-Net</label>
+      <label><input type="checkbox" id="t7"> Extend the comparison to DeepLabV3+ and SegFormer</label>
+      <label><input type="checkbox" id="t8"> Collect outside-Bern imagery and look for comparable heat maps (Z&#252;rich, Basel)</label>
+      <label><input type="checkbox" id="t9"> Ask the supervisors whether raw heat values are available</label>
+    </div>
+  </section>
+
+  <footer>Analysis 19 Oct 2026</footer>
+</main>
+
+<script>
+(() => {
+  const labels = ["<23", "23&#8211;26", "26&#8211;29", "29&#8211;32", "32&#8211;35", "35&#8211;36", "36&#8211;37", "37&#8211;38", "38&#8211;39", "39&#8211;40", "40&#8211;41", "41&#8211;42", "42&#8211;43", ">43"];
+  const legend = ["#6c8cf7","#aad6fb","#cef5fe","#ebffdd","#defe8a","#edfa92","#fffb5c","#fadf95","#f3b280","#ec6e32","#eb4e4a","#f090c5","#e16cf8","#5d11a9"];
+  const observed = ["#a6b8fe","#c1e3fe","#d7f8fe","#eefee4","#e2feaf","#f0fcb3","#fefc98","#fee8b7","#fecaaf","#fea695","#fe9b9c","#feb7da","#f5a6fe","#a894cb"];
+  const err = [5.9, 9.7, 8.8, 5.6, 10.7, 9.1, 3.6, 7.8, 9.7, 22.7, 19.3, 10.6, 11.3, 39.8];
+  const core = [2.21, 37.49, 14.25, 4.67, 4.10, 1.95, 2.95, 4.37, 5.66, 6.59, 7.70, 5.20, 2.16, 0.71];
+  const large = [2.22, 37.68, 13.82, 4.46, 3.80, 1.88, 2.92, 4.38, 5.88, 6.86, 7.95, 5.34, 2.14, 0.68];
+  const bands = [["keine", 0, 0], ["schwach", 1, 2], ["m&#228;ssig", 3, 4], ["stark", 5, 10], ["extrem", 11, 13]];
+  const bandOf = i => bands.find(b => i >= b[1] && i <= b[2])[0];
+
+  // hero bar
+  document.getElementById("heatbar").innerHTML = legend.map(c => `<span style="background:${c}"></span>`).join("");
+
+  // legend table
+  document.querySelector("#legendTable tbody").innerHTML = labels.map((l, i) => `
+    <tr><td class="mono">${i}</td><td>${l} &#176;C</td>
+    <td><span class="sw" style="background:${legend[i]}"></span></td>
+    <td><span class="sw" style="background:${observed[i]}"></span></td>
+    <td class="num">${err[i].toFixed(1)}</td>
+    <td>${i === bands.find(b => b[0] === bandOf(i))[1] ? bandOf(i) : ""}</td></tr>`).join("");
+
+  // compare slider
+  const cmp = document.getElementById("compare"), rng = document.getElementById("cmp");
+  const setPos = v => cmp.style.setProperty("--pos", v + "%");
+  rng.addEventListener("input", e => setPos(e.target.value)); setPos(rng.value);
+
+  // distribution chart
+  const host = document.getElementById("distChart");
+  const W = 880, H = 340, m = { t: 34, r: 8, b: 46, l: 40 };
+  const iw = W - m.l - m.r, ih = H - m.t - m.b, n = labels.length, step = iw / n, bw = step - 4;
+  const ymax = 40, y = v => m.t + ih - (v / ymax) * ih;
+  const NS = "http://www.w3.org/2000/svg";
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Share of area per heat level, core and Large sets">`;
+  [0, 10, 20, 30, 40].forEach(t => {
+    s += `<line class="grid" x1="${m.l}" x2="${W - m.r}" y1="${y(t)}" y2="${y(t)}"/>`;
+    s += `<text class="tick" x="${m.l - 8}" y="${y(t) + 4}" text-anchor="end">${t}%</text>`;
+  });
+  bands.forEach(([name, a, b]) => {
+    const x0 = m.l + a * step, x1 = m.l + (b + 1) * step;
+    s += `<text class="band" x="${(x0 + x1) / 2}" y="${m.t - 14}" text-anchor="middle">${name}</text>`;
+    if (a > 0) s += `<line class="bandline" x1="${x0}" x2="${x0}" y1="${m.t - 24}" y2="${m.t + ih}"/>`;
+  });
+  core.forEach((v, i) => {
+    const x = m.l + i * step + 2, top = y(v), h = m.t + ih - top, r = Math.min(4, h);
+    s += `<path d="M${x},${m.t + ih} V${top + r} Q${x},${top} ${x + r},${top} H${x + bw - r} Q${x + bw},${top} ${x + bw},${top + r} V${m.t + ih} Z" fill="${legend[i]}" stroke="var(--bg)" stroke-width="1"/>`;
+    s += `<line class="marker" x1="${x + 3}" x2="${x + bw - 3}" y1="${y(large[i])}" y2="${y(large[i])}"/>`;
+    s += `<text class="tick" x="${x + bw / 2}" y="${m.t + ih + 16}" text-anchor="middle">${labels[i]}</text>`;
+    s += `<rect class="hit" data-i="${i}" x="${m.l + i * step}" y="${m.t}" width="${step}" height="${ih}" fill="transparent"/>`;
+  });
+  [[1, "37.5%"], [10, "7.7%"]].forEach(([i, t]) => {
+    s += `<text class="direct" x="${m.l + i * step + step / 2}" y="${Math.min(y(core[i]), y(large[i])) - 9}" text-anchor="middle">${t}</text>`;
+  });
+  s += `<line class="base" x1="${m.l}" x2="${W - m.r}" y1="${m.t + ih}" y2="${m.t + ih}"/>`;
+  s += `<text class="axis-label" x="${m.l + iw / 2}" y="${H - 6}" text-anchor="middle">Heat level (&#176;C)</text></svg>`;
+  host.innerHTML = s;
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; host.appendChild(tip);
+  host.querySelectorAll(".hit").forEach(r => {
+    r.addEventListener("mousemove", e => {
+      const i = +r.dataset.i, box = host.getBoundingClientRect();
+      tip.innerHTML = `<b>${labels[i]} &#176;C</b> &#183; ${bandOf(i)}<br>Core ${core[i].toFixed(2)}%<br>Large ${large[i].toFixed(2)}%`;
+      tip.hidden = false;
+      const x = e.clientX - box.left, tw = tip.offsetWidth;
+      tip.style.left = Math.min(Math.max(0, x + 12), box.width - tw) + "px";
+      tip.style.top = (e.clientY - box.top - 70) + "px";
+      r.setAttribute("fill", "rgba(127,127,127,0.08)");
+    });
+    r.addEventListener("mouseleave", () => { tip.hidden = true; r.setAttribute("fill", "transparent"); });
+  });
+
+  // table view
+  document.querySelector("#distTable tbody").innerHTML = labels.map((l, i) =>
+    `<tr><td>${l} &#176;C</td><td class="num">${core[i].toFixed(2)}</td><td class="num">${large[i].toFixed(2)}</td><td class="num">${(large[i] - core[i]).toFixed(2)}</td></tr>`).join("");
+  const tg = document.getElementById("distToggle"), tb = document.getElementById("distTable");
+  tg.addEventListener("click", () => { tb.hidden = !tb.hidden; tg.setAttribute("aria-expanded", String(!tb.hidden)); tg.textContent = tb.hidden ? "Show as table" : "Hide table"; });
+})();
+</script>
+
+</body>
+</html>
