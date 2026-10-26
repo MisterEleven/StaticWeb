@@ -183,10 +183,10 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <div class="fact"><b>65 &#215; 35</b><span>tile grid over Bern</span></div>
       <div class="fact"><b>14</b><span>ordered heat levels</span></div>
       <div class="fact"><b>256 px</b><span>tile size, RGB</span></div>
-      <div class="fact"><b>9.45 px</b><span>heat raster cell</span></div><div class="fact"><b>99.2%</b><span>pixels usable for training</span></div>
+      <div class="fact"><b>9.45 px</b><span>heat raster cell</span></div><div class="fact"><b>99.2%</b><span>pixels usable (base mask)</span></div>
     </div>
     <nav class="toc" aria-label="Sections">
-      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#cleaning">Cleaning</a><a href="#buildings">Buildings</a><a href="#result">Result</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
+      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#cleaning">Cleaning</a><a href="#buildings">Buildings</a><a href="#result">Result</a><a href="#landcover">Land cover</a><a href="#team">Team</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
     </nav>
   </header>
 
@@ -406,6 +406,61 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="small muted col">The flags come from a detector, not from ground truth, so they are suspected mismatches. A sample check found the "building without outline" flags reliable; some small "outline without building" flags sit on sheds and garages the detector misses. They cover little area and were kept.</p>
   </section>
 
+  <section id="landcover">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Finding 7</div>
+      <h2>Surface colour carries heat, and some of it disagrees with the photo</h2>
+      <p>Using simple colour rules on the photo (green vegetation, brown or bare, grey sealed), the heat level of each surface differs a lot. Mean level is 3.6 over green vegetation, 6.5 over grey sealed surfaces and 8.0 over brown or bare ground.</p>
+      <p>Two kinds of disagreement stand out. <b>Green and hot</b>: the photo shows vegetation, but the heat is 40 to 41 &#176;C or hotter. This is 7.1% of heat pixels, mostly crop fields. <b>Brown and cool</b>: the photo shows bare ground, but the heat is 26 &#176;C or cooler. This is 0.13%.</p>
+      <p>A disagreement is a suspicion, not an error. The heat may have been computed on another date, when the field was bare. The colour rule is also crude: brown catches roofs and soil alike.</p>
+    </div>
+    <div class="tablewrap col">
+      <table>
+        <thead><tr><th>Photo says</th><th>Heat says</th><th class="num">Share of heat pixels</th><th>Reading</th></tr></thead>
+        <tbody>
+          <tr><td>Green vegetation</td><td>40 to 41 &#176;C or hotter</td><td class="num">7.09%</td><td>Mostly crop fields: date mismatch or label noise</td></tr>
+          <tr><td>Brown or bare</td><td>26 &#176;C or cooler</td><td class="num">0.13%</td><td>Rare; cut-over forest and soil</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout col">
+      <strong>Using it in training</strong>
+      <p>Two masks are prepared, so each model can choose. The base mask ignores 0.80% of pixels. The land-cover mask also ignores the two conflict types, which brings it to 7.01%. Excluding them removes the farmland examples most needed for learning, so the choice should be tested rather than assumed.</p>
+    </div>
+    <p class="muted col">Review: a local map viewer (a local review page) shows the flags tile by tile, next to the photo and the heat map.</p>
+  </section>
+
+  <section id="team" class="col">
+    <div class="eyebrow">Who does what</div>
+    <h2>Four model tracks</h2>
+    <div class="options">
+      <div class="opt pick">
+        <span class="pill go">Main track</span>
+        <h3>Classification: Timo</h3>
+        <p class="small muted">14-class U-Net on the photo. Baseline for everything else, trained on the base mask first.</p>
+      </div>
+      <div class="opt">
+        <span class="pill base">Team</span>
+        <h3>Scalar regression: Louis</h3>
+        <p class="small muted">One output in &#176;C (bin midpoints), L1 loss, same backbone for a like-for-like comparison.</p>
+      </div>
+      <div class="opt">
+        <span class="pill base">Team</span>
+        <h3>Ordinal: Chenjie</h3>
+        <p class="small muted">13 "hotter than level k" outputs (CORAL), respecting the order of the levels.</p>
+      </div>
+      <div class="opt">
+        <span class="pill no">Can do</span>
+        <h3>Side tasks</h3>
+        <ul class="small clean">
+          <li>Search Bern aerial imagery for a closer match to the heat map's date</li>
+          <li>RGB regression (pix2pix-style) as a reference for the colour option</li>
+        </ul>
+      </div>
+    </div>
+    <p class="muted">All tracks use the same split (5 &#215; 5 spatial blocks), the same photos and the same metrics, so the numbers can be compared directly. Each track chooses its mask: the base mask, or the land-cover mask if the conflicts should be excluded.</p>
+  </section>
+
   <section id="options">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">How we could go forth</div>
@@ -483,6 +538,10 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <label><input type="checkbox" id="t10" checked> Fit the heat raster grid and clean all heat maps</label>
       <label><input type="checkbox" id="t11" checked> Flag building mismatches in both directions and build the ignore mask</label>
       <label><input type="checkbox" id="t12" checked> Fit the export opacity per tile</label>
+      <label><input type="checkbox" id="t13" checked> Flag green-and-hot and brown-and-cool conflicts (land cover vs heat)</label>
+      <label><input type="checkbox" id="t14"> Test with and without the land-cover mask (Timo, Louis, Chenjie)</label>
+      <label><input type="checkbox" id="t15"> Search for a closer aerial image (side task)</label>
+      <label><input type="checkbox" id="t16"> RGB regression reference (side task)</label>
       <label><input type="checkbox" id="t3"> Check the map.bern.ch layer metadata (quantity, time of day, model)</label>
       <label><input type="checkbox" id="t4"> Write <code>make_splits.py</code> with 5 &#215; 5 spatial blocks</label>
       <label><input type="checkbox" id="t5"> Build the dataset loader from the cleaned levels and ignore mask, with flip and rotation augmentation</label>
@@ -493,7 +552,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
-  <footer>Analysis 19 Oct 2026, updated 19 Oct 2026</footer>
+  <footer>Project guide, updated 26 Oct 2026 &#183; published by Timo</footer>
 </main>
 
 <script>
