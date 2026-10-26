@@ -6,32 +6,37 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Bern Heat Review</title>
 <style>
+/* Layout: one column of controls over a full-width map; the details sit beside it on wide screens. */
 :root {
-  --bg: #f6f7f7; --panel: #ffffff; --ink: #161a1d; --ink-2: #4e575e; --rule: #d9dee1;
-  --accent: #c8501f; --hot: #00aa50; --cool: #aa4600; --bld: #00aabe; --gap: 16px;
+  --bg: #f5f6f4; --panel: #ffffff; --ink: #1b1f1d; --ink-2: #545c57; --rule: #d7dcd8;
+  --accent: #1f6f4f; --accent-ink: #ffffff; --hot: #1f9e66; --cool: #d4733a; --bld: #00aabe;
+  --gap: 16px; --step--1: 12.5px; --step-0: 14px; --step-1: 16px; --step-2: 20px; --frame: #e9ece9;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #111416; --panel: #1a1f22; --ink: #eef1f2; --ink-2: #aab3b9; --rule: #2c3438;
-    --accent: #f08a55; --hot: #2ed37e; --cool: #e08a50; --bld: #3fd6e8; color-scheme: dark;
+    --bg: #121514; --panel: #1b201e; --ink: #eef2ef; --ink-2: #a9b3ad; --rule: #2d3531;
+    --accent: #7fd1a8; --accent-ink: #0f1412; --hot: #22a86a; --cool: #d97a3a; --bld: #3fd6e8; --frame: #0c0f0e; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #111416; --panel: #1a1f22; --ink: #eef1f2; --ink-2: #aab3b9; --rule: #2c3438;
-  --accent: #f08a55; --hot: #2ed37e; --cool: #e08a50; --bld: #3fd6e8; color-scheme: dark;
+  --bg: #121514; --panel: #1b201e; --ink: #eef2ef; --ink-2: #a9b3ad; --rule: #2d3531;
+  --accent: #7fd1a8; --accent-ink: #0f1412; --hot: #22a86a; --cool: #d97a3a; --bld: #3fd6e8; --frame: #0c0f0e; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
-header { padding: 14px var(--gap) 0; display: grid; gap: 10px; }
+header { padding: 16px var(--gap) 0; display: grid; gap: 12px; }
+header h1 { font-size: var(--step-2); letter-spacing: -0.01em; }
+header .note { margin: 0; }
 h1 { font-size: 18px; margin: 0; }
 .muted { color: var(--ink-2); }
 .bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
 .bar label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; padding: 4px 8px; border: 1px solid var(--rule); border-radius: 999px; background: var(--panel); }
 .sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+.sw-hatch { background: repeating-linear-gradient(45deg, var(--cool) 0 2px, transparent 2px 6px); border: 1px solid var(--cool); }
 select, button { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 5px 9px; }
 input[type=range] { accent-color: var(--accent); width: 120px; }
-#view { position: relative; height: 62vh; min-height: 360px; margin: 10px var(--gap) 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: #000; cursor: grab; touch-action: none; }
+#view { position: relative; height: 62vh; min-height: 360px; aspect-ratio: auto; margin: 10px var(--gap) 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--frame); cursor: grab; touch-action: none; }
 #view.drag { cursor: grabbing; }
 #map { position: absolute; left: 0; top: 0; transform-origin: 0 0; width: 8320px; height: 4480px; }
 #map img { position: absolute; left: 0; top: 0; width: 8320px; height: 4480px; image-rendering: pixelated; user-select: none; -webkit-user-drag: none; }
@@ -49,6 +54,10 @@ td.n, th.n { text-align: right; }
 .list { display: grid; gap: 4px; max-height: 300px; overflow: auto; }
 .list button { text-align: left; display: flex; justify-content: space-between; gap: 8px; }
 .note { font-size: 12.5px; color: var(--ink-2); }
+@media (max-width: 720px) {
+  /* the map is 65:35; on a phone give it nearly the whole screen height so the city fills the frame */
+  #view { height: 58vh; min-height: 300px; }
+}
 </style>
 </head>
 <body>
@@ -59,7 +68,7 @@ td.n, th.n { text-align: right; }
     <label><input type="radio" name="base" value="heat" checked> Heat map</label>
     <label><input type="radio" name="base" value="photo"> Aerial photo</label>
     <label><span class="sw" style="background:var(--hot)"></span><input type="checkbox" id="lcHot" checked> Green and hot</label>
-    <label><span class="sw" style="background:var(--cool)"></span><input type="checkbox" id="lcCool" checked> Brown and cool</label>
+    <label><span class="sw sw-hatch" style="--c:var(--cool)"></span><input type="checkbox" id="lcCool" checked> Brown and cool</label>
     <label><span class="sw" style="background:var(--bld)"></span><input type="checkbox" id="bld" checked> Building mismatches</label>
     <label>Flag opacity <input type="range" id="op" min="0" max="100" value="100"></label>
   </div>
@@ -105,7 +114,7 @@ td.n, th.n { text-align: right; }
   </section>
   <section class="card">
     <h2>Most affected tiles</h2>
-    <div class="list" id="lists"></div>
+    <div class="list" id="lists"><p class="note">Pick a category above to rank the tiles. Each entry centres the map on that tile.</p></div>
     <p class="note">Counts are pixels per tile (256 × 256 each). Green and hot: photo says vegetation, heat is 40–41 °C or hotter. Brown and cool: photo says bare, heat is 26 °C or cooler (levels 0–1).</p>
   </section>
 </div>
@@ -119,7 +128,10 @@ td.n, th.n { text-align: right; }
 
   const fit = () => {
     const r = view.getBoundingClientRect();
+    if (!r.width || !r.height) return;                 // frame not laid out yet
+    // whole city when the frame is wide; on a phone, fill the frame width and centre on the city so the map is readable
     T.s = Math.min(r.width / W, r.height / H);
+    if (r.width < 720) T.s = r.width / W * 3;
     T.x = (r.width - W * T.s) / 2; T.y = (r.height - H * T.s) / 2;
     apply();
   };
@@ -191,6 +203,8 @@ td.n, th.n { text-align: right; }
   document.getElementById("zout").onclick = () => { const r = view.getBoundingClientRect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, 1 / 1.5); };
   document.getElementById("zfit").onclick = fit;
   window.addEventListener("resize", fit);
+  // the fit depends on the frame, which changes height at phone width; refit when it does
+  new ResizeObserver(fit).observe(view);
 
   const row = (k, v) => `<tr><th>${k}</th><td class="n">${v}</td></tr>`;
   // counts are at full tile resolution (256 x 256)
@@ -241,8 +255,8 @@ td.n, th.n { text-align: right; }
     ctx.drawImage(lcSource, 0, 0);
     const d = ctx.getImageData(0, 0, W, H), p = d.data;
     for (let k = 0; k < p.length; k += 4) {
-      const isHot = p[k] === 0 && p[k + 1] === 170;
-      const isCool = p[k] === 170 && p[k + 1] === 70;
+      const isHot = p[k] === 31 && p[k + 1] === 158 && p[k + 2] === 102;
+      const isCool = p[k] === 212 && p[k + 1] === 115 && p[k + 2] === 58;
       if ((isHot && !showHot) || (isCool && !showCool)) p[k + 3] = 0;
     }
     ctx.putImageData(d, 0, 0);
@@ -270,7 +284,7 @@ td.n, th.n { text-align: right; }
       missing: () => ranked("missing"),
       unknown: () => ranked("unknown"),
     }[mode];
-    if (!pick) { lists.innerHTML = ""; return; }
+    if (!pick) { lists.innerHTML = '<p class="note">Pick a category above to rank the tiles.</p>'; return; }
     lists.innerHTML = pick().map(t => listItem({ id: t.id, row: t.row, col: t.col, v: t[mode] })).join("");
   };
   lists.addEventListener("click", e => {
@@ -298,9 +312,10 @@ td.n, th.n { text-align: right; }
     for (const [k, v] of Object.entries(data)) tiles[+k] = { id: +k, ...v };
     fit();
     const top = ranked("hot")[0];
-    if (top) document.querySelector("#lists").innerHTML = "";
   });
   document.getElementById("imgHeat").addEventListener("load", fit, { once: true });
+  requestAnimationFrame(fit);
+  if (document.readyState !== "complete") window.addEventListener("load", fit, { once: true });
   setLayers();
 })();
 </script>
