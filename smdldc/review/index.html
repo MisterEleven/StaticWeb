@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bern Heat Review</title>
+<style>
+:root {
+  --bg: #f6f7f7; --panel: #ffffff; --ink: #161a1d; --ink-2: #4e575e; --rule: #d9dee1;
+  --accent: #c8501f; --hot: #00aa50; --cool: #aa4600; --bld: #00aabe; --gap: 16px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #111416; --panel: #1a1f22; --ink: #eef1f2; --ink-2: #aab3b9; --rule: #2c3438;
+    --accent: #f08a55; --hot: #2ed37e; --cool: #e08a50; --bld: #3fd6e8; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #111416; --panel: #1a1f22; --ink: #eef1f2; --ink-2: #aab3b9; --rule: #2c3438;
+  --accent: #f08a55; --hot: #2ed37e; --cool: #e08a50; --bld: #3fd6e8; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
+header { padding: 14px var(--gap) 0; display: grid; gap: 10px; }
+h1 { font-size: 18px; margin: 0; }
+.muted { color: var(--ink-2); }
+.bar { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; }
+.bar label { display: inline-flex; gap: 6px; align-items: center; cursor: pointer; padding: 4px 8px; border: 1px solid var(--rule); border-radius: 999px; background: var(--panel); }
+.sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+select, button { font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--rule); border-radius: 6px; padding: 5px 9px; }
+input[type=range] { accent-color: var(--accent); width: 120px; }
+#view { position: relative; height: 62vh; min-height: 360px; margin: 10px var(--gap) 0; border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: #000; cursor: grab; touch-action: none; }
+#view.drag { cursor: grabbing; }
+#map { position: absolute; left: 0; top: 0; transform-origin: 0 0; width: 8320px; height: 4480px; }
+#map img { position: absolute; left: 0; top: 0; width: 8320px; height: 4480px; image-rendering: pixelated; user-select: none; -webkit-user-drag: none; }
+#hl { position: absolute; border: 2px solid var(--accent); pointer-events: none; box-sizing: border-box; display: none; }
+#tip { position: absolute; pointer-events: none; background: var(--panel); color: var(--ink); border: 1px solid var(--rule); border-radius: 6px; padding: 6px 8px; font-size: 12px; white-space: nowrap; display: none; box-shadow: 0 4px 14px rgba(0,0,0,.18); }
+.zoom { position: absolute; right: 10px; top: 10px; display: grid; gap: 6px; }
+.zoom button { width: 36px; padding: 4px 0; background: var(--panel); }
+.panel { margin: 14px var(--gap) 28px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: var(--gap); }
+@media (max-width: 720px) { .panel { grid-template-columns: 1fr; } }
+.card { background: var(--panel); border: 1px solid var(--rule); border-radius: 8px; padding: 12px 14px; min-width: 0; }
+.card h2 { font-size: 14px; margin: 0 0 8px; }
+table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: 13px; }
+td, th { padding: 4px 6px 4px 0; border-bottom: 1px solid var(--rule); text-align: left; }
+td.n, th.n { text-align: right; }
+.list { display: grid; gap: 4px; max-height: 300px; overflow: auto; }
+.list button { text-align: left; display: flex; justify-content: space-between; gap: 8px; }
+.note { font-size: 12.5px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<header>
+  <h1>Bern heat map, manual review</h1>
+  <p class="note">Images: aerial photo and heat map from <a href="https://map.bern.ch" target="_blank" rel="noopener">map.bern.ch</a> (City of Bern). Cleaned and flagged by the project team; the heat colours are the map.bern.ch legend.</p>
+  <div class="bar" role="group" aria-label="Layers">
+    <label><input type="radio" name="base" value="heat" checked> Heat map</label>
+    <label><input type="radio" name="base" value="photo"> Aerial photo</label>
+    <label><span class="sw" style="background:var(--hot)"></span><input type="checkbox" id="lcHot" checked> Green and hot</label>
+    <label><span class="sw" style="background:var(--cool)"></span><input type="checkbox" id="lcCool" checked> Brown and cool</label>
+    <label><span class="sw" style="background:var(--bld)"></span><input type="checkbox" id="bld" checked> Building mismatches</label>
+    <label>Flag opacity <input type="range" id="op" min="0" max="100" value="100"></label>
+  </div>
+  <div class="bar muted">
+    <span>Drag to pan, wheel or buttons to zoom, click a tile to pin it.</span>
+    <span>Jump to:</span>
+    <select id="jump">
+      <option value="">choose a tile</option>
+      <option value="hot">most green-and-hot</option>
+      <option value="cool">most brown-and-cool</option>
+      <option value="ghost">most outlines without building</option>
+      <option value="missing">most buildings without outline</option>
+      <option value="unknown">most unknown pixels</option>
+    </select>
+  </div>
+  <p class="note" style="margin:0 var(--gap)">Flags are suspicions where the photo and the heat map disagree. They are for checking by eye, not ground truth.</p>
+</header>
+
+<div id="view" role="application" aria-label="Map viewer">
+  <div id="map">
+    <img id="imgHeat" src="layer_heat.jpg" alt="" draggable="false">
+    <img id="imgPhoto" src="layer_photo.jpg" alt="" draggable="false" style="display:none">
+    <img id="imgLc" src="layer_lc.png" alt="" draggable="false">
+    <img id="imgBld" src="layer_bld.png" alt="" draggable="false">
+    <div id="hl"></div>
+  </div>
+  <div id="tip"></div>
+  <div class="zoom">
+    <button id="zin" aria-label="Zoom in">+</button>
+    <button id="zout" aria-label="Zoom out">&minus;</button>
+    <button id="zfit" aria-label="Fit whole map">fit</button>
+  </div>
+</div>
+
+<div class="panel">
+  <section class="card" id="info">
+    <h2>Tile</h2>
+    <div class="note" id="infoEmpty">Hover a tile for a quick read, or click to pin it and keep its details here.</div>
+    <table id="infoTable" hidden>
+      <tbody></tbody>
+    </table>
+    <p class="note">Ids follow the grid: row = (id-1) // 65, column = (id-1) % 65. Opacity is the export opacity fitted for that tile.</p>
+  </section>
+  <section class="card">
+    <h2>Most affected tiles</h2>
+    <div class="list" id="lists"></div>
+    <p class="note">Counts are pixels per tile (256 × 256 each). Green and hot: photo says vegetation, heat is 40–41 °C or hotter. Brown and cool: photo says bare, heat is 26 °C or cooler (levels 0–1).</p>
+  </section>
+</div>
+
+<script>
+(() => {
+  const COLS = 65, ROWS = 35, S = 128, W = COLS * S, H = ROWS * S;
+  const view = document.getElementById("view"), map = document.getElementById("map");
+  const hl = document.getElementById("hl"), tip = document.getElementById("tip");
+  let tiles = {}, T = { x: 0, y: 0, s: 1 }, pinned = null;
+
+  const fit = () => {
+    const r = view.getBoundingClientRect();
+    T.s = Math.min(r.width / W, r.height / H);
+    T.x = (r.width - W * T.s) / 2; T.y = (r.height - H * T.s) / 2;
+    apply();
+  };
+  const apply = () => {
+    map.style.transform = `translate(${T.x}px, ${T.y}px) scale(${T.s})`;
+    placeHighlight();
+  };
+  const zoomAt = (cx, cy, f) => {
+    const r = view.getBoundingClientRect(), px = cx - r.left, py = cy - r.top;
+    const s2 = Math.min(Math.max(T.s * f, 0.05), 3);
+    T.x = px - (px - T.x) * (s2 / T.s); T.y = py - (py - T.y) * (s2 / T.s); T.s = s2;
+    apply();
+  };
+  const toMap = (cx, cy) => {
+    const r = view.getBoundingClientRect();
+    return { x: (cx - r.left - T.x) / T.s, y: (cy - r.top - T.y) / T.s };
+  };
+  const tileAt = (cx, cy) => {
+    const m = toMap(cx, cy);
+    if (m.x < 0 || m.y < 0 || m.x >= W || m.y >= H) return null;
+    const c = Math.floor(m.x / S), r = Math.floor(m.y / S);
+    return r * COLS + c + 1;
+  };
+  const placeHighlight = () => {
+    const id = pinned;
+    if (!id) { hl.style.display = "none"; return; }
+    const t = tiles[id];
+    hl.style.display = "block";
+    hl.style.left = t.col * S + "px"; hl.style.top = t.row * S + "px";
+    hl.style.width = S + "px"; hl.style.height = S + "px";
+    hl.style.borderWidth = (2 / T.s) + "px";
+  };
+
+  const showTip = (cx, cy) => {
+    const id = tileAt(cx, cy);
+    if (!id || !tiles[id]) return hideTip();   // tile data may still be loading
+    const t = tiles[id], r = view.getBoundingClientRect();
+    tip.style.display = "block";
+    tip.innerHTML = `<b>id ${id}</b> · green-hot ${t.hot} · brown-cool ${t.cool} · no outline ${t.missing} · no building ${t.ghost}`;
+    tip.style.left = Math.min(cx - r.left + 14, r.width - tip.offsetWidth - 8) + "px";
+    tip.style.top = Math.min(cy - r.top + 14, r.height - tip.offsetHeight - 8) + "px";
+  };
+  const hideTip = () => { tip.style.display = "none"; };
+  // pointer: drag to pan, click (no movement) to pin a tile
+  let drag = null;
+  view.addEventListener("pointerdown", e => {
+    drag = { x: e.clientX, y: e.clientY, tx: T.x, ty: T.y, moved: false };
+    view.setPointerCapture(e.pointerId); view.classList.add("drag");
+  });
+  view.addEventListener("pointermove", e => {
+    if (drag) {
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.abs(dx) + Math.abs(dy) > 3) drag.moved = true;
+      T.x = drag.tx + dx; T.y = drag.ty + dy; apply(); hideTip(); return;
+    }
+    showTip(e.clientX, e.clientY);
+  });
+  view.addEventListener("pointerup", e => {
+    view.classList.remove("drag");
+    if (drag && !drag.moved) {
+      const id = tileAt(e.clientX, e.clientY);
+      if (id) pin(id);
+    }
+    drag = null;
+  });
+  view.addEventListener("pointerleave", hideTip);
+  view.addEventListener("wheel", e => { e.preventDefault(); zoomAt(e.clientX, e.clientY, e.deltaY < 0 ? 1.15 : 1 / 1.15); }, { passive: false });
+  document.getElementById("zin").onclick = () => { const r = view.getBoundingClientRect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, 1.5); };
+  document.getElementById("zout").onclick = () => { const r = view.getBoundingClientRect(); zoomAt(r.left + r.width / 2, r.top + r.height / 2, 1 / 1.5); };
+  document.getElementById("zfit").onclick = fit;
+  window.addEventListener("resize", fit);
+
+  const row = (k, v) => `<tr><th>${k}</th><td class="n">${v}</td></tr>`;
+  // counts are at full tile resolution (256 x 256)
+  const pct = (n, total = 256 * 256) => (100 * n / total).toFixed(1) + "%";
+  const describe = id => {
+    const t = tiles[id];
+    return [
+      row("Tile id", id),
+      row("Row / column", `${t.row} / ${t.col}`),
+      row("Export opacity", t.alpha.toFixed(2)),
+      row("Mean heat level", t.mean_level === null ? "no heat" : t.mean_level.toFixed(2) + " (0 = under 23 °C, 13 = over 43 °C)"),
+      row("Green and hot px", `${t.hot} (${pct(t.hot)})`),
+      row("Brown and cool px", `${t.cool} (${pct(t.cool)})`),
+      row("Outline, no building px", `${t.ghost} (${pct(t.ghost)})`),
+      row("Building, no outline px", `${t.missing} (${pct(t.missing)})`),
+      row("Unknown px", `${t.unknown} (${pct(t.unknown)})`),
+    ].join("");
+  };
+  const tbody = document.querySelector("#infoTable tbody");
+  const showInfo = id => {
+    document.getElementById("infoEmpty").hidden = true;
+    document.getElementById("infoTable").hidden = false;
+    tbody.innerHTML = describe(id);
+  };
+  const pin = id => { pinned = id; showInfo(id); placeHighlight(); };
+
+  // layer switching
+  const setLayers = () => {
+    const base = document.querySelector('input[name="base"]:checked').value;
+    document.getElementById("imgHeat").style.display = base === "heat" ? "block" : "none";
+    document.getElementById("imgPhoto").style.display = base === "photo" ? "block" : "none";
+    document.getElementById("imgLc").style.display = "block";
+    document.getElementById("imgBld").style.display = document.getElementById("bld").checked ? "block" : "none";
+    const op = document.getElementById("op").value / 100;
+    document.getElementById("imgLc").style.opacity = op;
+    document.getElementById("imgBld").style.opacity = op;
+    applyLcFilter();
+  };
+  // the lc layer holds both flag types; hide one by re-rendering it from the raw colours
+  const lcCanvas = document.createElement("canvas");
+  const applyLcFilter = () => {
+    const showHot = document.getElementById("lcHot").checked, showCool = document.getElementById("lcCool").checked;
+    const img = document.getElementById("imgLc");
+    if (!img.dataset.src) img.dataset.src = img.src;
+    if (!lcSource) return;
+    lcCanvas.width = W; lcCanvas.height = H;
+    const ctx = lcCanvas.getContext("2d");
+    ctx.drawImage(lcSource, 0, 0);
+    const d = ctx.getImageData(0, 0, W, H), p = d.data;
+    for (let k = 0; k < p.length; k += 4) {
+      const isHot = p[k] === 0 && p[k + 1] === 170;
+      const isCool = p[k] === 170 && p[k + 1] === 70;
+      if ((isHot && !showHot) || (isCool && !showCool)) p[k + 3] = 0;
+    }
+    ctx.putImageData(d, 0, 0);
+    img.src = lcCanvas.toDataURL("image/png");
+  };
+  let lcSource = null;
+  const loadLc = new Image();
+  loadLc.onload = () => { lcSource = loadLc; setLayers(); };
+  loadLc.src = "layer_lc.png";
+
+  document.querySelectorAll('input[name="base"], #lcHot, #lcCool, #bld, #op').forEach(el => el.addEventListener("input", setLayers));
+  document.querySelectorAll('input[name="base"]').forEach(el => el.addEventListener("change", setLayers));
+
+  // ranking lists
+  const ranked = (key, filter = () => true) =>
+    Object.values(tiles).filter(filter).sort((a, b) => b[key] - a[key]).slice(0, 12);
+  const listItem = t => `<button data-id="${t.id}"><span>id ${t.id} · row ${t.row}, col ${t.col}</span><span>${t.v}</span></button>`;
+  const lists = document.getElementById("lists");
+  const jump = document.getElementById("jump");
+  const renderList = mode => {
+    const pick = {
+      hot: () => ranked("hot"),
+      cool: () => ranked("cool"),
+      ghost: () => ranked("ghost"),
+      missing: () => ranked("missing"),
+      unknown: () => ranked("unknown"),
+    }[mode];
+    if (!pick) { lists.innerHTML = ""; return; }
+    lists.innerHTML = pick().map(t => listItem({ id: t.id, row: t.row, col: t.col, v: t[mode] })).join("");
+  };
+  lists.addEventListener("click", e => {
+    const b = e.target.closest("button[data-id]"); if (!b) return;
+    centerOn(+b.dataset.id); pin(+b.dataset.id);
+  });
+  const centerOn = id => {
+    const t = tiles[id], r = view.getBoundingClientRect();
+    T.s = Math.max(T.s, 0.6);
+    T.x = r.width / 2 - (t.col * S + S / 2) * T.s;
+    T.y = r.height / 2 - (t.row * S + S / 2) * T.s;
+    apply();
+  };
+  jump.addEventListener("change", () => {
+    const mode = jump.value;
+    renderList(mode);
+    if (mode) {
+      const top = ranked(mode)[0];
+      if (top) { centerOn(top.id); pin(top.id); }
+    }
+  });
+
+  fetch("tiles.json").then(r => r.json()).then(data => {
+    tiles = {};
+    for (const [k, v] of Object.entries(data)) tiles[+k] = { id: +k, ...v };
+    fit();
+    const top = ranked("hot")[0];
+    if (top) document.querySelector("#lists").innerHTML = "";
+  });
+  document.getElementById("imgHeat").addEventListener("load", fit, { once: true });
+  setLayers();
+})();
+</script>
+</body>
+</html>

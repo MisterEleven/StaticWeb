@@ -385,7 +385,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
     <figure>
       <img src="img/overview_clean.jpg" alt="Cleaned heat map of Bern with ignored areas marked" style="width:100%;border-radius:6px">
-      <figcaption>Heat in the legend colours, buildings grey. Turquoise: building in the photo without outline. Dark teal: outline without building. Teal tint: 6 px ring around a mismatch. Black: no value in the source map (the patch south of the centre is a sports ground).</figcaption>
+      <figcaption>Source: <a href="https://map.bern.ch" target="_blank" rel="noopener">map.bern.ch</a> (City of Bern), cleaned by the project team. Heat in the legend colours, buildings grey. Turquoise: building in the photo without outline. Dark teal: outline without building. Teal tint: 6 px ring around a mismatch. Black: no value in the source map (the patch south of the centre is a sports ground).</figcaption>
     </figure>
     <figure>
       <img src="img/overview_crop.jpg" alt="Close-up of the cleaned map in the Breitenrain and Lorraine area" style="width:100%;border-radius:6px">
@@ -427,7 +427,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <strong>Using it in training</strong>
       <p>Two masks are prepared, so each model can choose. The base mask ignores 0.80% of pixels. The land-cover mask also ignores the two conflict types, which brings it to 7.01%. Excluding them removes the farmland examples most needed for learning, so the choice should be tested rather than assumed.</p>
     </div>
-    <p class="muted col">Review: a local map viewer (a local review page) shows the flags tile by tile, next to the photo and the heat map.</p>
+    <p class="muted col">Manual review: a <a href="review/">tile-by-tile viewer</a> shows the flags next to the photo and the heat map. Images there are from <a href="https://map.bern.ch" target="_blank" rel="noopener">map.bern.ch</a> (City of Bern).</p>
   </section>
 
   <section id="team" class="col">
