@@ -432,67 +432,63 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
 
   <section id="team" class="col">
     <div class="eyebrow">Who does what</div>
-    <h2>Four model tracks</h2>
+    <h2>Three tracks, one comparison</h2>
+    <p>The three formulations are equally important. Each track trains on the same split and reports the same metrics. The final choice of method, and how the outputs are combined, is decided after the comparison, not in advance.</p>
     <div class="options">
-      <div class="opt pick">
-        <span class="pill go">Main track</span>
-        <h3>Classification: Timo</h3>
-        <p class="small muted">14-class U-Net on the photo. Baseline for everything else, trained on the base mask first.</p>
+      <div class="opt">
+        <span class="pill base">Timo</span>
+        <h3>Classification</h3>
+        <p class="small muted">14-class U-Net. Trained on the base mask first, then with the land-cover mask.</p>
       </div>
       <div class="opt">
-        <span class="pill base">Team</span>
-        <h3>Scalar regression: Louis</h3>
-        <p class="small muted">One output in &#176;C (bin midpoints), L1 loss, same backbone for a like-for-like comparison.</p>
+        <span class="pill base">Louis</span>
+        <h3>Scalar regression</h3>
+        <p class="small muted">One output in &#176;C, L1 loss, same backbone for a like-for-like comparison.</p>
       </div>
       <div class="opt">
-        <span class="pill base">Team</span>
-        <h3>Ordinal: Chenjie</h3>
-        <p class="small muted">13 "hotter than level k" outputs (CORAL), respecting the order of the levels.</p>
+        <span class="pill base">Chenjie</span>
+        <h3>Ordinal</h3>
+        <p class="small muted">13 ordered outputs (CORAL), same backbone and split.</p>
       </div>
       <div class="opt">
-        <span class="pill no">Can do</span>
-        <h3>Side tasks</h3>
+        <span class="pill no">Side tasks</span>
+        <h3>Open</h3>
         <ul class="small clean">
-          <li>Search Bern aerial imagery for a closer match to the heat map's date</li>
-          <li>RGB regression (pix2pix-style) as a reference for the colour option</li>
+          <li>Search for an aerial image closer in date to the heat map</li>
+          <li>RGB regression as a reference</li>
         </ul>
       </div>
     </div>
-    <p class="muted">All tracks use the same split (5 &#215; 5 spatial blocks), the same photos and the same metrics, so the numbers can be compared directly. Each track chooses its mask: the base mask, or the land-cover mask if the conflicts should be excluded.</p>
+    <p class="muted">Every track uses the same split (5 &#215; 5 spatial blocks), the same photos and the same metrics. Each one runs with the base mask and with the land-cover mask, so the effect of excluding the conflicts is measured, not assumed.</p>
   </section>
 
   <section id="options">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">How we could go forth</div>
-      <h2>Three ways to frame the output</h2>
-      <p>All three share the same backbones (U-Net, DeepLabV3+, SegFormer) and differ only in the output head and loss. Every option ignores building and overlay pixels in the loss.</p>
+      <h2>Three output formulations, compared on equal terms</h2>
+      <p>All three use the same backbone family (U-Net first; DeepLabV3+ and SegFormer later) and the same split, photos and metrics. They differ only in the output head and loss. Which one is used in the final result depends on what the comparison shows.</p>
     </div>
     <div class="options">
       <div class="opt">
-        <span class="pill base">Baseline</span>
-        <h3>A &#183; Classification</h3>
-        <dl><dt>Output</dt><dd>14 logits per pixel</dd><dt>Loss</dt><dd>Class-weighted cross-entropy</dd><dt>Metric</dt><dd>mIoU, accuracy</dd></dl>
-        <p class="small muted">Standard and easy to set up. It treats 40 &#176;C as just as wrong as 24 &#176;C when the truth is 41 &#176;C.</p>
-      </div>
-      <div class="opt pick">
-        <span class="pill go">Recommended</span>
-        <h3>B &#183; Ordinal</h3>
-        <dl><dt>Output</dt><dd>13 "hotter than level k" sigmoids (CORAL / CORN)</dd><dt>Loss</dt><dd>Sum of binary cross-entropies</dd><dt>Metric</dt><dd>MAE in &#176;C, &#177;1-level accuracy</dd></dl>
-        <p class="small muted">Respects the order and doesn't average across the two peaks. A one-level miss costs little and a ten-level miss costs a lot.</p>
+        <span class="pill base">Track 1 &#183; Timo</span>
+        <h3>Classification</h3>
+        <dl><dt>Output</dt><dd>14 logits per pixel</dd><dt>Loss</dt><dd>Class-weighted cross-entropy</dd><dt>Metric</dt><dd>mIoU, accuracy, MAE in &#176;C</dd></dl>
+        <p class="small muted">Treats 40 &#176;C as just as wrong as 24 &#176;C when the truth is 41 &#176;C. Its per-class scores show where it fails.</p>
       </div>
       <div class="opt">
-        <span class="pill no">Comparison</span>
-        <h3>C &#183; Scalar regression</h3>
+        <span class="pill base">Track 2 &#183; Louis</span>
+        <h3>Scalar regression</h3>
         <dl><dt>Output</dt><dd>1 channel in &#176;C (bin midpoints)</dd><dt>Loss</dt><dd>L1</dd><dt>Metric</dt><dd>MAE in &#176;C</dd></dl>
-        <p class="small muted">Simplest output. It blurs towards middle values where it is unsure, which the bimodal data punishes.</p>
+        <p class="small muted">Simplest output. Where it is unsure it blurs towards middle values, which the bimodal distribution punishes.</p>
       </div>
       <div class="opt">
-        <span class="pill no">Not chosen</span>
-        <h3>RGB regression (pix2pix)</h3>
-        <dl><dt>Output</dt><dd>3 colour channels</dd><dt>Loss</dt><dd>L1 + GAN</dd><dt>Metric</dt><dd>MSE, SSIM</dd></dl>
-        <p class="small muted">Distance in RGB is not distance in &#176;C, and the model would also learn to paint street names.</p>
+        <span class="pill base">Track 3 &#183; Chenjie</span>
+        <h3>Ordinal</h3>
+        <dl><dt>Output</dt><dd>13 "hotter than level k" sigmoids (CORAL / CORN)</dd><dt>Loss</dt><dd>Sum of binary cross-entropies</dd><dt>Metric</dt><dd>MAE in &#176;C, &#177;1-level accuracy</dd></dl>
+        <p class="small muted">Respects the order of the levels and does not average across the two peaks. A one-level miss costs little, a ten-level miss costs a lot.</p>
       </div>
     </div>
+    <p class="small muted col">Side tasks, also open: an RGB regression (pix2pix-style) reference, and a search for an aerial image closer in date to the heat map. Both are compared against the same metrics.</p>
     <div class="callout col">
       <strong>Shared evaluation</strong>
       <p>Reported for every model: MAE in &#176;C, accuracy within &#177;1 level, and accuracy on the five W&#228;rmebelastung categories, which non-specialists can read. Metrics are also computed at the heat map's own grid resolution, since pixel-exact borders are not reachable.</p>
