@@ -1,0 +1,363 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Palette from the hub (root index.html, Building Systems card) */
+:root {
+    --bg: #0a0a0a;
+    --bg-elev: #111114;
+    --bg-warm: #141006;
+    --border: rgba(255, 255, 255, 0.08);
+    --text: #f5f5f5;
+    --text-dim: #a8a8a8;
+    --text-muted: #6b6b6b;
+    --accent: #f5a524;
+    --accent-soft: #ffd58a;
+    --accent-glow: rgba(245, 165, 36, 0.22);
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', 'SF Mono', Menlo, Consolas, monospace;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* Main Container */
+.container {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+}
+
+.viewer-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+model-viewer {
+    width: 100%;
+    height: 100%;
+    background:
+        radial-gradient(ellipse at 50% 45%, rgba(245, 165, 36, 0.14), transparent 60%),
+        linear-gradient(135deg, var(--bg-warm) 0%, var(--bg) 100%);
+}
+
+/* Shared floating-card look */
+.info-panel,
+.legend,
+.footer,
+.hotspot-label,
+.hotspot-note {
+    background: rgba(17, 17, 20, 0.88);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
+}
+
+/* Hotspots */
+.hotspot {
+    position: relative;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--bg);
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-glow), 0 0 20px var(--accent-glow);
+    cursor: pointer;
+    padding: 0;
+    animation: pulse 2.4s ease-out infinite;
+}
+
+.hotspot-label {
+    position: absolute;
+    left: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 260px;
+    padding: 12px 14px;
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+    border-radius: 12px;
+    font-family: var(--font-sans);
+    font-size: 12.5px;
+    line-height: 1.5;
+    color: var(--text-dim);
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease;
+    pointer-events: none;
+}
+
+.hotspot-note {
+    display: none;
+}
+
+.hotspot-label strong,
+.hotspot-note strong {
+    display: block;
+    margin-bottom: 4px;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+.hotspot:hover .hotspot-label,
+.hotspot.open .hotspot-label {
+    opacity: 1;
+    visibility: visible;
+}
+
+.hotspot:hover,
+.hotspot.open {
+    z-index: 10;
+    animation: none;
+}
+
+@keyframes pulse {
+    0%   { box-shadow: 0 0 0 0 rgba(245, 165, 36, 0.55), 0 0 20px var(--accent-glow); }
+    70%  { box-shadow: 0 0 0 12px rgba(245, 165, 36, 0), 0 0 20px var(--accent-glow); }
+    100% { box-shadow: 0 0 0 0 rgba(245, 165, 36, 0), 0 0 20px var(--accent-glow); }
+}
+
+/* Velocity legend: Turbo colormap, sampled from the model's own texture */
+.legend {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    z-index: 999;
+    padding: 14px 16px;
+    border-radius: 14px;
+}
+
+.legend-title {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+
+.legend-body {
+    display: flex;
+    gap: 10px;
+    height: 160px;
+}
+
+.legend-bar {
+    width: 12px;
+    border-radius: 6px;
+    background: linear-gradient(to top,
+        #30123b 0%, #4559cb 10%, #4099ff 20%, #19d5cd 30%, #46f884 40%, #a1fd3d 50%,
+        #e1dd37 60%, #fea431 70%, #ef5811 80%, #c32503 90%, #7a0403 100%);
+}
+
+.legend-ticks {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--text-dim);
+    line-height: 1;
+}
+
+/* Top-down plot, floating over the viewer */
+.info-panel {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    width: min(520px, calc(100vw - 48px));
+    padding: 18px;
+    border-radius: 18px;
+    z-index: 1000;
+    animation: fadeInLeft 0.8s ease-out;
+    transition: all 0.3s ease;
+}
+
+.info-panel.minimized {
+    width: 220px;
+    padding: 12px 16px;
+    cursor: pointer;
+}
+
+.info-panel.minimized:hover {
+    border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+}
+
+.info-panel.minimized .info-panel-content {
+    display: none;
+}
+
+.info-panel-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+    gap: 16px;
+}
+
+.info-panel.minimized .info-panel-header {
+    margin-bottom: 0;
+}
+
+.info-panel h3 {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    flex: 1;
+    margin: 0;
+}
+
+.minimize-btn {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid color-mix(in srgb, var(--accent) 50%, transparent);
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all 0.25s ease;
+}
+
+.minimize-btn:hover {
+    background: var(--accent);
+    color: var(--bg);
+    box-shadow: 0 0 20px var(--accent-glow);
+}
+
+.info-panel-content {
+    display: block;
+    cursor: zoom-in;
+}
+
+.info-panel-content img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+@keyframes fadeInLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Footer */
+.footer {
+    position: absolute;
+    bottom: 12px;
+    right: 24px;
+    padding: 8px 14px;
+    border-radius: 10px;
+    z-index: 999;
+}
+
+.footer p {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+.footer .hub-link {
+    color: var(--accent);
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+}
+
+.footer .hub-link:hover {
+    opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .hotspot, .info-panel { animation: none; }
+}
+
+@media (max-width: 768px) {
+    .footer {
+        bottom: 6px;
+        right: 12px;
+        padding: 6px 10px;
+        border-radius: 8px;
+    }
+
+    .footer p {
+        font-size: 9.5px;
+    }
+
+    .legend {
+        top: 12px;
+        right: 12px;
+        padding: 10px 12px;
+    }
+
+    .legend-body {
+        height: 110px;
+    }
+
+    .info-panel {
+        bottom: 40px;
+        left: 12px;
+        width: calc(100vw - 24px);
+        padding: 14px;
+    }
+
+    .info-panel.minimized {
+        width: 190px;
+        padding: 10px 14px;
+    }
+
+    /* Notes open in a fixed card beside the legend instead */
+    .hotspot-label {
+        display: none;
+    }
+
+    .hotspot-note:not([hidden]) {
+        display: block;
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        right: 108px;
+        z-index: 1001;
+        padding: 12px 14px;
+        border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+        border-radius: 12px;
+        font-size: 12.5px;
+        line-height: 1.5;
+        color: var(--text-dim);
+        animation: noteIn 0.2s ease-out;
+    }
+
+    @keyframes noteIn {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: none; }
+    }
+}

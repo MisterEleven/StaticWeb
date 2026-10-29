@@ -162,8 +162,7 @@ model-viewer {
     width: 12px;
     border-radius: 6px;
     background: linear-gradient(to top,
-        #30123b 0%, #4559cb 10%, #4099ff 20%, #19d5cd 30%, #46f884 40%, #a1fd3d 50%,
-        #e1dd37 60%, #fea431 70%, #ef5811 80%, #c32503 90%, #7a0403 100%);
+        rgb(48, 18, 59) 0%, rgb(69, 89, 203) 10%, rgb(62, 155, 254) 20%, rgb(25, 213, 205) 30%, rgb(70, 248, 132) 40%, rgb(164, 252, 60) 50%, rgb(225, 221, 55) 60%, rgb(254, 164, 49) 70%, rgb(240, 91, 18) 80%, rgb(195, 37, 3) 90%, rgb(122, 4, 3) 100%);
 }
 
 .legend-ticks {
@@ -361,3 +360,29 @@ model-viewer {
         to   { opacity: 1; transform: none; }
     }
 }
+
+
+.legend-note {
+    margin-top: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+}
+
+.info-panel-content p {
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text-dim);
+    margin-bottom: 10px;
+}
+
+.info-panel-content .older a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+.info-panel-content .older a:hover {
+    text-decoration: underline;
+}
+

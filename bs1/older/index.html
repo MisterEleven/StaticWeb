@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Building Systems 1 | ETH Zurich</title>
+    <meta name="description" content="ETH Zurich Building Systems 1: interactive 3D CFD airflow model and top-down velocity plot.">
+    <link rel="canonical" href="https://git.feddern.dev/bs1/older/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Building Systems 1 | ETH Zurich">
+    <meta property="og:description" content="Interactive 3D CFD airflow model and top-down velocity plot.">
+    <meta property="og:url" content="https://git.feddern.dev/bs1/older/">
+    <meta property="og:image" content="https://git.feddern.dev/bs1/older/og.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://git.feddern.dev/bs1/older/og.jpg">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script>
+        // The model is meshopt-compressed; tell model-viewer where the decoder lives
+        self.ModelViewerElement = self.ModelViewerElement || {};
+        self.ModelViewerElement.meshoptDecoderLocation = 'https://cdn.jsdelivr.net/npm/meshoptimizer@0.21.0/meshopt_decoder.js';
+    </script>
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <!-- Model Viewer -->
+        <div class="viewer-container">
+            <model-viewer
+                id="model-viewer"
+                src="model1.glb"
+                ar
+                ar-modes="webxr scene-viewer quick-look"
+                camera-controls
+                auto-rotate
+                shadow-intensity="2"
+                alt="Building Systems 1 3D Model"
+                exposure="1"
+                shadow-softness="0.3"
+                camera-orbit="180deg 55deg auto"
+                min-camera-orbit="auto auto 1m"
+                max-camera-orbit="auto auto 100m"
+                field-of-view="45deg"
+                max-field-of-view="60deg"
+                min-field-of-view="20deg"
+                interaction-prompt="none"
+                orientation="0deg -90deg 0deg"
+                loading="eager">
+
+                <!-- Hotspot: position in the oriented frame, i.e. (x, z, -y) of the Z-up model; floor at y = 12 -->
+                <button class="hotspot" slot="hotspot-ventilation" data-position="18.9 15.4 -81.4">
+                    <span class="hotspot-label">
+                        <strong>Ventilation</strong>
+                        The ventilation delivers only ~300 m³/h (about 0.5 air changes per hour) for up to 30 people. Opening a few of the large façade windows adds the airflow shown here.
+                    </span>
+                </button>
+            </model-viewer>
+
+            <!-- On phones, hotspot notes open here instead of beside the dot -->
+            <div class="hotspot-note" hidden></div>
+
+            <!-- Velocity legend -->
+            <div class="legend" aria-label="Air velocity colour scale, 0 to 0.4 metres per second">
+                <div class="legend-title">U · m/s</div>
+                <div class="legend-body">
+                    <div class="legend-bar"></div>
+                    <div class="legend-ticks">
+                        <span>0</span><span>0.1</span><span>0.2</span><span>0.3</span><span>0.4</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top-down velocity plot -->
+            <div class="info-panel">
+                <div class="info-panel-header">
+                    <h3>Top-down View</h3>
+                    <button class="minimize-btn" title="Minimize panel">−</button>
+                </div>
+
+                <a class="info-panel-content" href="top-down.webp" target="_blank" rel="noopener">
+                    <img src="top-down.webp" width="2470" height="1152" alt="Top-down CFD plot of air velocity magnitude across the room">
+                </a>
+            </div>
+
+            <!-- Footer -->
+            <footer class="footer">
+                <p><a href="../../" class="hub-link">← All projects</a> &nbsp;·&nbsp; &copy; 2026 Timo Feddern</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        // Tap a hotspot to toggle its note (hover also works on desktop).
+        // On phones the note goes into a fixed card so it can't run off-screen.
+        const note = document.querySelector('.hotspot-note');
+        const isPhone = window.matchMedia('(max-width: 768px)');
+
+        document.querySelectorAll('.hotspot').forEach((hotspot) => {
+            hotspot.addEventListener('click', () => {
+                const wasOpen = hotspot.classList.contains('open');
+                document.querySelectorAll('.hotspot.open').forEach((h) => h.classList.remove('open'));
+                note.hidden = true;
+                if (wasOpen) return;
+
+                hotspot.classList.add('open');
+                if (isPhone.matches) {
+                    note.innerHTML = hotspot.querySelector('.hotspot-label').innerHTML;
+                    note.hidden = false;
+                }
+            });
+        });
+
+        note.addEventListener('click', () => {
+            note.hidden = true;
+            document.querySelectorAll('.hotspot.open').forEach((h) => h.classList.remove('open'));
+        });
+
+        // Minimize/maximize the top-down panel
+        const infoPanel = document.querySelector('.info-panel');
+        const minimizeBtn = document.querySelector('.minimize-btn');
+
+        minimizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            infoPanel.classList.toggle('minimized');
+            minimizeBtn.textContent = infoPanel.classList.contains('minimized') ? '+' : '−';
+        });
+
+        // Click on minimized panel to expand
+        infoPanel.addEventListener('click', () => {
+            if (infoPanel.classList.contains('minimized')) {
+                infoPanel.classList.remove('minimized');
+                minimizeBtn.textContent = '−';
+            }
+        });
+    </script>
+</body>
+
+</html>
