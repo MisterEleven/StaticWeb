@@ -82,6 +82,15 @@ header.hero { display: grid; gap: 22px; }
 nav.toc { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--font-mono); font-size: var(--step--1); }
 nav.toc a { color: var(--ink-2); text-decoration: none; border: 1px solid var(--rule); padding: 4px 10px; border-radius: 999px; }
 nav.toc a:hover { color: var(--ink); border-color: var(--ink-3); }
+.find { position: relative; display: grid; gap: 6px; max-width: 420px; }
+.find input { font: inherit; font-size: var(--step--1); font-family: var(--font-mono); color: var(--ink); background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 8px 12px; width: 100%; }
+.find input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+.find-results { position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 5; margin: 0; padding: 4px; list-style: none; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); max-height: 320px; overflow-y: auto; }
+.find-results[hidden] { display: none; }
+.find-results a { display: block; padding: 8px 10px; border-radius: 6px; color: var(--ink); text-decoration: none; font-family: var(--font-display); font-size: var(--step--1); }
+.find-results a:hover, .find-results a:focus-visible { background: var(--note); outline: none; }
+.find-results small { display: block; color: var(--ink-3); font-family: var(--font-mono); font-size: 0.72rem; }
+.find-empty { padding: 8px 10px; color: var(--ink-3); font-size: var(--step--1); font-family: var(--font-mono); }
 
 /* tables */
 .tablewrap { overflow-x: auto; }
@@ -165,12 +174,59 @@ ul.clean { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
 .todo { display: grid; gap: 10px; }
 .todo label { display: flex; gap: 10px; align-items: baseline; }
 .todo input { accent-color: var(--accent); }
+/* task A cases: three square images side by side, same scale */
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.trio img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 4px; display: block; background: var(--rule); }
+figure.case { gap: 12px; max-width: 100%; }
+figure.case figcaption { max-width: 68ch; }
+@media (max-width: 520px) { .trio { gap: 4px; } }
+/* chapter selector for the modelling chapters */
+.chapters { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--font-mono); font-size: var(--step--1); }
+.chapters a { color: var(--ink-2); text-decoration: none; border: 1px solid var(--rule); padding: 6px 12px; border-radius: 999px; }
+.chapters a:hover { color: var(--ink); border-color: var(--ink-3); }
+/* chapter overview: a sticky column beside the text on wide screens; hidden below 1400 px */
+html { scroll-behavior: auto; }
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+main > section[id], [data-toc] { scroll-margin-top: 24px; }
+.shell { display: block; }
+.side { display: none; }
+@media (min-width: 1400px) {
+  .shell { display: grid; grid-template-columns: 210px minmax(0, 1120px); gap: 56px; justify-content: center; max-width: 1440px; margin: 0 auto; }
+  .shell main { margin: 0; }
+  .side { display: block; position: sticky; top: 0; align-self: start; max-height: 100vh; overflow-y: auto; padding: 48px 0; }
+}
+.side ul { list-style: none; margin: 0; padding: 0; }
+.side li { margin: 0; }
+.side .sub-list { display: none; margin: 4px 0 6px 10px; padding-left: 10px; border-left: 1px solid var(--rule); }
+.side li.open > .sub-list { display: block; }
+.side a { display: block; color: var(--ink-3); text-decoration: none; padding: 4px 0 4px 8px; margin-left: -1px; border-left: 2px solid transparent; line-height: 1.3; }
+.side a:hover { color: var(--ink); }
+.side .chap > a { font-family: var(--font-display); font-weight: 700; font-size: 0.92rem; color: var(--ink); padding-top: 8px; padding-bottom: 8px; }
+.side .chap > a.on { color: var(--accent); }
+.side .sub > a { padding-left: 14px; position: relative; }
+.side .sub > a::before { content: ""; position: absolute; left: 0; top: 50%; width: 6px; height: 1px; background: var(--ink-3); }
+.side .subsub > a { padding-left: 26px; position: relative; }
+.side .subsub > a::before { content: ""; position: absolute; left: 14px; top: 50%; width: 6px; height: 1px; background: var(--rule); }
+.side .sub-list .sub-list { margin-left: 0; }
+.side .sub > a { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-2); }
+.side .subsub > a { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-3); padding-top: 3px; padding-bottom: 3px; }
+.side a.in { color: var(--ink); }
+.side a.on { color: var(--accent); border-left-color: var(--accent); }
+/* parts: the five big groups of the guide */
+.part { display: flex; gap: 12px; align-items: baseline; padding-top: 14px; border-top: 2px solid var(--ink); margin-bottom: -48px; font-family: var(--font-mono); font-size: var(--step--1); text-transform: uppercase; letter-spacing: 0.08em; color: var(--ink-2); scroll-margin-top: 24px; }
+.part-no { color: var(--accent); font-weight: 500; }
+.side .part { margin: 18px 0 2px; padding: 0; border: 0; font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); display: block; }
+.side .part a { color: var(--accent); padding: 0; border: 0; }
+.side .part a:hover { color: var(--ink); }
+.side .part:first-child { margin-top: 0; }
 footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font-mono); border-top: 1px solid var(--rule); padding-top: 16px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
 <body>
 
+<div class="shell">
+  <nav class="side" id="sideToc" aria-label="Chapter overview"></nav>
 <main>
   <header class="hero">
     <div class="eyebrow">ETH SMDLDC &#183; Project &#183; Data analysis</div>
@@ -187,12 +243,18 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <div class="fact"><b>256 px</b><span>tile size, RGB</span></div>
       <div class="fact"><b>9.45 px</b><span>heat raster cell</span></div><div class="fact"><b>99.2%</b><span>pixels usable (base mask)</span></div>
     </div>
+    <div class="find">
+      <label for="findInput" class="small muted">Find a section</label>
+      <input id="findInput" type="search" autocomplete="off" placeholder="Type to find: legend, cases, seeds, limits&#8230;" aria-controls="findResults">
+      <ul id="findResults" class="find-results" hidden></ul>
+    </div>
     <nav class="toc" aria-label="Sections">
-      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#cleaning">Cleaning</a><a href="#buildings">Buildings</a><a href="#result">Result</a><a href="#landcover">Land cover</a><a href="#team">Team</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
+      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#cleaning">Cleaning</a><a href="#buildings">Buildings</a><a href="#result">Result</a><a href="#encoder">Model</a><a href="#taska-cases">Task A cases</a><a href="#landcover">Land cover</a><a href="#team">Team</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
     </nav>
   </header>
 
-  <section id="brief" class="col">
+  <div class="part" id="part-intro"><span class="part-no">1</span><span>Intro</span></div>
+  <section id="brief" data-part="intro" class="col">
     <div class="eyebrow">The brief</div>
     <h2>Predict heat islands from aerial images</h2>
     <ul class="clean">
@@ -203,7 +265,8 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="muted">Takeaways the supervisors are after: working with image2image models, and evaluating performance <em>and</em> generalisability. Supervisors: Rafael Bischof, Andreas M&#252;ller.</p>
   </section>
 
-  <section id="data">
+  <div class="part" id="part-data"><span class="part-no">2</span><span>Data preparation and exploration</span></div>
+  <section id="data" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">What we were given</div>
       <h2>The dataset folders</h2>
@@ -228,7 +291,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
-  <section id="method">
+  <section id="method" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">How we analysed it</div>
       <h2>Eight passes over the data</h2>
@@ -246,7 +309,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </ol>
   </section>
 
-  <section id="grid">
+  <section id="grid" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Finding 1</div>
       <h2>The tiles are one continuous map of Bern</h2>
@@ -264,7 +327,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </figure>
   </section>
 
-  <section id="legend">
+  <section id="legend" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Finding 2</div>
       <h2>The pastel colours are the official legend at 60% opacity</h2>
@@ -285,7 +348,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="small muted col">The worst fit is <b>&gt; 43 &#176;C</b> (error 39.8): dark purple loses the most in a blend. It is still the only plausible partner, and it covers just 0.7% of pixels.</p>
   </section>
 
-  <section id="dist">
+  <section id="dist" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Finding 3</div>
       <h2>The temperatures cluster in two groups</h2>
@@ -300,7 +363,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="small muted col">The core and Large sets have nearly the same distribution (at most 0.4 percentage points apart per level), so training on one scale and testing on the other is a fair experiment. Heat raster cells measure 9.45 px in core tiles; the Large tiles mix 7.55 and 11.35 px.</p>
   </section>
 
-  <section id="examples">
+  <section id="examples" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Finding 4</div>
       <h2>Where photo and heat map disagree</h2>
@@ -325,7 +388,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
-  <section id="cleaning">
+  <section id="cleaning" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Finding 5</div>
       <h2>The heat map is a grid of 9.45 px cells, so lines and labels can be painted over</h2>
@@ -352,7 +415,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
-  <section id="buildings">
+  <section id="buildings" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Finding 6</div>
       <h2>Some buildings exist in only one of the two images</h2>
@@ -379,7 +442,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
-  <section id="result">
+  <section id="result" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Result</div>
       <h2>The cleaned heat map of Bern</h2>
@@ -408,7 +471,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="small muted col">The flags come from a detector, not from ground truth, so they are suspected mismatches. A sample check found the "building without outline" flags reliable; some small "outline without building" flags sit on sheds and garages the detector misses. They cover little area and were kept.</p>
   </section>
 
-  <section id="landcover">
+  <section id="landcover" data-part="data">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Finding 7</div>
       <h2>Surface colour carries heat, and some of it disagrees with the photo</h2>
@@ -432,10 +495,14 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="muted col">Manual review: a <a href="review/">tile-by-tile viewer</a> shows the flags next to the photo and the heat map. Images there are from <a href="https://map.bern.ch" target="_blank" rel="noopener">map.bern.ch</a> (City of Bern).</p>
   </section>
 
-  <section id="team" class="col">
+  <div class="part" id="part-modelling"><span class="part-no">3</span><span>Modelling</span></div>
+  <section id="team" data-part="modelling" class="col">
     <div class="eyebrow">Who does what</div>
     <h2>Three tracks, one comparison</h2>
     <p>The three formulations are equally important. Each track trains on the same split and reports the same metrics. The final choice of method, and how the outputs are combined, is decided after the comparison, not in advance.</p>
+    <nav class="chapters" aria-label="Modelling chapters">
+      <a href="#team">Tracks</a><a href="#options">Formulations</a><a href="#encoder">Model results</a><a href="#taska-cases">Cases</a>
+    </nav>
     <div class="options">
       <div class="opt">
         <span class="pill base">Timo</span>
@@ -464,7 +531,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="muted">Every track uses the same split (5 &#215; 5 spatial blocks), the same photos and the same metrics. Each one runs with the base mask and with the land-cover mask, so the effect of excluding the conflicts is measured, not assumed.</p>
   </section>
 
-  <section id="options">
+  <section id="options" data-part="modelling">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">How we could go forth</div>
       <h2>Three output formulations, compared on equal terms</h2>
@@ -497,7 +564,133 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
-  <section id="split" class="col">
+  <div class="part" id="part-comparison"><span class="part-no">4</span><span>Comparisons</span></div>
+  <section id="encoder" data-part="comparison">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Task A · classification</div>
+      <h2>A pretrained encoder reaches about 2 °C mean error</h2>
+      <p>Each model predicts the heat level of every pixel, and we report the error in °C. The split is five spatial folds of 5 × 5 tile blocks, shared by all runs. Every number is the mean over the five folds, with the spread across folds after it. The colour-only baseline is kept in every comparison.</p>
+    </div>
+    <div class="tablewrap col">
+      <table>
+        <thead><tr><th>Setting</th><th class="num">MAE, argmax (°C)</th><th class="num">MAE, median (°C)</th><th class="num">±1 level</th><th class="num">Category acc.</th></tr></thead>
+        <tbody>
+          <tr><td>Colour-only baseline</td><td class="num">5.69 ± 0.48</td><td class="num">-</td><td class="num">56.4% ± 2.3</td><td class="num">53.8% ± 3.6</td></tr>
+          <tr><td>From-scratch U-Net, 60 epochs (seed 0)</td><td class="num">2.26 ± 0.12</td><td class="num">-</td><td class="num">75.5% ± 1.0</td><td class="num">71.6% ± 2.5</td></tr>
+          <tr><td><b>ResNet-34 encoder, 60 epochs, four seeds (20 runs)</b></td><td class="num">2.12 ± 0.10</td><td class="num"><b>1.98 ± 0.10</b></td><td class="num">77.4% ± 0.5</td><td class="num">73.4% ± 1.6</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="small muted col">Split: <code>b5_fold0</code>–<code>b5_fold4</code>, base mask, RGB input. Training uses cross-entropy with flips and rotations; decoding is shown two ways (argmax and median, the level that minimises expected °C error). The encoder row pools all 20 runs (five folds × four seeds).</p>
+    <figure>
+      <div class="chart" id="seedChart"></div>
+      <figcaption>Median-decoded MAE per fold for four training seeds (dots). Seed means are 1.975, 1.986, 1.971 and 1.978 °C; the seed-to-seed spread is 0.015 °C, far smaller than the fold-to-fold spread. Lower is better.</figcaption>
+    </figure>
+    <div class="callout col">
+      <strong>What the seeds tell us</strong>
+      <p>The result is stable: four seeds give the same mean within 0.02 °C, so the 1.98 °C figure is not a lucky draw. The error is not spread evenly, though. Folds 0–2 average 2.05 °C and folds 3–4 average 1.86 °C; the spread between seeds is at most 0.05 °C on any single fold. The largest errors sit in the high-PET areas with green cover (see Finding 7), which is where the model is weakest.</p>
+    </div>
+  </section>
+
+  <section id="taska-cases" data-part="comparison">
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow">Task A &#183; classification &#183; cases</div>
+      <h2>Where the model is right, wrong and strange</h2>
+      <p>Each tile is predicted by a model that never saw its block during training: ResNet-34, seed 2, median decoding. The tiles below show different kinds of result. They are not the best tiles.</p>
+    </div>
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow" data-toc="sub" data-toc-title="Whole city">Whole city</div>
+    </div>
+    <figure>
+      <div class="compare" id="compareCity">
+        <img src="img/city_true.webp" alt="True heat map of Bern, all tiles">
+        <img class="top" src="img/city_pred.webp" alt="Predicted heat map of Bern, all tiles">
+        <div class="handle"></div>
+        <span class="tag l">Prediction</span><span class="tag r">True map</span>
+      </div>
+      <div class="slider-row"><label for="cmpCity">Prediction</label><input id="cmpCity" type="range" min="0" max="100" value="50" aria-label="Reveal the true heat map or the prediction"><span>True map</span></div>
+      <figcaption>Whole city, 2,275 tiles, 32 px per tile. Errors cluster in the western farmland and the dense built-up centre; forest, water and open roads are mostly right.</figcaption>
+    </figure>
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow" data-toc="sub" data-toc-title="Error map">Error map</div>
+      <p class="small muted">Absolute error per pixel, in &#176;C, on the same scale as the heat map colours. Unscored pixels (buildings and flagged areas) are left blank.</p>
+    </div>
+    <figure>
+      <div class="legend-row"><span>0 &#176;C</span><span style="flex:0 1 240px;height:10px;border-radius:2px;background:linear-gradient(90deg,#6c8cf7 0%,#e8ffc7 25%,#fcec7a 50%,#eb5545 75%,#5d11a9 100%)" aria-hidden="true"></span><span>8 &#176;C or more</span></div>
+      <img src="img/city_error.webp" alt="Absolute error per pixel across the city" style="width:100%">
+      <figcaption>Whole city, same layout as the slider above. Bright areas are small errors, purple large ones.</figcaption>
+    </figure>
+
+    <div class="col" style="display:grid;gap:12px">
+      <div class="eyebrow" data-toc="sub" data-toc-title="Tile examples">Tile examples</div>
+      <p class="small muted">Left to right: aerial photo, heat map as published, model prediction. Same tile, same scale.</p>
+    </div>
+
+    <figure class="case">
+      <div class="trio">
+        <img src="img/tile_871_photo.webp" alt="Forest with a road edge, aerial photo">
+        <img src="img/tile_871_true.webp" alt="Forest tile, true heat map">
+        <img src="img/tile_871_pred.webp" alt="Forest tile, predicted heat map">
+      </div>
+      <figcaption><b data-toc="subsub" data-toc-title="871 · good">Tile 871, good (0.26 &#176;C).</b> Forest with a road edge. The model gets the cool forest and the warm road edge right and misses the small bright patches inside the forest, which are too small to predict.</figcaption>
+    </figure>
+
+    <figure class="case">
+      <div class="trio">
+        <img src="img/tile_570_photo.webp" alt="Residential street with gardens and a playing field, aerial photo">
+        <img src="img/tile_570_true.webp" alt="Residential street tile, true heat map">
+        <img src="img/tile_570_pred.webp" alt="Residential street tile, predicted heat map">
+      </div>
+      <figcaption><b data-toc="subsub" data-toc-title="570 · typical">Tile 570, typical complex tile (3.21 &#176;C).</b> The median tile of the 253 most complex, building-dense tiles. The layout is right: the field and gardens are cooler, the built-up band warmer. The mosaic of hot and cool cells between the houses is smoothed into broad areas, and a warm patch in the top right is not on the map.</figcaption>
+    </figure>
+
+    <figure class="case">
+      <div class="trio">
+        <img src="img/tile_1114_photo.webp" alt="Courtyard housing block with solar roofs, aerial photo">
+        <img src="img/tile_1114_true.webp" alt="Courtyard block, true heat map">
+        <img src="img/tile_1114_pred.webp" alt="Courtyard block, predicted heat map">
+      </div>
+      <figcaption><b data-toc="subsub" data-toc-title="1114 · worst">Tile 1114, worst of the set (4.81 &#176;C).</b> A courtyard block with solar roofs. The model is too cool by 2.4 &#176;C on average. Its prediction is smooth, while the true map has grey roofs cutting through the yard.</figcaption>
+    </figure>
+
+    <figure class="case">
+      <div class="trio">
+        <img src="img/tile_450_photo.webp" alt="Construction and parking yard, aerial photo">
+        <img src="img/tile_450_true.webp" alt="Construction yard, true heat map">
+        <img src="img/tile_450_pred.webp" alt="Construction yard, predicted heat map">
+      </div>
+      <figcaption><b data-toc="subsub" data-toc-title="450 · strange">Tile 450, strange (4.66 &#176;C, +4.1 &#176;C bias).</b> A construction and parking yard. The true map has a thin diagonal band of cool cells between hot ones. The model paints the whole area hot, reading bright sealed ground as hot, and misses the cool stripe.</figcaption>
+    </figure>
+
+    <figure class="case">
+      <div class="trio">
+        <img src="img/tile_2214_photo.webp" alt="Ploughed field, aerial photo">
+        <img src="img/tile_2214_true.webp" alt="Ploughed field, true heat map">
+        <img src="img/tile_2214_pred.webp" alt="Ploughed field, predicted heat map">
+      </div>
+      <figcaption><b data-toc="subsub" data-toc-title="2214 · field">Tile 2214, field labelled hot (3.53 &#176;C, &#8722;3.4 &#176;C bias).</b> The map says 41&#8211;42 &#176;C and the model says 37&#8211;38 &#176;C. The photo looks ordinary; this is the label problem from Finding 7.</figcaption>
+    </figure>
+
+    <div class="tablewrap col">
+      <table>
+        <thead><tr><th>Group of tiles</th><th class="num">Tiles</th><th class="num">Mean error per tile (&#176;C)</th></tr></thead>
+        <tbody>
+          <tr><td>All tiles</td><td class="num">2,275</td><td class="num">2.10</td></tr>
+          <tr><td>Rest of the city (outside both groups below)</td><td class="num">-</td><td class="num">1.74</td></tr>
+          <tr><td>Complex (top 25% by edge detail)</td><td class="num">569</td><td class="num">3.19</td></tr>
+          <tr><td>Dense buildings (top 25% by building share)</td><td class="num">569</td><td class="num">3.02</td></tr>
+          <tr><td><b>Complex and dense buildings</b></td><td class="num">253</td><td class="num"><b>3.24</b> (median 3.21; none below 2.0)</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout col">
+      <strong>What the errors look like</strong>
+      <p>Errors come in clusters: whole neighbourhoods are off together. The model gets the broad pattern (forest and roads cool, sealed and built areas warm) but blurs fine detail. Its misses go both ways: too cool on the western fields and some built-up tiles, too hot on some sealed yards. On the busiest built-up tiles the error is about 1.5 &#176;C higher than in the rest of the city, so the 1.5 &#176;C goal is not met where the city is densest.</p>
+      <p><b>The model never predicts the hottest level.</b> Above 43 &#176;C it outputs 0.00% of pixels, against 0.77% in the true map. At 42&#8211;43 &#176;C it outputs 0.15%, against 2.22%. Below 23 &#176;C it outputs 0.35%, against 2.14%. Its extremes are pulled into the middle, so the hottest areas are always underestimated. This is a limit of the model, not noise in the data.</p>
+    </div>
+  </section>
+
+  <section id="split" data-part="comparison" class="col">
     <div class="eyebrow">Evaluation design</div>
     <h2>Splitting by spatial block</h2>
     <p>The tiles are neighbours on one map, and neighbours look alike. A random split would put near-twins on both sides and flatter the scores somewhat. Our plan:</p>
@@ -509,7 +702,8 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="muted">The in-Bern test asks "how good on unseen tiles of this city". The outside imagery asks "does it work elsewhere at all". The report needs both, and only the first produces error numbers.</p>
   </section>
 
-  <section id="limits">
+  <div class="part" id="part-fazit"><span class="part-no">5</span><span>Fazit and next steps</span></div>
+  <section id="limits" data-part="fazit">
     <div class="col" style="display:grid;gap:12px">
       <div class="eyebrow">Limitations</div>
       <h2>What the data cannot tell us</h2>
@@ -527,7 +721,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
-  <section id="next" class="col">
+  <section id="next" data-part="fazit" class="col">
     <div class="eyebrow">Next steps</div>
     <h2>Open items</h2>
     <p class="muted col">Every track follows the same measurement rules: the evaluation guide in the project repo has the splits, metrics and required runs, written for newcomers.</p>
@@ -545,15 +739,17 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <label><input type="checkbox" id="t3"> Check the map.bern.ch layer metadata (quantity, time of day, model)</label>
       <label><input type="checkbox" id="t4" checked> Write the spatial splits (5 &#215; 5 blocks, five folds, shared by all tracks)</label>
       <label><input type="checkbox" id="t5"> Build the dataset loader from the cleaned levels and ignore mask, with flip and rotation augmentation</label>
-      <label><input type="checkbox" id="t6"> Train baseline (A) and ordinal (B) heads on a U-Net</label>
+      <label><input type="checkbox" id="t6" checked> Train baseline (A) and ordinal (B) heads on a U-Net</label>
+      <label><input type="checkbox" id="t18" checked> Pretrained ResNet-34 encoder, five folds × four seeds, median decoding</label>
       <label><input type="checkbox" id="t7"> Extend the comparison to DeepLabV3+ and SegFormer</label>
       <label><input type="checkbox" id="t8"> Collect outside-Bern imagery and look for comparable heat maps (Z&#252;rich, Basel)</label>
       <label><input type="checkbox" id="t9"> Ask the supervisors whether raw heat values are available</label>
     </div>
   </section>
 
-  <footer>Project guide, updated 26 Oct 2026 &#183; published by Timo</footer>
+  <footer>Project guide, updated 30 Oct 2026 &#183; published by Timo</footer>
 </main>
+</div>
 
 <script>
 (() => {
@@ -624,6 +820,149 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     });
     r.addEventListener("mouseleave", () => { tip.hidden = true; r.setAttribute("fill", "transparent"); });
   });
+
+  // seed chart: median-decoded MAE per fold, four seeds
+  const seeds = [
+    { name: "seed 0", v: [2.066, 2.056, 2.042, 1.882, 1.828] },
+    { name: "seed 1", v: [2.080, 2.033, 2.081, 1.892, 1.845] },
+    { name: "seed 2", v: [2.064, 2.048, 2.033, 1.871, 1.838] },
+    { name: "seed 3", v: [2.063, 2.039, 2.049, 1.904, 1.837] },
+  ];
+  const sc = document.getElementById("seedChart");
+  const SW = 880, SH = 300, sm = { t: 28, r: 16, b: 40, l: 52 };
+  const sw = SW - sm.l - sm.r, sh = SH - sm.t - sm.b;
+  const lo = 1.80, hi = 2.10, sy = v => sm.t + sh - ((v - lo) / (hi - lo)) * sh;
+  const sx = (k) => sm.l + (k + 0.5) * (sw / 5);
+  const sCol = ["#3c6fd6", "#c8501f", "#2f8f5b", "#7a4fb0"];
+  let ss = `<svg viewBox="0 0 ${SW} ${SH}" role="img" aria-label="Median-decoded MAE per fold for four seeds">`;
+  [1.80, 1.85, 1.90, 1.95, 2.00, 2.05, 2.10].forEach(t => {
+    ss += `<line class="grid" x1="${sm.l}" x2="${SW - sm.r}" y1="${sy(t)}" y2="${sy(t)}"/>`;
+    ss += `<text class="tick" x="${sm.l - 8}" y="${sy(t) + 4}" text-anchor="end">${t.toFixed(2)}</text>`;
+  });
+  [0, 1, 2, 3, 4].forEach(k => {
+    ss += `<text class="tick" x="${sx(k)}" y="${sm.t + sh + 18}" text-anchor="middle">fold ${k}</text>`;
+  });
+  const meanOf = k => seeds.reduce((a, s) => a + s.v[k], 0) / seeds.length;
+  [0, 1, 2, 3, 4].forEach(k => {
+    ss += `<line class="marker" x1="${sx(k) - 60}" x2="${sx(k) + 60}" y1="${sy(meanOf(k))}" y2="${sy(meanOf(k))}" style="stroke:var(--ink-2);stroke-dasharray:4 3"/>`;
+  });
+  seeds.forEach((s, si) => {
+    s.v.forEach((val, k) => {
+      const off = (si - 1.5) * 22;
+      ss += `<circle cx="${sx(k) + off}" cy="${sy(val)}" r="5" fill="${sCol[si]}" stroke="var(--surface)" stroke-width="1.5"/>`;
+    });
+  });
+  ss += `<line class="base" x1="${sm.l}" x2="${SW - sm.r}" y1="${sm.t + sh}" y2="${sm.t + sh}"/>`;
+  ss += `<text class="axis-label" x="${sm.l + sw / 2}" y="${SH - 6}" text-anchor="middle">Test fold (median-decoded MAE, °C; dashed = mean of four seeds)</text></svg>`;
+  sc.innerHTML = ss;
+  sc.insertAdjacentHTML("beforeend", `<div class="legend-row" style="margin-top:8px">${seeds.map((s, i) => `<span><i style="background:${sCol[i]};border-radius:50%;width:10px;height:10px"></i>${s.name}</span>`).join("")}</div>`);
+
+  // city slider (Task A): same behaviour as the first comparison slider
+  const cc = document.getElementById("compareCity"), rc = document.getElementById("cmpCity");
+  const setCity = v => cc.style.setProperty("--pos", v + "%");
+  rc.addEventListener("input", e => setCity(e.target.value)); setCity(rc.value);
+
+  // section finder: matches each section's eyebrow and heading, and jumps to it
+  const fi = document.getElementById("findInput"), fr = document.getElementById("findResults");
+  const sections = [...document.querySelectorAll("main > section[id]")].map(sec => {
+    const eb = sec.querySelector(".eyebrow"), h = sec.querySelector("h2");
+    return { id: sec.id, label: h ? h.textContent.trim() : sec.id, group: eb ? eb.textContent.trim() : "", text: sec.textContent.replace(/\s+/g, " ").toLowerCase() };
+  });
+  const showList = q => {
+    const needle = q.trim().toLowerCase();
+    const hits = needle ? sections.filter(s => s.text.includes(needle)) : [];
+    fr.innerHTML = "";
+    if (!needle) { fr.hidden = true; return; }
+    if (!hits.length) { fr.innerHTML = '<li class="find-empty">No section matches.</li>'; fr.hidden = false; return; }
+    hits.forEach(s => {
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="#${s.id}"><small>${s.group}</small>${s.label}</a>`;
+      fr.appendChild(li);
+    });
+    fr.hidden = false;
+  };
+  fi.addEventListener("input", e => showList(e.target.value));
+  fi.addEventListener("keydown", e => {
+    if (e.key === "Enter") { const first = fr.querySelector("a"); if (first) { e.preventDefault(); location.hash = first.getAttribute("href"); fi.blur(); fr.hidden = true; } }
+    if (e.key === "Escape") { fi.value = ""; fr.hidden = true; }
+  });
+  document.addEventListener("click", e => { if (!e.target.closest(".find")) fr.hidden = true; });
+
+  // chapter overview: chapters are the section h2s; sub and sub-sub entries come from [data-toc] marks.
+  // The list highlights the entry being read and opens the chapter it belongs to.
+  // short chapter names for the overview (the full h2 is too long for a side column)
+  const SHORT_TITLES = { "brief": "Brief", "data": "Dataset", "method": "Method", "grid": "Grid", "legend": "Legend", "dist": "Distribution", "examples": "Examples", "cleaning": "Cleaning", "buildings": "Buildings", "result": "Result", "landcover": "Land cover", "team": "Tracks", "encoder": "Model", "taska-cases": "Task A cases", "options": "Options", "split": "Split", "limits": "Limits", "next": "Next" };
+  const side = document.getElementById("sideToc");
+  if (side) {
+    const clean = t => t.replace(/\s+/g, " ").trim();
+    const root = document.createElement("ul");
+    side.appendChild(root);
+    const targets = [];
+    let lastPart = null;
+    const PART_NAMES = { intro: "1 Intro", data: "2 Data", modelling: "3 Modelling", comparison: "4 Comparisons", fazit: "5 Fazit" };
+    document.querySelectorAll("main > section[id]").forEach(sec => {
+      const h = sec.querySelector("h2");
+      if (!h) return;
+      const part = sec.getAttribute("data-part");
+      if (part && part !== lastPart) {
+        const pl = document.createElement("li"); pl.className = "part";
+        const pa = document.createElement("a"); pa.href = "#part-" + part; pa.textContent = PART_NAMES[part];
+        pl.appendChild(pa); root.appendChild(pl); lastPart = part;
+      }
+      const li = document.createElement("li"); li.className = "chap";
+      const a = document.createElement("a"); a.href = "#" + sec.id; a.textContent = SHORT_TITLES[sec.id] || clean(h.textContent);
+      li.appendChild(a);
+      const subList = document.createElement("ul"); subList.className = "sub-list";
+      li.appendChild(subList);
+      root.appendChild(li);
+      const chap = { el: sec, link: a, chapLink: a, chapLi: li, subLi: null };
+      targets.push(chap);
+      let currentSub = null;
+      sec.querySelectorAll("[data-toc]").forEach(node => {
+        const level = node.getAttribute("data-toc");
+        const title = node.getAttribute("data-toc-title") || clean(node.textContent);
+        const row = document.createElement("li");
+        const link = document.createElement("a");
+        link.href = "#" + (node.id || (node.id = "toc-" + targets.length));
+        link.textContent = title;
+        row.appendChild(link);
+        if (level === "sub") {
+          row.className = "sub";
+          subList.appendChild(row);
+          currentSub = { row, link, list: null };
+          targets.push({ el: node, link, chapLink: a, chapLi: li, subLi: row });
+        } else {
+          row.className = "subsub";
+          if (currentSub) {
+            if (!currentSub.list) { currentSub.list = document.createElement("ul"); currentSub.list.className = "sub-list"; currentSub.row.appendChild(currentSub.list); }
+            currentSub.list.appendChild(row);
+            targets.push({ el: node, link, chapLink: a, chapLi: li, subLi: currentSub.row });
+          } else {
+            subList.appendChild(row);
+            targets.push({ el: node, link, chapLink: a, chapLi: li, subLi: null });
+          }
+        }
+      });
+    });
+    let active = null;
+    const update = () => {
+      const line = window.innerHeight * 0.3;
+      let cur = targets[0];
+      for (const t of targets) { if (t.el.getBoundingClientRect().top <= line) cur = t; else break; }
+      if (cur === active) return;
+      active = cur;
+      side.querySelectorAll(".on, .in").forEach(n => n.classList.remove("on", "in"));
+      side.querySelectorAll("li.open").forEach(n => n.classList.remove("open"));
+      cur.link.classList.add("on");
+      if (cur.chapLink !== cur.link) cur.chapLink.classList.add("in");
+      cur.chapLi.classList.add("open");
+      if (cur.subLi) cur.subLi.classList.add("open");
+      const r = cur.link.getBoundingClientRect(), s = side.getBoundingClientRect();
+      if (r.top < s.top || r.bottom > s.bottom) side.scrollTop += r.top - s.top - s.height / 2;
+    };
+    window.addEventListener("scroll", () => requestAnimationFrame(update), { passive: true });
+    update();
+  }
 
   // table view
   document.querySelector("#distTable tbody").innerHTML = labels.map((l, i) =>
