@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Small windows, 900 m³/h · 1.00 m/s | Building Systems 1 | ETH Zurich</title>
+    <meta name="description" content="Small windows with the ventilation unit at 900 m³/h.">
+    <link rel="canonical" href="https://git.feddern.dev/bs1/results/inflow-1.00-ms/small-windows-900/">
+    <meta name="theme-color" content="#0a0a0a">
+    <link rel="icon" type="image/svg+xml" href="../../../older/favicon.svg">
+    <link rel="stylesheet" href="../../../styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js" integrity="sha384-Ftcjj/GNLxPvzNDftO/oryXB9aGxsGZY9JGqsXG0uUKgQDl9RfDgsx9NJ/4IVNPe" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div class="container result">
+        <div class="viewer-container">
+            <model-viewer id="scene" src="cfd_scene.glb" camera-controls auto-rotate camera-orbit="180deg 55deg auto"
+                min-camera-orbit="auto auto 1m" max-camera-orbit="auto auto 100m" field-of-view="45deg"
+                max-field-of-view="60deg" min-field-of-view="20deg" interaction-prompt="none"
+                alt="Small windows, 900 m³/h, 1.00 m/s inflow: air flow, speed points and streamlines" loading="eager"></model-viewer>
+            <div class="legend" aria-label="Air speed colour scale, logarithmic">
+                <div class="legend-title">|v| · m/s</div>
+                <div class="legend-body">
+                    <div class="legend-bar" id="bar"></div>
+                    <div class="legend-ticks" id="ticks"></div>
+                </div>
+                <div class="legend-note">log scale</div>
+                <div class="key" id="key"></div>
+            </div>
+            <div class="info-panel minimized">
+                <div class="info-panel-header">
+                    <h3>Small windows, 900 m³/h · 1.00 m/s inflow</h3>
+                    <button class="minimize-btn" title="Minimize panel">+</button>
+                </div>
+                <div class="info-panel-content">
+                    <p>Small windows with the ventilation unit at 900 m³/h.</p>
+                    <dl class="stats">
+                        <dt>Inflow</dt><dd>about 10,100 m³/h through the windows<br>904 m³/h ventilation</dd>
+                        <dt>Air changes</dt><dd>23 per hour</dd>
+                        <dt>Air speed, occupied zone</dt><dd>0.11 m/s</dd>
+                        <dt>Turbulence, occupied zone</dt><dd>0.76</dd>
+                    </dl>
+                    <img class="figure" src="height_profile.png" alt="Air speed by height">
+                    <img class="figure" src="speed_histogram.png" alt="Air speed distribution">
+                </div>
+            </div>
+            <footer class="footer">
+                <p><a href="../../../" class="hub-link">← All results</a> &nbsp;·&nbsp; &copy; 2026 Timo Feddern</p>
+            </footer>
+        </div>
+    </div>
+
+    <script>
+        Promise.all([fetch('cfd_points_legend.json').then(r => r.json()),
+                     fetch('openings.json').then(r => r.json())]).then(([L, O]) => {
+            const stops = L.stops.map(s => `rgb(${s.rgb.join(',')}) ${s.t * 100}%`).join(',');
+            document.getElementById('bar').style.background = `linear-gradient(to top, ${stops})`;
+            const ticks = document.getElementById('ticks');
+            L.ticks.forEach(t => {
+                const span = document.createElement('span');
+                span.style.bottom = (t.t * 100) + '%';
+                span.textContent = t.speed;
+                ticks.appendChild(span);
+            });
+            const key = document.getElementById('key');
+            O.forEach(o => {
+                const row = document.createElement('div');
+                row.className = 'key-row';
+                row.innerHTML = `<span class="swatch" style="background:rgb(${o.rgb.join(',')})"></span>${o.label}`;
+                key.appendChild(row);
+            });
+        });
+        const infoPanel = document.querySelector('.info-panel');
+        const minimizeBtn = document.querySelector('.minimize-btn');
+        minimizeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            infoPanel.classList.toggle('minimized');
+            minimizeBtn.textContent = infoPanel.classList.contains('minimized') ? '+' : '−';
+        });
+        infoPanel.addEventListener('click', () => {
+            if (infoPanel.classList.contains('minimized')) {
+                infoPanel.classList.remove('minimized');
+                minimizeBtn.textContent = '−';
+            }
+        });
+    </script>
+</body>
+</html>

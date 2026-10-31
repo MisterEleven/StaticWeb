@@ -1,0 +1,29 @@
+[
+  {
+    "role": "window",
+    "label": "Window inlet",
+    "rgb": [
+      89,
+      204,
+      255
+    ]
+  },
+  {
+    "role": "vent",
+    "label": "Ventilation inlet",
+    "rgb": [
+      102,
+      255,
+      115
+    ]
+  },
+  {
+    "role": "outlet",
+    "label": "Outlet",
+    "rgb": [
+      255,
+      140,
+      51
+    ]
+  }
+]

@@ -1,21 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Building Systems 1 | ETH Zurich</title>
-    <meta name="description" content="ETH Zurich Building Systems 1: 3D CFD air velocity points and streamlines for the room, variant 1.2.">
+    <meta name="description" content="CFD results for the room with small or large windows, at two inflow speeds: the simulated 1.40 m/s and the 1.00 m/s annual median wind.">
     <link rel="canonical" href="https://git.feddern.dev/bs1/">
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Building Systems 1 | ETH Zurich">
-    <meta property="og:description" content="3D CFD air velocity points and streamlines for the room, variant 1.2.">
-    <meta property="og:url" content="https://git.feddern.dev/bs1/">
-    <meta property="og:image" content="https://git.feddern.dev/bs1/older/og.jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="630">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://git.feddern.dev/bs1/older/og.jpg">
     <meta name="theme-color" content="#0a0a0a">
     <link rel="icon" type="image/svg+xml" href="older/favicon.svg">
     <link rel="stylesheet" href="styles.css">
@@ -24,76 +14,66 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js" integrity="sha384-Ftcjj/GNLxPvzNDftO/oryXB9aGxsGZY9JGqsXG0uUKgQDl9RfDgsx9NJ/4IVNPe" crossorigin="anonymous"></script>
 </head>
-
 <body>
     <div class="container">
-        <div class="viewer-container">
-            <!-- One scene: speed points and streamlines share one camera and one auto-rotate -->
-            <model-viewer
-                id="scene"
-                src="cfd_scene.glb"
-                camera-controls
-                auto-rotate
-                camera-orbit="180deg 55deg auto"
-                min-camera-orbit="auto auto 1m"
-                max-camera-orbit="auto auto 100m"
-                field-of-view="45deg"
-                max-field-of-view="60deg"
-                min-field-of-view="20deg"
-                interaction-prompt="none"
-                alt="Air flow through the room: faint speed points with streamlines, colour on a log scale"
-                loading="eager">
-            </model-viewer>
+        <main class="page">
+            <h1>Building Systems 1 · room ventilation</h1>
+            <p class="lede">CFD results for the room, with small or large windows open. Each result is shown at two inflow speeds: the simulated 1.40 m/s, and 1.00 m/s, the annual median wind speed of the Zurich weather file.</p>
 
-            <!-- Velocity legend, log scale, matches the points and lines -->
-            <div class="legend" aria-label="Air velocity colour scale, logarithmic, 0.01 to 1 metres per second">
-                <div class="legend-title">|v| · m/s</div>
-                <div class="legend-body">
-                    <div class="legend-bar"></div>
-                    <div class="legend-ticks">
-                        <span>0.01</span><span>0.03</span><span>0.1</span><span>0.3</span><span>1</span>
-                    </div>
+            <section class="set">
+                <h2>Inflow 1.40 m/s</h2>
+                <p class="set-note">The speed used in the simulation.</p>
+                <div class="cards">
+                <a class="card-link" href="results/inflow-1.40-ms/small-windows-300/">
+                    <span class="card-title">Small windows, 300 m³/h</span>
+                    <span class="card-sub">Small windows open, 300 m³/h ventilation</span>
+                    <span class="card-stats">Average 0.17 m/s in the occupied zone · about 30 air changes per hour</span>
+                </a>
+                <a class="card-link" href="results/inflow-1.40-ms/small-windows-900/">
+                    <span class="card-title">Small windows, 900 m³/h</span>
+                    <span class="card-sub">Small windows open, 900 m³/h ventilation</span>
+                    <span class="card-stats">Average 0.15 m/s in the occupied zone · about 31 air changes per hour</span>
+                </a>
+                <a class="card-link" href="results/inflow-1.40-ms/large-windows-300/">
+                    <span class="card-title">Large windows, 300 m³/h</span>
+                    <span class="card-sub">Large windows open, small windows closed, 300 m³/h ventilation</span>
+                    <span class="card-stats">Average 0.77 m/s in the occupied zone · about 180 air changes per hour</span>
+                </a>
                 </div>
-                <div class="legend-note">log scale</div>
-            </div>
+            </section>
 
-            <!-- About the model -->
-            <div class="info-panel">
-                <div class="info-panel-header">
-                    <h3>Air flow · variant 1.2</h3>
-                    <button class="minimize-btn" title="Minimize panel">−</button>
+            <section class="set">
+                <h2>Inflow 1.00 m/s</h2>
+                <p class="set-note">The annual median wind speed of the Zurich weather file. Air speeds scale with this inflow.</p>
+                <div class="cards">
+                <a class="card-link" href="results/inflow-1.00-ms/small-windows-300/">
+                    <span class="card-title">Small windows, 300 m³/h</span>
+                    <span class="card-sub">Small windows open, 300 m³/h ventilation</span>
+                    <span class="card-stats">Average 0.12 m/s in the occupied zone · about 22 air changes per hour</span>
+                </a>
+                <a class="card-link" href="results/inflow-1.00-ms/small-windows-900/">
+                    <span class="card-title">Small windows, 900 m³/h</span>
+                    <span class="card-sub">Small windows open, 900 m³/h ventilation</span>
+                    <span class="card-stats">Average 0.11 m/s in the occupied zone · about 23 air changes per hour</span>
+                </a>
+                <a class="card-link" href="results/inflow-1.00-ms/large-windows-300/">
+                    <span class="card-title">Large windows, 300 m³/h</span>
+                    <span class="card-sub">Large windows open, small windows closed, 300 m³/h ventilation</span>
+                    <span class="card-stats">Average 0.55 m/s in the occupied zone · about 128 air changes per hour</span>
+                </a>
                 </div>
-                <div class="info-panel-content">
-                    <p>Simulated air flow through the room with the windows open (the ventilation unit is not included in this variant). Lines follow the air from the six inlet windows along the west wall, and the three outlet windows on the north side. Colour shows air speed on a log scale.</p>
-                    <p class="older"><a href="older/">Older version: 3D model with the earlier results</a></p>
-                </div>
-            </div>
-
-            <!-- Footer -->
-            <footer class="footer">
-                <p><a href="../" class="hub-link">← All projects</a> &nbsp;·&nbsp; &copy; 2026 Timo Feddern</p>
-            </footer>
-        </div>
+            </section>
+            <section class="notes">
+                <h2>Comparison</h2>
+                <p>Small windows carry about 10,000–15,000 m³/h through the windows, and the ventilation unit adds 300–900 m³/h. At 1.00 m/s the average air speed in the occupied zone is 0.11–0.12 m/s, below 0.2 m/s, but some draught is possible near the window path.</p>
+                <p>Large windows move about 62,000 m³/h at 1.00 m/s and average about 0.55 m/s in the occupied zone. That is a strong airing flow, suited to quick flushing only, not to ventilation while people work.</p>
+                <p>The small windows are assumed tilted for the whole period. If they are only opened for airing (Stoßlüften), the large-window figures describe a short flushing period, not the typical state.</p>
+                <p class="older"><a href="older/">Older version: 3D model of the earlier run</a></p>
+            </section>
+        </main>
+        <footer class="footer">
+            <p><a href="../" class="hub-link">← All projects</a> &nbsp;·&nbsp; &copy; 2026 Timo Feddern</p>
+        </footer>
     </div>
-
-    <script>
-        // Minimize/maximize the info panel
-        const infoPanel = document.querySelector('.info-panel');
-        const minimizeBtn = document.querySelector('.minimize-btn');
-
-        minimizeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            infoPanel.classList.toggle('minimized');
-            minimizeBtn.textContent = infoPanel.classList.contains('minimized') ? '+' : '−';
-        });
-
-        infoPanel.addEventListener('click', () => {
-            if (infoPanel.classList.contains('minimized')) {
-                infoPanel.classList.remove('minimized');
-                minimizeBtn.textContent = '−';
-            }
-        });
-    </script>
 </body>
-
 </html>
