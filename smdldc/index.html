@@ -7,7 +7,7 @@
 <title>Bern Heat Islands</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
 <style>
 /* Layout: a single reading column (~68ch) that steps out to full width for maps and the comparison slider; the heat legend itself is the colour system. */
 :root {
@@ -221,39 +221,161 @@ main > section[id], [data-toc] { scroll-margin-top: 24px; }
 .side .part:first-child { margin-top: 0; }
 footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font-mono); border-top: 1px solid var(--rule); padding-top: 16px; }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* ---- mockup additions ---- */
+:root{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--ok:#1d6b45;--ok-soft:#e1f3e9;--dot:#2a78d6}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--ok:#6fd4a0;--ok-soft:#143125;--dot:#3987e5}}
+:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--ok:#6fd4a0;--ok-soft:#143125;--dot:#3987e5}
+body{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.stack{display:grid;gap:12px}
+h3{text-wrap:balance}
+td,th,td:last-child,th:last-child{min-width:0}
+.tablewrap td:first-child{min-width:9em}
+.pill.done{background:var(--ok-soft);color:var(--ok)}
+.pill.open{border:1px solid var(--rule);color:var(--ink-2)}
+.pill.pend{background:var(--warn-bg);color:var(--warn-ink)}
+.nextlist{list-style:none;margin:0;padding:0;display:grid}
+.nextlist li{display:grid;grid-template-columns:5.5rem minmax(0,1fr);gap:12px;padding:10px 0;border-top:1px solid var(--rule);align-items:baseline}
+.nextlist .pill{justify-self:start}
+@media (max-width:520px){.nextlist li{grid-template-columns:1fr;gap:4px}}
+.years{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.years figure,.three figure{gap:6px}
+.years img,.three img{width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:4px;display:block;background:var(--rule)}
+.years figcaption,.three figcaption{font-family:var(--font-mono);font-size:.78rem;color:var(--ink-2)}
+.three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:640px){.years{grid-template-columns:repeat(2,minmax(0,1fr))}.three{gap:6px}.three figcaption{font-size:.68rem}}
+.sheetwrap{display:grid;gap:8px;max-width:560px}
+.sheet-head{display:grid;grid-template-columns:repeat(4,1fr);gap:.9%;margin-left:3.2rem;font-family:var(--font-mono);font-size:.78rem;color:var(--ink-2)}
+.sheet-body{display:grid;grid-template-columns:3.2rem minmax(0,1fr);align-items:stretch}
+.sheet-body img{width:100%;height:auto;display:block;border-radius:3px}
+.sheet-rows{display:grid;grid-template-rows:repeat(10,1fr);row-gap:.36%;font-family:var(--font-mono);font-size:.72rem;color:var(--ink-3)}
+.sheet-rows span{display:flex;align-items:center}
+/* explorer */
+.seg{display:inline-flex;flex-wrap:wrap;gap:0;border:1px solid var(--rule);border-radius:999px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-family:var(--font-mono);font-size:var(--step--1);padding:6px 14px;border:0;background:none;color:var(--ink-2);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+.seg button:hover:not([aria-pressed="true"]){color:var(--ink)}
+.filters{display:flex;flex-wrap:wrap;gap:12px 24px;align-items:center}
+.filters label{font-family:var(--font-mono);font-size:var(--step--1);color:var(--ink-3);display:grid;gap:4px}
+.xrows{display:grid;gap:0}
+.xrow{display:grid;gap:4px;padding:10px 0;border-top:1px solid var(--rule)}
+.xlab{display:flex;flex-wrap:wrap;gap:2px 12px;align-items:baseline;font-family:var(--font-display);font-size:var(--step--1)}
+.xlab small{font-family:var(--font-mono);color:var(--ink-3);font-size:.74rem}
+.xplot{position:relative;height:26px}
+.xplot .tk{position:absolute;top:0;bottom:0;width:1px;background:var(--rule)}
+.xplot .goal{background:var(--accent);opacity:.8}
+.xplot .wh{position:absolute;top:50%;height:2px;margin-top:-1px;background:var(--ink-2);opacity:.7}
+.xplot .dot{position:absolute;top:50%;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;border:2px solid var(--surface);background:var(--tc,var(--ink-3))}
+.xplot .vv{position:absolute;top:50%;margin-top:-9px;font-family:var(--font-mono);font-size:.78rem;color:var(--ink);white-space:nowrap}
+.xplot .off{position:absolute;right:0;top:50%;margin-top:-9px;font-family:var(--font-mono);font-size:.78rem;color:var(--ink-2)}
+.xaxis{position:relative;height:18px;font-family:var(--font-mono);font-size:.72rem;color:var(--ink-3)}
+.xaxis span{position:absolute;transform:translateX(-50%)}
+.xaxis span.g{color:var(--accent)}
+.xempty{padding:14px 0;color:var(--ink-3);font-family:var(--font-mono);font-size:var(--step--1)}
+.tk-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-family:var(--font-mono);font-size:var(--step--1);color:var(--ink-2)}
+.tk-legend i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:6px;vertical-align:-1px}
+.kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:640px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}.kpi b{font-size:1.35rem}}
+.kpi{display:grid;gap:4px;align-content:start;padding:14px 16px;background:var(--surface);border:1px solid var(--rule);border-radius:8px}
+.kpi b{font-family:var(--font-display);font-size:var(--step-2);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.1}
+.kpi span{font-size:var(--step--1);color:var(--ink-2);line-height:1.35}
+.kpi.weak b{color:var(--warn-ink)}
+.chart .pdot{fill:var(--dot);stroke:var(--surface);stroke-width:1.5}
+.chart .pmean{stroke:var(--ink);stroke-width:2}
+.chart .zero{stroke:var(--ink-2);stroke-width:1;stroke-dasharray:4 3}
+.sub{display:grid;gap:20px;min-width:0}
+.sub > .col h3,.sub > h3{font-size:var(--step-1);font-weight:700}
+.toggle[aria-pressed="true"]{border-color:var(--ink-3);color:var(--ink)}
+.partnav{display:flex;flex-wrap:wrap;gap:8px;font-family:var(--font-mono);font-size:var(--step--1)}
+.partnav a{color:var(--ink-2);text-decoration:none;border:1px solid var(--rule);padding:5px 12px;border-radius:999px}
+.partnav a:hover{color:var(--ink);border-color:var(--ink-3)}
+img{max-width:100%}
+:root{--bg:#e9edf0;--surface:#ffffff;--ink:#12171a;--ink-2:#40494f;--ink-3:#5a656c;--rule:#d0d7dc;--accent:#c8501f;--accent-soft:#fbe6da;--cool:#3c6fd6;--note:#e2e9ee;--warn-bg:#fff1de;--warn-ink:#8a4b00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0c1012;--surface:#161b1e;--ink:#eef1f2;--ink-2:#b4bdc2;--ink-3:#8795a0;--rule:#283036;--accent:#f08a55;--accent-soft:#3a2419;--cool:#7fa2f0;--note:#1b2530;--warn-bg:#2e2312;--warn-ink:#f2bf73;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0c1012;--surface:#161b1e;--ink:#eef1f2;--ink-2:#b4bdc2;--ink-3:#8795a0;--rule:#283036;--accent:#f08a55;--accent-soft:#3a2419;--cool:#7fa2f0;--note:#1b2530;--warn-bg:#2e2312;--warn-ink:#f2bf73;color-scheme:dark}
+
+:root{--font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--step-0:1rem}
+body{font-size:1rem;line-height:1.55}
+main{max-width:1120px}
+.hero{padding-bottom:4px}
+section#dashboard{padding:20px;background:var(--bg);margin-inline:-4px}
+.opt,.callout,.kpi,.tablewrap table{background:var(--surface)}
+.tablewrap{background:var(--surface);border-radius:8px;padding:4px 14px;border:1px solid var(--rule)}
+.tablewrap table{background:none}
+tr:last-child td{border-bottom:0}
+.callout{border:1px solid var(--rule)}
+.callout.warn{background:var(--warn-bg)}
+.part{border-top-width:3px}
+.xrow{background:var(--surface);padding:10px 14px;border:1px solid var(--rule);border-radius:8px;margin-bottom:8px}
+.xrows{gap:0}
+.xaxis{margin:0 14px}
+#explorer .xaxis{margin-inline:14px}
+.seg{background:var(--surface)}
 </style>
 </head>
 <body>
-
 <div class="shell">
   <nav class="side" id="sideToc" aria-label="Chapter overview"></nav>
 <main>
-  <header class="hero">
-    <div class="eyebrow">ETH SMDLDC &#183; Project &#183; Data analysis</div>
+<header class="hero">
+    <div class="eyebrow">ETH SMDLDC &#183; Project</div>
     <h1>Bern Heat Islands</h1>
-    <p class="lede col">Learning to predict the city's heat-stress map from aerial photographs. This page records what is in the dataset, how we took it apart, what the heatmaps actually encode, and the modelling plan that follows from it.</p>
+    <p class="lede col">Predicting the city's heat-stress map from aerial photographs. The result first, then the data, the photos, three modelling tracks and what is still weak.</p>
     <div>
       <div class="heatbar" id="heatbar" aria-label="Heat legend from below 23 &#176;C to above 43 &#176;C"></div>
       <div class="heatbar-labels"><span>&lt; 23 &#176;C</span><span>keine &#8594; extreme W&#228;rmebelastung</span><span>&gt; 43 &#176;C</span></div>
     </div>
-    <div class="facts">
-      <div class="fact"><b>2,275</b><span>core tile pairs</span></div>
-      <div class="fact"><b>65 &#215; 35</b><span>tile grid over Bern</span></div>
-      <div class="fact"><b>14</b><span>ordered heat levels</span></div>
-      <div class="fact"><b>256 px</b><span>tile size, RGB</span></div>
-      <div class="fact"><b>9.45 px</b><span>heat raster cell</span></div><div class="fact"><b>99.2%</b><span>pixels usable (base mask)</span></div>
-    </div>
     <div class="find">
       <label for="findInput" class="small muted">Find a section</label>
-      <input id="findInput" type="search" autocomplete="off" placeholder="Type to find: legend, cases, seeds, limits&#8230;" aria-controls="findResults">
+      <input id="findInput" type="search" autocomplete="off" placeholder="Type to find: legend, 2021, CORN, floor&#8230;" aria-controls="findResults">
       <ul id="findResults" class="find-results" hidden></ul>
     </div>
-    <nav class="toc" aria-label="Sections">
-      <a href="#brief">Brief</a><a href="#data">Dataset</a><a href="#method">Method</a><a href="#grid">Grid</a><a href="#legend">Legend</a><a href="#dist">Distribution</a><a href="#examples">Examples</a><a href="#cleaning">Cleaning</a><a href="#buildings">Buildings</a><a href="#result">Result</a><a href="#encoder">Model</a><a href="#taska-cases">Task A cases</a><a href="#landcover">Land cover</a><a href="#team">Team</a><a href="#options">Options</a><a href="#split">Split</a><a href="#limits">Limitations</a><a href="#next">Next</a>
-    </nav>
+    <nav class="partnav" aria-label="Parts"><a href="#part-intro">1 Intro</a><a href="#part-data">2 Data</a><a href="#part-modelling">3 Modelling</a><a href="#part-comparison">4 Comparisons</a><a href="#part-fazit">5 Fazit</a></nav>
   </header>
 
   <div class="part" id="part-intro"><span class="part-no">1</span><span>Intro</span></div>
+  <section id="dashboard" data-part="intro">
+    <div class="col stack">
+      <div class="eyebrow">Result in brief</div>
+      <h2>A pretrained U-Net predicts the heat map to within about 1.9 &#176;C</h2>
+      <p>We predict the 14-level heat-stress map of Bern from aerial photographs, and compare three ways to set up the output: classification (Timo), scalar regression (Louis) and ordinal heads (Chenjie). With SWISSIMAGE 2021 photos the best classification model reaches a mean error of <b>1.931 &#176;C</b> (median decoding, 20 runs), against 1.978 &#176;C on the original photos. The 2021 photos were better in 20 of 20 paired runs. CORN, the best ordinal head, ties cross-entropy at 1.976 &#176;C. The goal was 1.5 &#176;C.</p>
+      <p>Three weaknesses shape every number below. The model <b>never predicts above 43 &#176;C</b> (0.77% of the true map). The 2021 photos were chosen by date and forest colour and are the weakest year on structure. And photos and labels are years apart, so some of the error is not the model's.</p>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><b>1.931 &#176;C</b><span>Best MAE: cross-entropy, 2021 photos, median decoding, 20 runs</span></div>
+      <div class="kpi"><b>20 of 20</b><span>paired runs better on the 2021 photos (&#8722;0.056 &#176;C, argmax)</span></div>
+      <div class="kpi"><b>1.976 &#176;C</b><span>CORN (Chenjie), ties cross-entropy on the original photos at 1.975</span></div>
+      <div class="kpi weak"><b>+0.43 &#176;C</b><span>still above the 1.5 &#176;C goal</span></div>
+      <div class="kpi weak"><b>0.00%</b><span>of pixels predicted above 43 &#176;C, against 0.77% in the true map</span></div>
+      <div class="kpi"><b>0.78 &#176;C</b><span>floor from the 14 bins when scoring against exact degrees (tile 201)</span></div>
+    </div>
+    <div class="col stack"><h3 data-toc="sub" data-toc-title="Model explorer">Model explorer</h3></div>
+    <div id="explorer" class="stack">
+      <div class="filters">
+        <label>Track<div class="seg" data-key="track" role="group" aria-label="Track"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="timo" aria-pressed="false">Classification</button><button type="button" data-v="louis" aria-pressed="false">Regression</button><button type="button" data-v="chenjie" aria-pressed="false">Ordinal</button></div></label>
+        <label>Photos<div class="seg" data-key="photos" role="group" aria-label="Photos"><button type="button" data-v="all" aria-pressed="true">All</button><button type="button" data-v="original" aria-pressed="false">Original</button><button type="button" data-v="2021" aria-pressed="false">2021</button></div></label>
+        <label>Decoding<div class="seg" data-key="dec" role="group" aria-label="Decoding"><button type="button" data-v="median" aria-pressed="true">Median</button><button type="button" data-v="argmax" aria-pressed="false">Argmax</button></div></label>
+      </div>
+      <div class="tk-legend"><span><i style="background:var(--s1)"></i>Timo, classification</span><span><i style="background:var(--s2)"></i>Louis, scalar regression</span><span><i style="background:var(--s3)"></i>Chenjie, ordinal</span><span><i style="background:var(--ink-3)"></i>Baseline</span><span id="xcount" class="muted"></span></div>
+      <div class="xaxis" id="xaxis" aria-hidden="true"></div>
+      <div class="xrows" id="xrows"></div>
+      <p class="small muted">Dot: mean MAE in &#176;C, line: spread across folds or runs where known. Axis 1.4 to 2.6 &#176;C, so the colour-only baseline (5.69) sits off the scale. Regression rows have one fold only and no decoding choice.</p>
+      <button class="toggle" id="xtoggle" type="button" aria-expanded="false" aria-controls="xtablewrap">Show as table</button>
+      <div class="tablewrap" id="xtablewrap" hidden><table id="xtable"><thead><tr><th>Run</th><th>Track</th><th>Photos</th><th class="num">Argmax (&#176;C)</th><th class="num">Median (&#176;C)</th><th class="num">&#177;1 level</th><th class="num">Category</th></tr></thead><tbody></tbody></table></div>
+    </div>
+    <div class="col stack"><h3 data-toc="sub" data-toc-title="Prediction vs truth">Prediction against the true map</h3></div>
+    <figure>
+      <div class="compare" data-gen="1" id="cmpTop">
+        <img src="img/city_true.webp" alt="True heat map of Bern, all tiles">
+        <img class="top" src="img/city_pred.webp" alt="Predicted heat map of Bern, all tiles">
+        <div class="handle"></div>
+        <span class="tag l">Prediction</span><span class="tag r">True map</span>
+      </div>
+      <div class="slider-row"><label for="cmpTopr">Prediction</label><input id="cmpTopr" type="range" min="0" max="100" value="50" aria-label="Reveal the true heat map or the prediction"><span>True map</span></div>
+    </figure>
+    <p class="small muted col">Whole city, 2,275 tiles. Errors cluster in the western farmland and the dense centre. Photos and labels are years apart and the 2021 photos are the weakest on structure.</p>
+  </section>
+
   <section id="brief" data-part="intro" class="col">
     <div class="eyebrow">The brief</div>
     <h2>Predict heat islands from aerial images</h2>
@@ -264,6 +386,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </ul>
     <p class="muted">Takeaways the supervisors are after: working with image2image models, and evaluating performance <em>and</em> generalisability. Supervisors: Rafael Bischof, Andreas M&#252;ller.</p>
   </section>
+
 
   <div class="part" id="part-data"><span class="part-no">2</span><span>Data preparation and exploration</span></div>
   <section id="data" data-part="data">
@@ -495,6 +618,63 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="muted col">Manual review: a <a href="review/">tile-by-tile viewer</a> shows the flags next to the photo and the heat map. Images there are from <a href="https://map.bern.ch" target="_blank" rel="noopener">map.bern.ch</a> (City of Bern).</p>
   </section>
 
+  <section id="photos" data-part="data">
+    <div class="col stack">
+      <div class="eyebrow">Finding 8</div>
+      <h2>Which aerial photo matches the 2020 heat map</h2>
+      <p>The labels are the Bern PET map for 14:00 in 2020 (Stadt Bern, GeoTIFF with 5 m cells, credit "Geodaten Stadt Bern"). The photos are SWISSIMAGE 10 cm from swisstopo, but the capture year of our copies was not recorded. For the same 1 km square the open index lists three years: <b>2018, 2021 and 2024</b>. There is no 2020 or 2023 item for this square.</p>
+    </div>
+    <figure>
+      <div class="years">
+        <figure><img src="img/t201_ours.webp" alt="Tile 201, our original photo" loading="lazy"><figcaption>Our photo</figcaption></figure>
+        <figure><img src="img/t201_2018.webp" alt="Tile 201, SWISSIMAGE 2018" loading="lazy"><figcaption>SWISSIMAGE 2018</figcaption></figure>
+        <figure><img src="img/t201_2021.webp" alt="Tile 201, SWISSIMAGE 2021" loading="lazy"><figcaption>SWISSIMAGE 2021</figcaption></figure>
+        <figure><img src="img/t201_2024.webp" alt="Tile 201, SWISSIMAGE 2024" loading="lazy"><figcaption>SWISSIMAGE 2024</figcaption></figure>
+      </div>
+      <figcaption>Tile 201 (an island in the Aare) in four photos. The reed island changes shape and colour from year to year. The shoreline buildings at the lower right also differ between the photos.</figcaption>
+    </figure>
+    <div class="col stack">
+      <h3 data-toc="subsub" data-toc-title="Ten-tile comparison">Ten tiles, three years</h3>
+      <p>For ten tiles we measured how well each year lines up with our photo: correlation at the same footprint, taking the best shift within &#177;6 px. A higher value means the same structures sit in the same places.</p>
+    </div>
+    <div class="tablewrap"><table><thead><tr><th>Tile</th><th class="num">2018</th><th class="num">2021</th><th class="num">2024</th><th>Best year</th></tr></thead><tbody><tr><td class="mono">346</td><td class="num">0.55</td><td class="num">0.51</td><td class="num"><b>0.58</b></td><td>2024</td></tr><tr><td class="mono">236</td><td class="num">0.62</td><td class="num">0.62</td><td class="num"><b>0.72</b></td><td>2024</td></tr><tr><td class="mono">587</td><td class="num"><b>0.85</b></td><td class="num">0.11</td><td class="num">-0.03</td><td>2018</td></tr><tr><td class="mono">488</td><td class="num">0.36</td><td class="num">0.26</td><td class="num"><b>0.42</b></td><td>2024</td></tr><tr><td class="mono">1002</td><td class="num">0.47</td><td class="num">0.51</td><td class="num"><b>0.59</b></td><td>2024</td></tr><tr><td class="mono">1233</td><td class="num">0.35</td><td class="num">0.30</td><td class="num"><b>0.53</b></td><td>2024</td></tr><tr><td class="mono">1580</td><td class="num">0.32</td><td class="num"><b>0.60</b></td><td class="num">0.51</td><td>2021</td></tr><tr><td class="mono">1812</td><td class="num">0.33</td><td class="num">0.59</td><td class="num"><b>0.63</b></td><td>2024</td></tr><tr><td class="mono">2098</td><td class="num">0.22</td><td class="num"><b>0.36</b></td><td class="num">0.30</td><td>2021</td></tr><tr><td class="mono">2078</td><td class="num">0.14</td><td class="num">0.44</td><td class="num"><b>0.46</b></td><td>2024</td></tr><tr><td><b>Mean</b></td><td class="num"><b>0.42</b></td><td class="num"><b>0.43</b></td><td class="num"><b>0.47</b></td><td>2024 best on 7 of 10</td></tr></tbody></table></div>
+    <div class="sheetwrap">
+      <div class="sheet-head"><span>Ours</span><span>2018</span><span>2021</span><span>2024</span></div>
+      <div class="sheet-body"><div class="sheet-rows"><span>346</span><span>236</span><span>587</span><span>488</span><span>1002</span><span>1233</span><span>1580</span><span>1812</span><span>2098</span><span>2078</span></div><img src="img/tiles10_sheet.webp" alt="Ten tiles in our photo and the three SWISSIMAGE years" loading="lazy"></div>
+      <p class="small muted">Rows are tiles 346, 236, 587, 488, 1002, 1233, 1580, 1812, 2098 and 2078. Fields (587, 2078) differ most between years; forests change colour with the season.</p>
+    </div>
+    <div class="col stack">
+      <h3 data-toc="subsub" data-toc-title="Forest colour">Forest colour</h3>
+      <p>Photos taken in different seasons show forests in different greens. On green-dominant pixels of the same tiles, our photo has R 68, G 89, B 63 <span class="sw" style="background:rgb(68, 89, 63)"></span>. The distance of each year to it:</p>
+    </div>
+    <div class="tablewrap col"><table><thead><tr><th>Year</th><th class="num">Distance to our forest colour</th><th>Reading</th></tr></thead><tbody>
+      <tr><td><b>2021</b></td><td class="num"><b>9</b></td><td>Closest</td></tr>
+      <tr><td>2024</td><td class="num">23</td><td>Least green (green lead 17 vs 23)</td></tr>
+      <tr><td>2018</td><td class="num">26</td><td>Furthest</td></tr>
+    </tbody></table></div>
+    <div class="callout warn col">
+      <strong>Decision: 2021 is the working photo reference</strong>
+      <p>It is the nearest year to the 2020 labels and the closest in forest colour. It is also only the second best on structure (0.43, against 0.47 for 2024). The notes record that tile 201 does not look like a clean 2021 capture, so the photos are probably not a single-year product. Every result that uses these photos has to say so. Open item: Bern's own orthophoto downloads (2020 or 2023, if they exist) would be a closer match for the labels.</p>
+    </div>
+  </section>
+
+  <section id="placement" data-part="data">
+    <div class="col stack">
+      <div class="eyebrow">Finding 9</div>
+      <h2>Placing the label grid on the 5 m GeoTIFF</h2>
+      <p>The city's own raster has 5 m cells, finer than the 9.45 px heat cells in our tiles. To use it, each tile has to be put on the right spot of the GeoTIFF (LV95 coordinates). We fitted the footprint of the tile grid against the raster: pitch <b>135.5 m</b>, origin at <b>E 2594060</b> shifted by <b>+5 label px</b>, and <b>N 1201890</b>.</p>
+    </div>
+    <figure>
+      <div class="three">
+        <figure><img src="img/match_photo.webp" alt="Tile 201, aerial photo" loading="lazy"><figcaption>Aerial photo</figcaption></figure>
+        <figure><img src="img/match_before.webp" alt="Tile 201, current heat labels with one block circled" loading="lazy"><figcaption>Current heat labels</figcaption></figure>
+        <figure><img src="img/match_after.webp" alt="Tile 201, 5 m GeoTIFF at the fitted placement with the same block circled" loading="lazy"><figcaption>5 m GeoTIFF, +5 label px</figcaption></figure>
+      </div>
+      <figcaption>Tile 201 in the legend colours. The green square marks the block used for the close check. At this placement the two label sets agree on 99.6% of pixels of tile 201 (0.996), and on 92.4% inside the circled block (0.924).</figcaption>
+    </figure>
+  </section>
+
+
   <div class="part" id="part-modelling"><span class="part-no">3</span><span>Modelling</span></div>
   <section id="team" data-part="modelling" class="col">
     <div class="eyebrow">Who does what</div>
@@ -517,13 +697,13 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <div class="opt">
         <span class="pill base">Chenjie</span>
         <h3>Ordinal</h3>
-        <p class="small muted">13 ordered outputs (CORAL), same backbone and split.</p>
+        <p class="small muted">13 ordered outputs (CORAL and CORN), same backbone and split.</p>
       </div>
       <div class="opt">
         <span class="pill no">Side tasks</span>
         <h3>Open</h3>
         <ul class="small clean">
-          <li>Search for an aerial image closer in date to the heat map</li>
+          <li>Aerial photo closer in date: SWISSIMAGE 2021 chosen, Bern's own orthophoto still open</li>
           <li>RGB regression as a reference</li>
         </ul>
       </div>
@@ -564,6 +744,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     </div>
   </section>
 
+
   <div class="part" id="part-comparison"><span class="part-no">4</span><span>Comparisons</span></div>
   <section id="encoder" data-part="comparison">
     <div class="col" style="display:grid;gap:12px">
@@ -590,6 +771,106 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <strong>What the seeds tell us</strong>
       <p>The result is stable: four seeds give the same mean within 0.02 °C, so the 1.98 °C figure is not a lucky draw. The error is not spread evenly, though. Folds 0–2 average 2.05 °C and folds 3–4 average 1.86 °C; the spread between seeds is at most 0.05 °C on any single fold. The largest errors sit in the high-PET areas with green cover (see Finding 7), which is where the model is weakest.</p>
     </div>
+  </section>
+
+  <section id="year2021" data-part="comparison">
+    <div class="col stack">
+      <div class="eyebrow">Task A &#183; classification &#183; photos</div>
+      <h2>The 2021 photos lower the error in every paired run</h2>
+      <p>One thing changed: the photos (SWISSIMAGE 2021 at the fitted footprint). Labels are the unchanged 2020 levels from map.bern.ch, with the same split, the same ResNet-34 U-Net, cross-entropy, 60 epochs, smoothed selection 3, base mask and RGB input. Four seeds times five folds make 20 runs for each photo set.</p>
+    </div>
+    <div class="tablewrap col"><table>
+      <thead><tr><th>Decoding</th><th class="num">Original photos (&#176;C)</th><th class="num">2021 photos (&#176;C)</th><th>Reading</th></tr></thead>
+      <tbody>
+        <tr><td>Argmax</td><td class="num">2.116</td><td class="num"><b>2.060</b></td><td>Paired by seed and fold: mean difference &#8722;0.056 &#176;C (sd 0.033), 2021 better in <b>20 of 20</b> runs</td></tr>
+        <tr><td>Median</td><td class="num">1.978</td><td class="num"><b>1.931</b></td><td>Spread over runs 0.104. Gain about 0.05 &#176;C; not paired seed by seed for the median runs</td></tr>
+      </tbody></table></div>
+    <p class="small muted col">Argmax by seed (2021 / original): 2.064 / 2.113, 2.055 / 2.124, 2.064 / 2.115, 2.059 / 2.113. Median seed means on the 2021 photos: 1.928, 1.948, 1.926, 1.920.</p>
+    <figure>
+      <div class="chart" id="pairChart"></div>
+      <figcaption>Change in argmax MAE when switching to the 2021 photos, one dot per seed and fold (20 dots), the dash is the mean of the four seeds. Every dot is below the dashed zero line, which means the 2021 photos gave the lower error in all 20 pairs.</figcaption>
+    </figure>
+    <div class="tablewrap col"><table>
+      <thead><tr><th>Fold</th><th class="num">Argmax, original</th><th class="num">Argmax, 2021</th><th class="num">Median, original</th><th class="num">Median, 2021</th></tr></thead>
+      <tbody><tr><td>Fold 0</td><td class="num">2.194</td><td class="num">2.146</td><td class="num">2.068</td><td class="num">1.982</td></tr><tr><td>Fold 1</td><td class="num">2.227</td><td class="num">2.120</td><td class="num">2.044</td><td class="num">2.009</td></tr><tr><td>Fold 2</td><td class="num">2.177</td><td class="num">2.152</td><td class="num">2.051</td><td class="num">2.035</td></tr><tr><td>Fold 3</td><td class="num">2.002</td><td class="num">1.941</td><td class="num">1.887</td><td class="num">1.823</td></tr><tr><td>Fold 4</td><td class="num">1.981</td><td class="num">1.942</td><td class="num">1.837</td><td class="num">1.804</td></tr></tbody></table></div>
+    <div class="callout warn col">
+      <strong>How far to trust this</strong>
+      <p>The gain is small next to the spread between folds (about 0.1 &#176;C) but has the same sign everywhere, so the training strategy holds on the new photos. The result is still about <b>0.43 &#176;C above the 1.5 &#176;C goal</b>. The 2021 photos were chosen by date and forest colour, and they are the weakest of the three years on structure. Photos and labels are still years apart.</p>
+    </div>
+    <div class="col stack">
+      <h3 data-toc="subsub" data-toc-title="Colour check">Colour analysis on the 2021 photos</h3>
+      <p class="small muted">Same colour rules as Finding 7, run again on the 2021 photos. Not verified against the images tile by tile.</p>
+    </div>
+    <div class="tablewrap col"><table>
+      <thead><tr><th>Measure</th><th class="num">Original photos</th><th class="num">2021 photos</th></tr></thead>
+      <tbody>
+        <tr><td>Green surface, share of area</td><td class="num">48.8%</td><td class="num">52.2%</td></tr>
+        <tr><td>Brown surface, share of area</td><td class="num">7.3%</td><td class="num">3.8%</td></tr>
+        <tr><td>Green and hot, share of heat pixels</td><td class="num">7.09%</td><td class="num">7.83%</td></tr>
+        <tr><td>Brown and cool, share of heat pixels</td><td class="num">0.13%</td><td class="num">0.086%</td></tr>
+        <tr><td>Building footprints more than 60% vegetated</td><td class="num">515</td><td class="num">713</td></tr>
+      </tbody></table></div>
+    <p class="small muted col">The vegetated footprints cover 1.06% of building area on the original photos and 1.66% on the 2021 photos; this may be the photo date. Per-pixel colour still does not separate cool from hot (best single channel 0.723 against chance 0.72). The existing flags were built from the original photos, so their pixel overlap with the 2021 photos is lower (IoU 0.56 against 0.85).</p>
+  </section>
+
+  <section id="ordinal" data-part="comparison">
+    <div class="col stack">
+      <div class="eyebrow">Three tracks &#183; ordinal</div>
+      <h2>CORN ties cross-entropy, CORAL falls behind</h2>
+      <p>Three people run the same comparison. <b>Timo</b> trains the 14-class classifier, <b>Louis</b> the scalar regression, <b>Chenjie</b> the ordinal heads. The ordinal runs use the same protocol as the classification encoder runs: U-Net with an ImageNet ResNet-34, five folds, 60 epochs, batch 16, AdamW with learning rate 0.002, OneCycle, flips and rotations, smoothed selection 3, seed 0, original photos. Only the output head and the loss change.</p>
+    </div>
+    <div class="options">
+      <div class="opt"><span class="pill base">Chenjie</span><h3>CORAL</h3><p class="small muted">One score per pixel plus 13 shared ordered thresholds, so P(level &gt; k) cannot rise with k. The curve shape is shared, which makes it rigid.</p></div>
+      <div class="opt"><span class="pill base">Chenjie</span><h3>CORN</h3><p class="small muted">13 conditional outputs P(level &gt; k | level &gt; k&#8722;1), multiplied up. Consistent by construction and more flexible, with less data for the hot end.</p></div>
+    </div>
+    <div class="tablewrap col"><table>
+      <thead><tr><th>Run (five folds, all pixels)</th><th class="num">MAE median (&#176;C)</th><th class="num">MAE argmax (&#176;C)</th><th class="num">&#177;1 level</th><th class="num">Category acc.</th></tr></thead>
+      <tbody>
+        <tr><td>Cross-entropy (Timo)</td><td class="num">1.975</td><td class="num">2.113 &#177; 0.109</td><td class="num">77.5%</td><td class="num">73.5%</td></tr>
+        <tr><td>13 independent thresholds (Timo)</td><td class="num">1.987</td><td class="num">2.115 &#177; 0.107</td><td class="num">77.1%</td><td class="num">73.0%</td></tr>
+        <tr><td>CORAL, base mask, RGB (Chenjie)</td><td class="num">2.070 &#177; 0.105</td><td class="num">2.433 &#177; 0.107</td><td class="num">72.4%</td><td class="num">70.5%</td></tr>
+        <tr><td><b>CORN, base mask, RGB (Chenjie)</b></td><td class="num"><b>1.976 &#177; 0.097</b></td><td class="num">2.121 &#177; 0.092</td><td class="num">76.1%</td><td class="num">72.9%</td></tr>
+        <tr><td>CORN, with land-cover mask, RGB (Chenjie)</td><td class="num">1.992 &#177; 0.087</td><td class="num">2.125 &#177; 0.091</td><td class="num">75.2%</td><td class="num">74.0%</td></tr>
+      </tbody></table></div>
+    <p class="small muted col">Median decoding is the headline for the ordinal heads; the argmax is stored with the run. The ±1 level and category columns use argmax for the two classification rows and median for the rest.</p>
+    <div class="tablewrap col"><table>
+      <thead><tr><th>MAE by surface group (median, &#176;C)</th><th class="num">Unflagged</th><th class="num">Green and hot</th><th class="num">Brown and cool</th><th class="num">Green</th><th class="num">Brown</th><th class="num">Grey</th></tr></thead>
+      <tbody>
+        <tr><td>CORAL, base</td><td class="num">2.106</td><td class="num">1.676</td><td class="num">4.354</td><td class="num">1.737</td><td class="num">2.213</td><td class="num">3.013</td></tr>
+        <tr><td>CORN, base</td><td class="num">1.994</td><td class="num">1.864</td><td class="num">4.527</td><td class="num">1.640</td><td class="num">2.125</td><td class="num">2.914</td></tr>
+        <tr><td>CORN, with land cover</td><td class="num">1.938</td><td class="num">2.847</td><td class="num">4.781</td><td class="num">1.680</td><td class="num">2.161</td><td class="num">2.889</td></tr>
+      </tbody></table></div>
+    <ul class="clean col">
+      <li><b>CORN ties cross-entropy</b> (1.976 against 1.975), and the folds match within about 0.02 &#176;C. The output head does not move the overall error here.</li>
+      <li><b>CORN beats CORAL on all five folds</b>, by 0.08 to 0.11 &#176;C. CORAL's shared curve looks too rigid for this two-peaked target.</li>
+      <li><b>Green and hot looks better for ordinal</b> (CORN 1.86, CORAL 1.68, cross-entropy 2.30), but the classification group columns are argmax and these are median, so this is not yet like for like. Brown and cool goes the other way.</li>
+      <li><b>Every run under-predicts the hot extremes.</b> Level 13 (&gt; 43 &#176;C) is never predicted (0.78% true) and level 12 gets 0.2% (2.22% true).</li>
+      <li><b>Grey surfaces stay the largest class error</b> (2.9 to 3.0 &#176;C), consistent with the confusion between water and sealed ground.</li>
+      <li><b>The land-cover mask is a trade-off.</b> Against CORN base, unflagged pixels improve by 0.06 &#176;C, green and hot gets worse by 0.98 &#176;C, all pixels by 0.02 &#176;C. Recommendation: base mask for the main result. Unexplained: with the land-cover mask the model over-predicts level 9 (11.8% against 6.6% true).</li>
+    </ul>
+    <div class="callout col"><strong>Not done yet</strong><p>RGB plus classes for the ordinal track needs the first convolution widened to 7 channels (ImageNet weights on the first three, zeros on the rest) and waits for the group's OK. CORAL with the land-cover mask was not run, since CORN is better on the base mask. One seed only.</p></div>
+  </section>
+
+  <section id="exact" data-part="comparison">
+    <div class="col stack">
+      <div class="eyebrow">Labels &#183; regression</div>
+      <h2>Exact-degree labels set a floor of 0.78 &#176;C</h2>
+      <p>The 5 m GeoTIFF stores a temperature for every cell, not one of 14 bins. Putting it on the tiles (previous finding) gives <b>exact degrees per label pixel</b>. This shows how much the 14 bins cost. Any method that predicts bin midpoints has a minimum error of <b>0.78 &#176;C</b> when it is scored against exact degrees (measured on tile 201).</p>
+    </div>
+    <div class="tablewrap col"><table>
+      <thead><tr><th>Regression, fold 0, original photos</th><th class="num">MAE (&#176;C)</th><th class="num">Pixels scored</th></tr></thead>
+      <tbody>
+        <tr><td>Bin-midpoint target (Louis)</td><td class="num"><b>2.079</b></td><td class="num">26,554,462</td></tr>
+        <tr><td>Exact-degree target (5 m labels)</td><td class="num"><b>2.100</b></td><td class="num">26,025,830</td></tr>
+        <tr><td>Folds 1 to 4, exact-degree target</td><td class="num"><span class="pill pend">pending</span></td><td class="num">-</td></tr>
+      </tbody></table></div>
+    <ul class="clean col">
+      <li>The two numbers use a different scale and a different pixel set, so they are not directly comparable. The exact-degree number is the stricter one.</li>
+      <li>Folds 1 to 4 did not run on the Mac: fold 0 took 7.5 hours under memory pressure. They are still running on the GPU node, so only fold 0 is reported.</li>
+      <li>Levels taken from the 5 m raster agree with the current labels on 84.6% of pixels (92.8% within one level), and the level distributions differ by at most 0.5 points. The rest is mostly raster cells without a value, which the 5 m set leaves unknown. A classifier on these levels would learn almost the same target, so it was not run.</li>
+      <li>The classifier never predicts the hottest level (&gt; 43 &#176;C): 0.00% against 0.77% true. Exact-degree regression is the way to give the extremes a training signal.</li>
+    </ul>
+    <div class="callout warn col"><strong>One fold is not a result</strong><p>Fold 0 is one of the harder folds: cross-entropy scores 2.189 &#176;C (argmax) and 2.066 &#176;C (median) on it, against 2.116 and 1.978 over all runs. Read the regression rows next to those, not next to the five-fold means.</p></div>
   </section>
 
   <section id="taska-cases" data-part="comparison">
@@ -702,6 +983,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
     <p class="muted">The in-Bern test asks "how good on unseen tiles of this city". The outside imagery asks "does it work elsewhere at all". The report needs both, and only the first produces error numbers.</p>
   </section>
 
+
   <div class="part" id="part-fazit"><span class="part-no">5</span><span>Fazit and next steps</span></div>
   <section id="limits" data-part="fazit">
     <div class="col" style="display:grid;gap:12px">
@@ -709,6 +991,10 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
       <h2>What the data cannot tell us</h2>
     </div>
     <div class="limits">
+      <div class="limit"><h3><span class="sev hi">High</span>The model never predicts above 43 &#176;C</h3><p>0.00% of predicted pixels against 0.77% true; 42&#8211;43 &#176;C gets 0.15% against 2.22%. The hottest areas are always under-estimated.</p></div>
+      <div class="limit"><h3><span class="sev hi">High</span>Photos and labels are years apart</h3><p>The labels are for 2020; the photos are SWISSIMAGE 2021 chosen by date and forest colour. 2021 is the weakest year on structure (correlation 0.43), and the original photos match no single year cleanly.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Binning sets a floor</h3><p>Scored against exact degrees, any method that predicts bin midpoints has a minimum error of 0.78 &#176;C on tile 201.</p></div>
+      <div class="limit"><h3><span class="sev md">Medium</span>Single-seed and single-fold results</h3><p>The ordinal and regression runs use one seed. The regression results cover fold 0 only, and folds 1 to 4 on the exact target are still running.</p></div>
       <div class="limit"><h3><span class="sev hi">High</span>Photo and heat map from different times</h3><p>Fields that look green are labelled 40 &#176;C. Seasonal and land-use mismatch sets a ceiling on achievable accuracy, especially in the agricultural west.</p></div>
       <div class="limit"><h3><span class="sev hi">High</span>No ground truth outside Bern</h3><p>Generalisation to other cities can only be judged visually unless we find a comparable heat-stress map elsewhere.</p></div>
       <div class="limit"><h3><span class="sev md">Medium</span>One city, one map</h3><p>2,275 tiles from one city cover few building styles and little topography. The effective number of independent samples is smaller than the tile count.</p></div>
@@ -724,33 +1010,29 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
   <section id="next" data-part="fazit" class="col">
     <div class="eyebrow">Next steps</div>
     <h2>Open items</h2>
-    <p class="muted col">Every track follows the same measurement rules: the evaluation guide in the project repo has the splits, metrics and required runs, written for newcomers.</p>
-    <div class="todo">
-      <label><input type="checkbox" id="t1" checked> Decode legend and level order</label>
-      <label><input type="checkbox" id="t2" checked> Reconstruct the tile grid</label>
-      <label><input type="checkbox" id="t10" checked> Fit the heat raster grid and clean all heat maps</label>
-      <label><input type="checkbox" id="t11" checked> Flag building mismatches in both directions and build the ignore mask</label>
-      <label><input type="checkbox" id="t12" checked> Fit the export opacity per tile</label>
-      <label><input type="checkbox" id="t13" checked> Flag green-and-hot and brown-and-cool conflicts (land cover vs heat)</label>
-      <label><input type="checkbox" id="t14"> Test with and without the land-cover mask (Timo, Louis, Chenjie)</label>
-      <label><input type="checkbox" id="t15"> Search for a closer aerial image (side task)</label>
-      <label><input type="checkbox" id="t17"> Find datasets from other cities for train, test or validation (side task)</label>
-      <label><input type="checkbox" id="t16"> RGB regression reference (side task)</label>
-      <label><input type="checkbox" id="t3"> Check the map.bern.ch layer metadata (quantity, time of day, model)</label>
-      <label><input type="checkbox" id="t4" checked> Write the spatial splits (5 &#215; 5 blocks, five folds, shared by all tracks)</label>
-      <label><input type="checkbox" id="t5"> Build the dataset loader from the cleaned levels and ignore mask, with flip and rotation augmentation</label>
-      <label><input type="checkbox" id="t6" checked> Train baseline (A) and ordinal (B) heads on a U-Net</label>
-      <label><input type="checkbox" id="t18" checked> Pretrained ResNet-34 encoder, five folds × four seeds, median decoding</label>
-      <label><input type="checkbox" id="t7"> Extend the comparison to DeepLabV3+ and SegFormer</label>
-      <label><input type="checkbox" id="t8"> Collect outside-Bern imagery and look for comparable heat maps (Z&#252;rich, Basel)</label>
-      <label><input type="checkbox" id="t9"> Ask the supervisors whether raw heat values are available</label>
-    </div>
+    <p class="muted">Every track follows the same measurement rules: the evaluation guide in the project repo has the splits, metrics and required runs.</p>
+    <ul class="nextlist">
+      <li><span class="pill pend">pending</span><span>Exact-degree regression, folds 1 to 4 (running on the GPU node; only fold 0 is reported)</span></li>
+      <li><span class="pill open">open</span><span>Decide the final method and how the three tracks combine, after the comparison</span></li>
+      <li><span class="pill open">open</span><span>A closer aerial photo: Bern's own orthophoto (2020 or 2023), if it exists</span></li>
+      <li><span class="pill open">open</span><span>Ordinal with RGB plus classes (needs the first convolution widened to 7 channels; waits for the group's OK)</span></li>
+      <li><span class="pill open">open</span><span>More seeds for the ordinal and regression tracks; the 3 &#215; 3 and 10 &#215; 10 split checks wait for the final model</span></li>
+      <li><span class="pill open">open</span><span>Test with and without the land-cover mask for every track (done for ordinal: base mask is better)</span></li>
+      <li><span class="pill open">open</span><span>Why the land-cover mask over-predicts level 9 and under-predicts levels 10 and 11</span></li>
+      <li><span class="pill open">open</span><span>Extend the comparison to DeepLabV3+ and SegFormer</span></li>
+      <li><span class="pill open">open</span><span>Outside-Bern imagery and comparable heat maps (Z&#252;rich, Basel); ask the supervisors for raw heat values; check the layer metadata (quantity, time of day, model)</span></li>
+      <li><span class="pill done">done</span><span>Photo year compared on tile 201 and ten tiles; 2021 chosen as the working reference</span></li>
+      <li><span class="pill done">done</span><span>Label grid placed on the 5 m GeoTIFF (tile 201 agreement 0.996)</span></li>
+      <li><span class="pill done">done</span><span>Four seeds &#215; five folds on the 2021 photos (20 of 20 paired runs better)</span></li>
+      <li><span class="pill done">done</span><span>Ordinal track: CORAL and CORN, five folds</span></li>
+      <li><span class="pill done">done</span><span>Exact-degree labels built; regression fold 0 on both targets</span></li>
+      <li><span class="pill done">done</span><span>Legend decoded, tile grid rebuilt, heat raster fitted, all heat maps cleaned, building and land-cover flags, spatial splits, pretrained ResNet-34 with four seeds</span></li>
+    </ul>
   </section>
 
-  <footer>Project guide, updated 30 Oct 2026 &#183; published by Timo</footer>
+  <footer>Project guide, updated 10 Nov 2026 &#183; published by Timo</footer>
 </main>
 </div>
-
 <script>
 (() => {
   const labels = ["<23", "23&#8211;26", "26&#8211;29", "29&#8211;32", "32&#8211;35", "35&#8211;36", "36&#8211;37", "37&#8211;38", "38&#8211;39", "39&#8211;40", "40&#8211;41", "41&#8211;42", "42&#8211;43", ">43"];
@@ -891,7 +1173,7 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
   // chapter overview: chapters are the section h2s; sub and sub-sub entries come from [data-toc] marks.
   // The list highlights the entry being read and opens the chapter it belongs to.
   // short chapter names for the overview (the full h2 is too long for a side column)
-  const SHORT_TITLES = { "brief": "Brief", "data": "Dataset", "method": "Method", "grid": "Grid", "legend": "Legend", "dist": "Distribution", "examples": "Examples", "cleaning": "Cleaning", "buildings": "Buildings", "result": "Result", "landcover": "Land cover", "team": "Tracks", "encoder": "Model", "taska-cases": "Task A cases", "options": "Options", "split": "Split", "limits": "Limits", "next": "Next" };
+  const SHORT_TITLES = {"abstract": "Result in brief", "dashboard": "Results", "brief": "Brief", "data": "Dataset", "method": "Method", "grid": "Grid", "legend": "Legend", "dist": "Distribution", "examples": "Examples", "cleaning": "Cleaning", "buildings": "Buildings", "result": "Result", "landcover": "Land cover", "photos": "Photo year", "placement": "5 m placement", "team": "Tracks", "options": "Options", "allruns": "All runs", "encoder": "Model", "year2021": "2021 photos", "ordinal": "Ordinal", "exact": "Exact degrees", "taska-cases": "Task A cases", "split": "Split", "limits": "Limits", "next": "Next", "dataset": "The dataset", "cleanup": "Cleaning and checks", "photolabel": "Photos and labels", "modelling": "Tracks and options", "res-class": "Classification", "res-other": "Ordinal and regression", "res-cases": "Cases and split"};
   const side = document.getElementById("sideToc");
   if (side) {
     const clean = t => t.replace(/\s+/g, " ").trim();
@@ -971,6 +1253,78 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
   tg.addEventListener("click", () => { tb.hidden = !tb.hidden; tg.setAttribute("aria-expanded", String(!tb.hidden)); tg.textContent = tb.hidden ? "Show as table" : "Hide table"; });
 })();
 </script>
+<script>const D={"rows": [{"id": "base", "name": "Colour-only baseline", "track": "base", "tl": "Baseline", "photos": "original", "runs": "5 folds", "argmax": [5.69, 0.48], "median": null, "pm1": [56.4, 2.3], "cat": [53.8, 3.6]}, {"id": "unet", "name": "From-scratch U-Net, 60 epochs", "track": "timo", "tl": "Timo", "photos": "original", "runs": "5 folds, seed 0", "argmax": [2.26, 0.12], "median": null, "pm1": [75.5, 1.0], "cat": [71.6, 2.5]}, {"id": "ce_o", "name": "ResNet-34 encoder, cross-entropy", "track": "timo", "tl": "Timo", "photos": "original", "runs": "20 runs (5 folds x 4 seeds)", "argmax": [2.116, 0.107], "median": [1.98, 0.1], "pm1": [77.4, 0.5], "cat": [73.4, 1.6]}, {"id": "ce_21", "name": "ResNet-34 encoder, cross-entropy", "track": "timo", "tl": "Timo", "photos": "2021", "runs": "20 runs (5 folds x 4 seeds)", "argmax": [2.06, 0.101], "median": [1.931, 0.104], "pm1": [78.4, 0.6], "cat": [73.9, 1.7]}, {"id": "ce_s0", "name": "ResNet-34, cross-entropy, seed 0", "track": "timo", "tl": "Timo", "photos": "original", "runs": "5 folds, seed 0", "argmax": [2.113, 0.109], "median": [1.975, null], "pm1": [77.5, null], "cat": [73.5, null]}, {"id": "ind", "name": "13 independent thresholds", "track": "timo", "tl": "Timo", "photos": "original", "runs": "5 folds, seed 0", "argmax": [2.115, 0.107], "median": [1.987, null], "pm1": [77.1, null], "cat": [73.0, null]}, {"id": "coral", "name": "CORAL, base mask", "track": "chenjie", "tl": "Chenjie", "photos": "original", "runs": "5 folds, seed 0", "argmax": [2.433, 0.107], "median": [2.07, 0.105], "pm1": [72.4, null], "cat": [70.5, null]}, {"id": "corn", "name": "CORN, base mask", "track": "chenjie", "tl": "Chenjie", "photos": "original", "runs": "5 folds, seed 0", "argmax": [2.121, 0.092], "median": [1.976, 0.097], "pm1": [76.1, null], "cat": [72.9, null]}, {"id": "corn_lc", "name": "CORN, with land-cover mask", "track": "chenjie", "tl": "Chenjie", "photos": "original", "runs": "5 folds, seed 0", "argmax": [2.125, 0.091], "median": [1.992, 0.087], "pm1": [75.2, null], "cat": [74.0, null]}, {"id": "ce_f0", "name": "Cross-entropy, fold 0 only", "track": "timo", "tl": "Timo", "photos": "original", "runs": "fold 0, seed 0", "argmax": [2.189, null], "median": [2.066, null], "pm1": null, "cat": null, "note": "Reference for the regression rows below, which have only fold 0."}, {"id": "reg_m", "name": "Scalar regression, midpoint target", "track": "louis", "tl": "Louis", "photos": "original", "runs": "fold 0 only", "argmax": [2.079, null], "median": [2.079, null], "scalar": true, "pm1": [75.3, null], "cat": [73.7, null]}, {"id": "reg_x", "name": "Scalar regression, exact-degree target", "track": "louis", "tl": "Louis", "photos": "original", "runs": "fold 0 only, 5 m labels", "argmax": [2.1, null], "median": [2.1, null], "scalar": true, "pm1": [76.0, null], "cat": [74.4, null], "note": "Different scale and pixel set; stricter, not directly comparable."}], "diffs": [[-0.0257, -0.063, -0.0467, -0.0596], [-0.1015, -0.1299, -0.0873, -0.1062], [-0.0372, -0.0283, -0.0239, -0.0075], [-0.0548, -0.0499, -0.0593, -0.0808], [-0.0281, -0.0707, -0.0394, -0.0151]], "foldmed": [[2.068, 2.044, 2.051, 1.887, 1.837], [1.982, 2.009, 2.035, 1.823, 1.804]], "foldarg": [[2.194, 2.227, 2.177, 2.002, 1.981], [2.146, 2.12, 2.152, 1.941, 1.942]]};
 
+(() => {
+  // generic compare sliders: .compare[data-gen] with the range input that follows it
+  document.querySelectorAll(".compare[data-gen]").forEach(c => {
+    const inp = c.parentElement.querySelector('input[type="range"]');
+    const set = v => c.style.setProperty("--pos", v + "%");
+    inp.addEventListener("input", e => set(e.target.value)); set(inp.value);
+  });
+  // paired-difference chart
+  const pc = document.getElementById("pairChart");
+  if (pc) {
+    const W=880,H=300,m={t:24,r:16,b:44,l:56}, iw=W-m.l-m.r, ih=H-m.t-m.b, lo=-0.14, hi=0.02;
+    const y=v=>m.t+ih-((v-lo)/(hi-lo))*ih, x=k=>m.l+(k+0.5)*iw/5;
+    let s=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Change in argmax MAE with the 2021 photos, 20 paired runs, all below zero">`;
+    [-0.14,-0.12,-0.09,-0.06,-0.03,0,0.02].forEach(t=>{ s+=`<line class="grid" x1="${m.l}" x2="${W-m.r}" y1="${y(t)}" y2="${y(t)}"/><text class="tick" x="${m.l-8}" y="${y(t)+4}" text-anchor="end">${t>0?"+":""}${t.toFixed(2)}</text>`; });
+    s+=`<line class="zero" x1="${m.l}" x2="${W-m.r}" y1="${y(0)}" y2="${y(0)}"/>`;
+    D.diffs.forEach((fd,k)=>{
+      const mean=fd.reduce((a,b)=>a+b,0)/fd.length;
+      s+=`<line class="pmean" x1="${x(k)-52}" x2="${x(k)+52}" y1="${y(mean)}" y2="${y(mean)}"/>`;
+      fd.forEach((v,i)=>{ s+=`<circle class="pdot" cx="${x(k)+(i-1.5)*24}" cy="${y(v)}" r="5.5"><title>fold ${k}, seed ${i}: ${v.toFixed(3)} C</title></circle>`; });
+      s+=`<text class="tick" x="${x(k)}" y="${m.t+ih+20}" text-anchor="middle">fold ${k}</text>`;
+    });
+    s+=`<text class="axis-label" x="${m.l+iw/2}" y="${H-6}" text-anchor="middle">Test fold (2021 minus original photos, argmax MAE in &#176;C)</text></svg>`;
+    pc.innerHTML=s;
+  }
+  // model explorer
+  const ex = document.getElementById("explorer");
+  if (ex) {
+    const COL={timo:"var(--s1)",louis:"var(--s2)",chenjie:"var(--s3)",base:"var(--ink-3)"};
+    const st={track:"all",photos:"all",dec:"median"};
+    const lo=1.4,hi=2.6,px=v=>((v-lo)/(hi-lo)*100);
+    const ticks=[1.5,1.8,2.0,2.2,2.4,2.6];
+    const rowsEl=document.getElementById("xrows"), tb=document.querySelector("#xtable tbody"), count=document.getElementById("xcount");
+    const f=(v,d)=>v==null?"-":v[0].toFixed(d)+(v[1]!=null?" ± "+v[1].toFixed(d):"");
+    const dec=r=>st.dec==="median"?r.median:r.argmax;
+    function render(){
+      const rs=D.rows.filter(r=>(st.track==="all"||r.track===st.track||(st.track==="timo"&&r.track==="base"&&false))&&(st.photos==="all"||r.photos===st.photos));
+      const base=D.rows.filter(r=>r.track==="base"&&st.track==="all"&&(st.photos==="all"||r.photos===st.photos));
+      let h="";
+      rs.forEach(r=>{
+        const v=dec(r), d=r.scalar?3:(v&&v[1]==null?3:2);
+        let plot="";
+        ticks.forEach(t=>plot+=`<i class="tk${t===1.5?" goal":""}" style="left:${px(t)}%"></i>`);
+        let tip=`${r.name}: ${f(v,d)} C`;
+        if(!v){ plot+=`<span class="off">no ${st.dec} decoding for this run</span>`; }
+        else if(v[0]>hi){ plot+=`<span class="off">${v[0].toFixed(2)} ± ${v[1].toFixed(2)}, off the scale →</span>`; }
+        else {
+          const x=px(v[0]);
+          if(v[1]!=null){ plot+=`<i class="wh" style="left:${px(Math.max(lo,v[0]-v[1]))}%;width:${px(Math.min(hi,v[0]+v[1]))-px(Math.max(lo,v[0]-v[1]))}%"></i>`; }
+          plot+=`<i class="dot" style="left:${x}%;--tc:${COL[r.track]}" title="${tip}"></i>`;
+          const lab=v[0].toFixed(d), right=x<78;
+          plot+=`<span class="vv" style="${right?`left:calc(${px(Math.min(hi,v[0]+(v[1]||0)))}% + 12px)`:`right:calc(${100-px(Math.max(lo,v[0]-(v[1]||0)))}% + 12px)`}">${lab}</span>`;
+        }
+        h+=`<div class="xrow"><div class="xlab"><b>${r.name}</b><small>${r.tl} · ${r.photos} photos · ${r.runs}</small></div><div class="xplot">${plot}</div>${r.note?`<small class="muted">${r.note}</small>`:""}</div>`;
+      });
+      rowsEl.innerHTML=h||'<div class="xempty">No run matches these filters.</div>';
+      count.textContent=rs.length+" of "+D.rows.length+" runs";
+      tb.innerHTML=rs.map(r=>`<tr><td>${r.name}</td><td>${r.tl}</td><td>${r.photos}</td><td class="num">${f(r.argmax,r.argmax[1]==null?3:2)}</td><td class="num">${r.scalar?"-":f(r.median,r.median&&r.median[1]==null?3:2)}</td><td class="num">${r.pm1?r.pm1[0].toFixed(1)+"%":"-"}</td><td class="num">${r.cat?r.cat[0].toFixed(1)+"%":"-"}</td></tr>`).join("");
+    }
+    ex.querySelectorAll(".seg").forEach(g=>g.addEventListener("click",e=>{
+      const b=e.target.closest("button"); if(!b) return;
+      g.querySelectorAll("button").forEach(x=>x.setAttribute("aria-pressed",String(x===b)));
+      st[g.dataset.key]=b.dataset.v; render();
+    }));
+    const ax=document.getElementById("xaxis");
+    ax.innerHTML=ticks.map(t=>`<span class="${t===1.5?"g":""}" style="left:${px(t)}%">${t===1.5?"goal 1.5":t.toFixed(1)}</span>`).join("");
+    render();
+  }
+})();
+
+(() => { const t=document.getElementById("xtoggle"), w=document.getElementById("xtablewrap"); if(t) t.addEventListener("click",()=>{w.hidden=!w.hidden;t.setAttribute("aria-expanded",String(!w.hidden));t.textContent=w.hidden?"Show as table":"Hide table";}); })();
+</script>
 </body>
 </html>
