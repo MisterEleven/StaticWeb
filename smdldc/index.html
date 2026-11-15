@@ -449,15 +449,15 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
   <section id="dashboard" data-part="intro">
     <div class="col stack">
       <div class="eyebrow">Result in brief</div>
-      <h2>A pretrained U-Net predicts the heat map to within about 1.9 °C</h2>
+      <h2>A pretrained U-Net predicts the heat map to within about 1.7 °C, with shadow as an input</h2>
       <p>We predict the 14-level heat-stress map of Bern from photos and compare three approaches, named by what the model outputs: <b>Classification</b> (one of 14 classes), <b>Ordinal</b> (13 ordered yes/no outputs) and <b>Regression</b> (one number in °C). With the 2021 photos the best Classification model reaches a mean error of <b>1.931 °C</b> (median decoding, 20 runs), against 1.978 °C on the original photos. The 2021 photos were better in 20 of 20 paired runs. Ordinal with the CORN head ties Classification on the original photos (1.976 against 1.975 °C). Regression has finished all five folds. The goal was 1.5 °C.</p>
       <p>Three weaknesses shape every number below. The models <b>never predict above 43 °C</b> (0.77% of the true map). The 2021 photos were chosen by date and forest colour and are the weakest year on structure. And photos and labels are years apart, so some of the error is not the model's.</p>
     </div>
     <div class="kpis">
       <div class="kpi"><b>1.931 °C</b><span>Classification, 2021 photos, median decoding, 20 runs. Better than the original photos in 20 of 20 paired runs.</span></div>
       <div class="kpi"><b>1.976 °C</b><span>Ordinal (CORN), original photos, five folds, median decoding. Classification on the same setup: 1.975 °C.</span></div>
-      <div class="kpi"><b>2.005 °C</b><span>Regression (exact target), folds 0 to 4 of five, scored against exact degrees (stricter). Classification on the same folds: 1.975 °C median decoding.</span></div>
-      <div class="kpi weak"><b>+0.43 °C</b><span>the best model is still above the 1.5 °C goal</span></div>
+      <div class="kpi"><b>1.659 °C</b><span>Regression with height, water and shadow, five folds, scored against exact degrees (stricter). Photo only, same target: 1.922 °C. Classification on the same folds: 1.975 °C median decoding.</span></div>
+      <div class="kpi weak"><b>+0.16 °C</b><span>the best model (regression with shadow) is still above the 1.5 °C goal</span></div>
       <div class="kpi weak"><b>0.00%</b><span>of pixels predicted above 43 °C by Ordinal (CORN), against 0.77% in the true map</span></div>
       <div class="kpi"><b>0.78 °C</b><span>floor from the 14 bins when scoring against exact degrees (tile 201)</span></div>
     </div>
