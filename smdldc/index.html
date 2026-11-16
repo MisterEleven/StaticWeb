@@ -1209,6 +1209,7 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
         <tr><td>Average of seed 0, seed 1 and the three-hour model</td><td class=num>1.709</td><td>Averaging models gains 0.01 to 0.04 °C at most.</td></tr>
         <tr><td>Hot pixels weighted four times in the loss (from 40 °C)</td><td class=num>1.888</td><td>The error at or above 40 °C falls from 1.83 to 1.09, but the whole map shifts warm (bias +0.58 °C) and the overall error rises by 0.14 °C.</td></tr>
         <tr><td>Bright, flat ground left out of training</td><td class=num>1.757</td><td>No gain; leaving it out of the scoring changes the error by about 0.01 °C.</td></tr>
+        <tr><td>Sky-view factor added (how enclosed a pixel is)</td><td class=num>1.725</td><td>No gain over the three-hour shadow model (1.716). Slightly better in settled areas (2.31 against 2.32 °C), worse on hot pixels. How open the surroundings are, as the height layer shows it, does not explain the settlement error.</td></tr>
         <tr><td>Photos from 2020 (the label year) instead of 2021</td><td class=num>1.912</td><td>Worse, not better. Matching the photo year to the label year does not explain the remaining error.</td></tr>
       </tbody></table></div>
       <div class="col stack"><ul class="clean">
@@ -1312,7 +1313,7 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
     <h2>Open items</h2>
     <p class="muted">All three approaches follow the same measurement rules: the evaluation guide in the project repo has the splits, metrics and required runs.</p>
     <ul class="nextlist">
-      <li><span class="pill open">open</span><span>Three-hour shadow done on five folds (1.635 °C, one seed); a second seed and a sky-view layer (how enclosed a pixel is) are next</span></li>
+      <li><span class="pill open">open</span><span>Three-hour shadow is done on five folds (1.635 °C, one seed); a second seed is running</span></li>
       <li><span class="pill open">open</span><span>Decide the final approach and how Classification, Ordinal and Regression combine, after the comparison</span></li>
       <li><span class="pill done">done</span><span>2020 photos built and tested against the 2020 labels: 1.912 °C against 1.749 °C on the 2021 photos, so the year match does not help</span></li>
       <li><span class="pill open">open</span><span>Ordinal with RGB plus classes (needs the first convolution widened to 7 channels; waits for the group's OK)</span></li>
