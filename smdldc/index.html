@@ -439,8 +439,9 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
   min-width: 0;
 }
 .layer-stack {
-  position: relative; width: 210px; height: 210px; transform-style: preserve-3d;
-  transform: rotateX(58deg) rotateZ(-36deg);
+  --gap: 36px;
+  position: relative; width: 176px; height: 176px; transform-style: preserve-3d;
+  transform: translateY(calc(var(--gap) * 1.55)) rotateX(58deg) rotateZ(-36deg);
 }
 .plane {
   position: absolute; inset: 0; border-radius: 4px; overflow: hidden;
@@ -450,9 +451,8 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
 .plane.opt { border-style: dashed; border-color: var(--ochre); }
 .plane.water-plane { background: transparent; border-color: var(--teal); border-style: solid; }
 .plane.water-plane img { background: transparent; }
-.p1 { transform: translateZ(0); }
-.p2 { transform: translateZ(78px); }
-.p3 { transform: translateZ(156px); }
+.plane { transform: translateZ(calc(var(--i, 0) * var(--gap))); }
+.plane.sheet { background: color-mix(in srgb, var(--card) 40%, transparent); }
 .stage-note { font-size: .74rem; color: var(--muted); text-align: center; margin-top: 4px; }
 .layer-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
 .layer-list li {
@@ -474,9 +474,7 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
 @media (max-width: 420px) {
   .panel { padding: 14px; }
   .stage { height: 290px; }
-  .layer-stack { width: 170px; height: 170px; }
-  .p2 { transform: translateZ(64px); }
-  .p3 { transform: translateZ(128px); }
+  .layer-stack { width: 150px; height: 150px; --gap: 32px; }
   .layer-list li { grid-template-columns: 56px minmax(0, 1fr); }
   .layer-list img { width: 56px; height: 56px; }
 }
@@ -537,14 +535,18 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
   </div>
   <div class="layers">
     <div>
-      <div class="stage" role="img" aria-label="The square's layers pulled apart: the aerial photo at the bottom, height above it, and water on top.">
+      <div class="stage" role="img" aria-label="The square's layers pulled apart, bottom to top: the aerial photo, height, water, cast shadow, bright flat ground and built-up area.">
         <div class="layer-stack">
-          <div class="plane p1"><img src="img/photo.webp" alt=""></div>
-          <div class="plane p2 opt"><img src="img/height.webp" alt=""></div>
-          <div class="plane p3 opt water-plane"><img src="img/water_alpha.webp" alt=""></div>
+          <div class="plane" style="--i:0"><img src="img/photo.webp" alt=""></div>
+          <div class="plane opt" style="--i:1"><img src="img/height.webp" alt=""></div>
+          <div class="plane opt water-plane" style="--i:2"><img src="img/water_alpha.webp" alt=""></div>
+          <div class="plane opt sheet" style="--i:3"><img src="img/shadow_alpha.webp" alt=""></div>
+          <div class="plane opt sheet" style="--i:4"><img src="img/brightflat_alpha.webp" alt=""></div>
+          <div class="plane opt sheet" style="--i:5"><img src="img/settlement_alpha.webp" alt=""></div>
+        </div>
         </div>
       </div>
-      <p class="stage-note">Pulled apart for display. In the model, the layers are read at the same pixel.</p>
+      <p class="stage-note">Pulled apart for display, in the order of the list. In the model, the layers are read at the same pixel.</p>
     </div>
 
     <div>
