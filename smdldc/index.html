@@ -17,6 +17,9 @@
   --ink-2: #4a5359;
   --ink-3: #7a858c;
   --rule: #dde2e4;
+  --card: #fbfbf7; --muted: #58696c; --teal: #1d6c67; --teal-soft: #d6eae6; --ochre: #9a5a12; --ochre-soft: #f6e8d2;
+  --paper: #eef0ea;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --accent: #c8501f;        /* 39&#8211;40 &#176;C step, darkened for text contrast */
   --accent-soft: #fbe6da;
   --cool: #3c6fd6;          /* <23 &#176;C step, for the cool end */
@@ -36,13 +39,13 @@
   :root:not([data-theme="light"]) {
     --bg: #121618; --surface: #1a1f22; --ink: #eef1f2; --ink-2: #b4bdc2; --ink-3: #85919a;
     --rule: #2c3438; --accent: #f08a55; --accent-soft: #3a2419; --cool: #7fa2f0;
-    --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
+    --card: #172224; --paper: #0f1718; --muted: #9aa9a7; --teal: #6fc6bc; --teal-soft: #1b3b36; --ochre: #e7a85c; --ochre-soft: #3a2a17; --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
   --bg: #121618; --surface: #1a1f22; --ink: #eef1f2; --ink-2: #b4bdc2; --ink-3: #85919a;
   --rule: #2c3438; --accent: #f08a55; --accent-soft: #3a2419; --cool: #7fa2f0;
-  --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
+  --card: #172224; --paper: #0f1718; --muted: #9aa9a7; --teal: #6fc6bc; --teal-soft: #1b3b36; --ochre: #e7a85c; --ochre-soft: #3a2a17; --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -423,6 +426,60 @@ table.cmp td:nth-child(2){min-width:12em}
 sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2px}
 .sheetfig .sheetwrap{max-width:560px}
 .part-no{font-variant-numeric:tabular-nums}
+
+/* layer stack (section 1 of the layer graphic) */
+.panel { background: var(--card); border: 1px solid var(--rule); border-radius: 18px; padding: 18px; min-width: 0; }
+.panel-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 4px 14px; margin-bottom: 12px; }
+.panel-head p { font-size: .88rem; color: var(--muted); }
+.tag { font: 600 .66rem/1 var(--sans); padding: 4px 8px; border-radius: 999px; background: var(--teal-soft); color: var(--teal); white-space: nowrap; }
+.tag.opt { background: var(--ochre-soft); color: var(--ochre); }
+.layers { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 18px; align-items: center; }
+.stage {
+  perspective: 1000px; height: 330px; display: flex; align-items: center; justify-content: center; overflow: hidden;
+  min-width: 0;
+}
+.layer-stack {
+  position: relative; width: 210px; height: 210px; transform-style: preserve-3d;
+  transform: rotateX(58deg) rotateZ(-36deg);
+}
+.plane {
+  position: absolute; inset: 0; border-radius: 4px; overflow: hidden;
+  border: 1.5px solid var(--ink); background: var(--card);
+}
+.plane img { width: 100%; height: 100%; object-fit: cover; }
+.plane.opt { border-style: dashed; border-color: var(--ochre); }
+.plane.water-plane { background: transparent; border-color: var(--teal); border-style: solid; }
+.plane.water-plane img { background: transparent; }
+.p1 { transform: translateZ(0); }
+.p2 { transform: translateZ(78px); }
+.p3 { transform: translateZ(156px); }
+.stage-note { font-size: .74rem; color: var(--muted); text-align: center; margin-top: 4px; }
+.layer-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.layer-list li {
+  display: grid; grid-template-columns: 62px minmax(0, 1fr); gap: 12px; align-items: center;
+  border: 1px solid var(--rule); border-radius: 12px; padding: 10px; background: var(--paper);
+}
+.layer-list li.opt { border-style: dashed; border-color: var(--ochre); }
+.layer-list img { width: 62px; height: 62px; border-radius: 8px; object-fit: cover; border: 1px solid var(--rule); }
+.layer-list .k { font: 600 .66rem/1 var(--sans); letter-spacing: .04em; color: var(--muted); }
+.layer-list h3 { margin: 3px 0 2px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
+.layer-list p { font-size: .84rem; }
+.layer-list .c { font-size: .72rem; color: var(--muted); margin-top: 2px; }
+.ramp { height: 8px; border-radius: 4px; border: 1px solid var(--rule); margin-top: 6px; }
+.ramp-l { display: flex; justify-content: space-between; font-size: .66rem; color: var(--muted); margin-top: 2px; }
+.note-box { font-size: .84rem; border-top: 1px solid var(--rule); padding-top: 10px; color: var(--muted); }
+@media (max-width: 900px) {
+  .layers { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 420px) {
+  .panel { padding: 14px; }
+  .stage { height: 290px; }
+  .layer-stack { width: 170px; height: 170px; }
+  .p2 { transform: translateZ(64px); }
+  .p3 { transform: translateZ(128px); }
+  .layer-list li { grid-template-columns: 56px minmax(0, 1fr); }
+  .layer-list img { width: 56px; height: 56px; }
+}
 </style>
 </head>
 <body>
@@ -446,17 +503,101 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
   </header>
 
   <div class="part" id="part-intro"><span class="part-no">1</span><span>Intro</span></div>
-  <section id="dashboard" data-part="intro">
+  <section id="layers" data-part="intro">
+  <div class="wrap">
+<section class="panel" aria-labelledby="stack-title">
+  <div class="panel-head">
+    <h2 id="stack-title">1. The layers, stacked</h2>
+    <p>Solid is the default run. Dashed is optional.</p>
+  </div>
+  <div class="layers">
+    <div>
+      <div class="stage" role="img" aria-label="The square's layers pulled apart: the aerial photo at the bottom, height above it, and water on top.">
+        <div class="layer-stack">
+          <div class="plane p1"><img src="img/photo.webp" alt=""></div>
+          <div class="plane p2 opt"><img src="img/height.webp" alt=""></div>
+          <div class="plane p3 opt water-plane"><img src="img/water_alpha.webp" alt=""></div>
+        </div>
+      </div>
+      <p class="stage-note">Pulled apart for display. In the model, the layers are read at the same pixel.</p>
+    </div>
+
+    <div>
+      <ol class="layer-list">
+        <li>
+          <img src="img/photo.webp" alt="">
+          <div>
+            <div class="k">CHANNELS 1 TO 3</div>
+            <h3>Aerial photo <span class="tag">Default</span></h3>
+            <p>Roofs, roads, trees and water as colour and texture, seen from above.</p>
+            <p class="c">&copy;swisstopo, SWISSIMAGE 10 cm, 2021</p>
+          </div>
+        </li>
+        <li class="opt">
+          <img src="img/height.webp" alt="">
+          <div>
+            <div class="k">CHANNEL 4</div>
+            <h3>Height above ground <span class="tag opt">Optional</span></h3>
+            <p>How tall buildings and trees are. A photo cannot show this.</p>
+            <div class="ramp" style="background:linear-gradient(to right, rgb(244,241,232) 0%, rgb(201,216,160) 22.0%, rgb(127,176,105) 45.0%, rgb(63,125,74) 67.0%, rgb(29,74,46) 100%)"></div>
+            <div class="ramp-l"><span>0 m</span><span>10 m</span><span>20 m+</span></div>
+            <p class="c">&copy;swisstopo, swissSURFACE3D minus swissALTI3D</p>
+          </div>
+        </li>
+        <li class="opt">
+          <img src="img/water.webp" alt="">
+          <div>
+            <div class="k">CHANNEL 5</div>
+            <h3>Water <span class="tag opt">Optional</span></h3>
+            <p>Rivers and lakes from the map. It is a 2026 release on 2021 photos, so the edges do not always match. A photo alone cannot tell water from bare ground, and small channels are often missed.</p>
+            <p class="c">&copy;swisstopo, swissTLM3D (2026 release)</p>
+          </div>
+        </li>
+        <li class="opt">
+          <img src="img/shadow_alpha.webp" alt="">
+          <div>
+            <div class="k">CHANNEL 6</div>
+            <h3>Cast shadow <span class="tag opt">Optional</span></h3>
+            <p>Where buildings and trees throw shade at 14:00 on the longest day, computed from the height layer. This is the layer that helped most in our tests.</p>
+            <p class="c">Computed from swissSURFACE3D minus swissALTI3D</p>
+          </div>
+        </li>
+        <li class="opt">
+          <img src="img/brightflat_alpha.webp" alt="">
+          <div>
+            <div class="k">CHANNEL 7</div>
+            <h3>Bright, flat ground <span class="tag opt">Optional, in test</span></h3>
+            <p>Smooth, bright surfaces such as plazas and paving, found from the photo. The model over-heats these, so this marks where it should be careful. Tested on one fold: no gain (1.75 against 1.749 °C), and leaving these pixels out of training or scoring changes the error by about 0.01 °C.</p>
+            <p class="c">&copy;swisstopo, SWISSIMAGE 10 cm, 2021</p>
+          </div>
+        </li>
+        <li class="opt">
+          <img src="img/settlement_alpha.webp" alt="">
+          <div>
+            <div class="k">CHANNEL 8</div>
+            <h3>Built-up area <span class="tag opt">Optional, in test</span></h3>
+            <p>Sealed, built surfaces from the land-cover map. Too broad to carry the error alone, and about 60% of the remaining error lies inside it, spread across the class.</p>
+            <p class="c">&copy;swisstopo, VECTOR25 land cover</p>
+          </div>
+        </li>
+      </ol>
+      <p class="note-box" style="margin-top:12px">Colour groups (green, brown, grey, other) were built from the photo too, but the best runs do not use them.</p>
+    </div>
+  </div>
+</section>
+  </div>
+</section>
+<section id="dashboard" data-part="intro">
     <div class="col stack">
       <div class="eyebrow">Result in brief</div>
       <h2>A pretrained U-Net predicts the heat map to within about 1.7 °C, with shadow as an input</h2>
-      <p>We predict the 14-level heat-stress map of Bern from photos and compare three approaches, named by what the model outputs: <b>Classification</b> (one of 14 classes), <b>Ordinal</b> (13 ordered yes/no outputs) and <b>Regression</b> (one number in °C). With the 2021 photos the best Classification model reaches a mean error of <b>1.931 °C</b> (median decoding, 20 runs), against 1.978 °C on the original photos. The 2021 photos were better in 20 of 20 paired runs. Ordinal with the CORN head ties Classification on the original photos (1.976 against 1.975 °C). Regression has finished all five folds. The goal was 1.5 °C.</p>
+      <p>We predict the 14-level heat-stress map of Bern from photos and compare three approaches, named by what the model outputs: <b>Classification</b> (one of 14 classes), <b>Ordinal</b> (13 ordered yes/no outputs) and <b>Regression</b> (one number in °C). With the 2021 photos the best Classification model reaches a mean error of <b>1.931 °C</b> (median decoding, 20 runs), against 1.978 °C on the original photos. The 2021 photos were better in 20 of 20 paired runs. Ordinal with the CORN head ties Classification on the original photos (1.976 against 1.975 °C). Regression with height, water and a cast-shadow layer reaches <b>1.66 °C</b> over five folds, scored against exact degrees (a stricter scale than the 14-level scoring used by Classification). The goal was 1.5 °C.</p>
       <p>Three weaknesses shape every number below. The models <b>never predict above 43 °C</b> (0.77% of the true map). The 2021 photos were chosen by date and forest colour and are the weakest year on structure. And photos and labels are years apart, so some of the error is not the model's.</p>
     </div>
     <div class="kpis">
       <div class="kpi"><b>1.931 °C</b><span>Classification, 2021 photos, median decoding, 20 runs. Better than the original photos in 20 of 20 paired runs.</span></div>
       <div class="kpi"><b>1.976 °C</b><span>Ordinal (CORN), original photos, five folds, median decoding. Classification on the same setup: 1.975 °C.</span></div>
-      <div class="kpi"><b>1.659 °C</b><span>Regression with height, water and shadow, five folds, scored against exact degrees (stricter). Photo only, same target: 1.922 °C. Classification on the same folds: 1.975 °C median decoding.</span></div>
+      <div class="kpi"><b>1.659 °C</b><span>Regression with height, water and shadow, five folds, scored against exact degrees (stricter). Photo only, same target: 1.922 °C.</span></div>
       <div class="kpi weak"><b>+0.16 °C</b><span>the best model (regression with shadow) is still above the 1.5 °C goal</span></div>
       <div class="kpi weak"><b>0.00%</b><span>of pixels predicted above 43 °C by Ordinal (CORN), against 0.77% in the true map</span></div>
       <div class="kpi"><b>0.78 °C</b><span>floor from the 14 bins when scoring against exact degrees (tile 201)</span></div>
@@ -1054,7 +1195,32 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
       <h2>Regression: all five folds done</h2>
       <p>One number per pixel in °C. Owner: Timo. The exact-degree target is the new part: it removes the 14-bin floor, but it is scored against exact degrees, which is stricter.</p>
     </div>
-    <p class="status col"><span class="pill done">complete</span> <b>All five folds done.</b> </p>
+    <div class="col stack">
+      <h3>Adding height, water and a cast-shadow layer</h3>
+      <p>Three extra input layers, each tested by itself, cut the five-fold mean error from 2.0 °C (photo only) to <b>1.66 °C</b> with height, water and shadow together. Height and water give 1.77 °C; the shadow layer (the 14:00 sun on the 21 June, computed from the height model) adds about 0.11 °C more. Shadow wins on all ten fold-seed pairs (two seeds). The water layer is a 2026 release and the photos are from 2021, so part of its gain may be a date mismatch.</p>
+    </div>
+    <p class="status col"><span class="pill done">complete</span> <b>All five folds done</b> for the exact target. The later tests below use fold 0 only. </p>
+
+    <div class="subsec" id="reg-more">
+      <h3 id="reg-more-h" data-toc="sub" data-toc-title="Tests after the shadow layer">Tests after the shadow layer</h3>
+      <p class="col">All on fold 0 (one seed) with the same 26.0 M scored pixels, so they can be compared with each other; the three-hour shadow row also has all five folds. The reference is the shadow model at 1.749 °C. Fold 0 is one of the harder folds; the five-fold mean for the same model is 1.66 °C.</p>
+      <div class="tablewrap col"><table><thead><tr><th>Test</th><th class=num>MAE (°C)</th><th>What it shows</th></tr></thead><tbody>
+        <tr><td>Shadow at 10:00, 14:00 and 18:00</td><td class=num>1.716 (five folds: 1.635)</td><td>Small gain on all five folds: five-fold mean 1.635 °C against 1.659 °C with the 14:00 layer alone (folds 1.716, 1.639, 1.725, 1.579, 1.513; gains from 0.002 to 0.036 °C, one seed). On fold 0, 304 of 475 tiles are better, and hot pixels gain most: the error at or above 42 °C drops from 2.65 to 2.32.</td></tr>
+        <tr><td>Average of seed 0, seed 1 and the three-hour model</td><td class=num>1.709</td><td>Averaging models gains 0.01 to 0.04 °C at most.</td></tr>
+        <tr><td>Hot pixels weighted four times in the loss (from 40 °C)</td><td class=num>1.888</td><td>The error at or above 40 °C falls from 1.83 to 1.09, but the whole map shifts warm (bias +0.58 °C) and the overall error rises by 0.14 °C.</td></tr>
+        <tr><td>Bright, flat ground left out of training</td><td class=num>1.757</td><td>No gain; leaving it out of the scoring changes the error by about 0.01 °C.</td></tr>
+        <tr><td>Photos from 2020 (the label year) instead of 2021</td><td class=num>1.912</td><td>Worse, not better. Matching the photo year to the label year does not explain the remaining error.</td></tr>
+      </tbody></table></div>
+      <div class="col stack"><ul class="clean">
+        <li><b>Where the error sits:</b> about 60% of it is inside settled areas and spread across the class. Bright, flat ground is a sharp +4 °C spot but only 0.3% of the pixels.</li>
+        <li><b>Hot end:</b> pixels at or above 42 °C are 1.6 to 2.6 °C too cold depending on the model. Pixels that are hot but shaded at 14:00 are the worst group (error about 4.1 to 4.5 °C, 0.4% of the pixels).</li>
+        <li><b>A coarser output grid</b> (the label cell is 9.45 pixels wide) made the error worse, from 1.75 to 1.87 °C, tested after training.</li>
+        <li><b>One tile looks like a photo and label mismatch:</b> a large bright basin that the label marks as cool gives the same error of about 8 °C in every model, so a model change is unlikely to fix it. What the basin looked like in 2021 is not checked.</li>
+        <li><b>Large forest errors</b> in three tiles stay unexplained. Felling visible only in the 2021 photo is real, but using the 2020 photos did not help.</li>
+        <li><b>Classification decoding:</b> using the probability-weighted mean instead of the median gives 2.33 against 2.45 °C on the same photos, and still never predicts above 43 °C.</li>
+      </ul></div>
+    </div>
+
 
     <div class="subsec" id="reg-setup">
       <h3 id="reg-setup-h" data-toc="sub" data-toc-title="Setup">Setup</h3>
@@ -1090,7 +1256,7 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
       <div class="col stack"><ul class="clean">
         <li><b>Not directly comparable:</b> with the exact target Regression is scored against exact degrees on 26.0 M pixels in fold 0, Classification against levels on 26.6 M. Exact degrees are stricter.</li>
         <li><b>One seed only</b>.</li>
-        <li><b>Not measured yet:</b> whether Regression predicts the hot end above 43 °C. Exact-degree training is meant to give the extremes a training signal, but this has not been checked on the finished folds. Where a regression is unsure it can blur towards middle values, which the two-peaked distribution punishes.</li>
+        <li><b>Hot end, measured:</b> Regression predicts 0.06 % of pixels at or above 43 °C, against 0.65 % true (fold 0). It blurs the rare hot pixels towards the middle: the error above 42 °C is about −2.6 °C. Exact-degree training does not fix this on its own. Weighting hot pixels fixes part of the hot end and costs 0.14 °C overall, so it is not adopted.</li>
         <li><b>Photos and labels are years apart</b>, as for the other approaches.</li>
       </ul></div>
     </div>
@@ -1125,14 +1291,10 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
       <h2>What the data cannot tell us</h2>
     </div>
     <div class="limits">
-      <div class="limit"><h3><span class="sev hi">High</span>The models never predict above 43 °C</h3><p>Classification and Ordinal output 0.00% of pixels above 43 °C against 0.77% in the true map; 42 to 43 °C gets about 0.15% against 2.22%. The hottest areas are always under-estimated. Regression has not been checked for this yet.</p></div>
+      <div class="limit"><h3><span class="sev hi">High</span>The models never predict above 43 °C</h3><p>Classification and Ordinal output 0.00% of pixels above 43 °C against 0.77% in the true map; 42 to 43 °C gets about 0.15% against 2.22%. The hottest areas are always under-estimated. Regression predicts 0.06 % of pixels above 43 °C against 0.65 % true (fold 0): it is nearly zero too, and it blurs the hot pixels towards the middle.</p></div>
       <div class="limit"><h3><span class="sev hi">High</span>Photos and labels are years apart</h3><p>The labels are for 2020; the photos are SWISSIMAGE 2021 chosen by date and forest colour. 2021 is the weakest year on structure (correlation 0.43), and the original photos match no single year cleanly.</p></div>
-      <div class="limit"><h3><span class="sev md">Medium</span>Binning sets a floor</h3><p>Scored against exact degrees, any method that predicts bin midpoints has a minimum error of 0.78 °C on tile 201.</p></div>
       <div class="limit"><h3><span class="sev md">Medium</span>Single-seed and partial results</h3><p>The Ordinal and Regression runs use one seed. Regression with the exact target covers all five folds, with one seed.</p></div>
-      <div class="limit"><h3><span class="sev hi">High</span>The model never predicts above 43 &#176;C</h3><p>0.00% of predicted pixels against 0.77% true; 42&#8211;43 &#176;C gets 0.15% against 2.22%. The hottest areas are always under-estimated.</p></div>
-      <div class="limit"><h3><span class="sev hi">High</span>Photos and labels are years apart</h3><p>The labels are for 2020; the photos are SWISSIMAGE 2021 chosen by date and forest colour. 2021 is the weakest year on structure (correlation 0.43), and the original photos match no single year cleanly.</p></div>
       <div class="limit"><h3><span class="sev md">Medium</span>Binning sets a floor</h3><p>Scored against exact degrees, any method that predicts bin midpoints has a minimum error of 0.78 &#176;C on tile 201.</p></div>
-      <div class="limit"><h3><span class="sev md">Medium</span>Single-seed and single-fold results</h3><p>The ordinal and regression runs use one seed. The regression results cover fold 0 only, and folds 1 to 4 on the exact target are still running.</p></div>
       <div class="limit"><h3><span class="sev hi">High</span>Photo and heat map from different times</h3><p>Fields that look green are labelled 40 &#176;C. Seasonal and land-use mismatch sets a ceiling on achievable accuracy, especially in the agricultural west.</p></div>
       <div class="limit"><h3><span class="sev hi">High</span>No ground truth outside Bern</h3><p>Generalisation to other cities can only be judged visually unless we find a comparable heat-stress map elsewhere.</p></div>
       <div class="limit"><h3><span class="sev md">Medium</span>One city, one map</h3><p>2,275 tiles from one city cover few building styles and little topography. The effective number of independent samples is smaller than the tile count.</p></div>
@@ -1150,16 +1312,16 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
     <h2>Open items</h2>
     <p class="muted">All three approaches follow the same measurement rules: the evaluation guide in the project repo has the splits, metrics and required runs.</p>
     <ul class="nextlist">
-      <li><span class="pill open">open</span><span>Regression: more seeds, and a check of the hot end</span></li>
+      <li><span class="pill open">open</span><span>Three-hour shadow done on five folds (1.635 °C, one seed); a second seed and a sky-view layer (how enclosed a pixel is) are next</span></li>
       <li><span class="pill open">open</span><span>Decide the final approach and how Classification, Ordinal and Regression combine, after the comparison</span></li>
-      <li><span class="pill open">open</span><span>A closer photo: Bern's own orthophoto (2020 or 2023), if it exists</span></li>
+      <li><span class="pill done">done</span><span>2020 photos built and tested against the 2020 labels: 1.912 °C against 1.749 °C on the 2021 photos, so the year match does not help</span></li>
       <li><span class="pill open">open</span><span>Ordinal with RGB plus classes (needs the first convolution widened to 7 channels; waits for the group's OK)</span></li>
       <li><span class="pill open">open</span><span>More seeds for Ordinal and Regression; the 3 × 3 and 10 × 10 split checks wait for the final model</span></li>
       <li><span class="pill open">open</span><span>Test with and without the land-cover mask for every approach (done for Ordinal: base mask is better)</span></li>
       <li><span class="pill open">open</span><span>Why the land-cover mask over-predicts level 9 and under-predicts levels 10 and 11</span></li>
-      <li><span class="pill open">open</span><span>Check whether Regression predicts the hot end above 43 °C</span></li>
+      <li><span class="pill done">done</span><span>Hot end of Regression checked: 0.06% of pixels at or above 43 °C against 0.65% true; weighting the loss fixes part of it at a cost of 0.14 °C overall</span></li>
       <li><span class="pill open">open</span><span>Extend the comparison to DeepLabV3+ and SegFormer</span></li>
-      <li><span class="pill open">open</span><span>Outside-Bern photos and comparable heat maps (Zürich, Basel); ask the supervisors for raw heat values; check the layer metadata (quantity, time of day, model)</span></li>
+      <li><span class="pill open">open</span><span>Zürich: 2025 photos and 2024 heat tiles are built and joined (95,483 tiles); the first Zürich training run crashed and is queued again; the transfer in the other direction is not run yet. A Bern model scored on Zürich gives 3.13 °C without any Zürich training (not comparable with Bern: different level and masking).</span></li>
       <li><span class="pill done">done</span><span>Photo year compared on tile 201 and ten tiles; 2021 chosen as the working reference</span></li>
       <li><span class="pill done">done</span><span>Label grid placed on the 5 m GeoTIFF (tile 201 agreement 0.996)</span></li>
       <li><span class="pill done">done</span><span>Classification: four seeds × five folds on the 2021 photos (20 of 20 paired runs better)</span></li>
@@ -1180,7 +1342,7 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
     </ul>
   </section>
 
-  <footer>Project guide, updated 10 Nov 2026 · published by Timo · ©swisstopo · Geodaten Stadt Bern</footer>
+  <footer>Project guide, updated 10 Nov 2026 · maintained by Timo; published by Timo only (manual deploy, no CI) · ©swisstopo · Geodaten Stadt Bern</footer>
 </main>
 </div>
 <script>
