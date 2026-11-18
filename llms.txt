@@ -1,6 +1,6 @@
 # Timo Feddern | Projects
 
-> Landing page and index of selected work by Timo Feddern, cloud fullstack developer at IBM Client Innovation Center Switzerland and master's student in Integrated Building Systems at ETH Zürich. Background: carpenter → digital construction specialist → cloud infrastructure. This site (git.feddern.dev) links out to the personal portfolio, two academic ETH projects, a study-guidance product, an event site, and an electronic-music label.
+> Landing page and index of selected work by Timo Feddern, cloud fullstack developer at IBM Client Innovation Center Switzerland and master's student in Integrated Building Systems at ETH Zürich. Background: carpenter → digital construction specialist → cloud infrastructure. This site (git.feddern.dev) links out to the personal portfolio, academic and research projects, a study-guidance product, an event site, and an electronic-music label.
 
 ## Person
 
@@ -16,9 +16,17 @@
 - [Personal portfolio (feddern.dev)](https://feddern.dev): Terminal-style personal site with a live console. Details on work, background, featured GitHub repos.
 - [HardLeaf](https://git.feddern.dev/ca2/): ETH Zürich Computational Architecture II studio project: a biomimetic timber pavilion optimising solar shading through vegetation. Interactive WebXR viewer with AR support.
 - [Building Systems 1](https://git.feddern.dev/bs1/): ETH Zürich Building Systems 1 coursework: interactive 3D model viewer with AR support.
+- [Bern Heat Islands](https://git.feddern.dev/smdldc/): interactive research guide on aerial imagery and modelled PET prediction.
 - [StudyCompass](https://studycompass.ch): Product. A platform helping students find the study path that actually fits them.
 - [GymRave](https://gymrave.ch): Event site. "Eine Rave. Im Gym." One-night rave at Sportcenter Ägeri on 25.09.2026 with T-Møse × NIRO.
 - [Passabel Kollektiv](https://passabelk.ch): Independent electronic-music label organising rave events.
+
+## Bern Heat Islands research
+
+- [Research guide](https://git.feddern.dev/smdldc/): Bern modelled daytime physiological equivalent temperature (PET), not measured air or surface temperature. Includes original data reconstruction, 2021 and 2020 imagery investigations, height/water/shadow layers, classification/ordinal/regression comparisons and detailed error analysis.
+- [Evaluation context](https://git.feddern.dev/smdldc/#evaluation-scope): reported experiments are development evaluations after repeated test-guided comparisons; independent final validation remains pending. Compare scores only with their target, mask, inputs, decoder, folds and seeds.
+- [Sources and reuse](https://git.feddern.dev/smdldc/#credits): ©swisstopo and Geodaten Stadt Bern source terms remain applicable. No blanket Creative Commons licence or official-provider endorsement is asserted.
+- [Privacy and site information](https://git.feddern.dev/privacy/): publisher contact, GitHub Pages/Cloudflare delivery and external resource information.
 
 ## Featured GitHub repositories
 
@@ -36,4 +44,4 @@
 ## Resources
 
 - [Sitemap XML](https://git.feddern.dev/sitemap.xml): All indexable URLs on this hub.
-- [OG Image](https://git.feddern.dev/assets/og.jpg): 1200×630 social preview image.
+- [OG Image](https://git.feddern.dev/assets/og.jpg): Project-index social preview image.

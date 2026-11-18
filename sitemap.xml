@@ -3,7 +3,7 @@
         xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
   <url>
     <loc>https://git.feddern.dev/</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1.0</priority>
     <image:image>
@@ -26,8 +26,10 @@
   </url>
   <url>
     <loc>https://git.feddern.dev/llms.txt</loc>
-    <lastmod>2026-08-12</lastmod>
+    <lastmod>2026-11-18</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.2</priority>
   </url>
+  <url><loc>https://git.feddern.dev/smdldc/</loc><lastmod>2026-11-18</lastmod><image:image><image:loc>https://git.feddern.dev/smdldc/img/social-preview.jpg</image:loc><image:title>Bern Heat Islands research</image:title><image:caption>Photo ©swisstopo; modelled PET: Geodaten Stadt Bern; prediction and error: project analysis.</image:caption></image:image></url>
+  <url><loc>https://git.feddern.dev/privacy/</loc><lastmod>2026-11-18</lastmod></url>
 </urlset>

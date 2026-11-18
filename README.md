@@ -1,134 +1,68 @@
 # Timo Feddern | Projects
 
-This repository hosts a landing page and a small collection of static sites served together from GitHub Pages. `index.html` is a project index that links out to each site.
+Static sites served together by GitHub Pages. The root `index.html` is the project hub; GymRave is an external link to a separate repository.
 
-## Repository Structure
+## Public routes
 
-```
-StaticWeb/
-├── index.html              # Hub landing page (project index)
-├── root/                   # Personal Portfolio (feddern.dev)
-│   ├── index.html
-│   ├── index.css
-│   ├── index.js
-│   ├── favicon.ico
-│   └── CNAME              # feddern.dev
-├── ca2/                    # HardLeaf: WebXR pavilion viewer (ETH CA II)
-│   ├── index.html
-│   ├── styles.css
-│   ├── script.js
-│   ├── a03_design-project.glb
-│   ├── final_hexmesh.glb
-│   └── skybox_360.jpg
-├── site1/, site2/, site3/  # Scratch slots, not linked from the hub
-├── .github/
-│   └── workflows/
-│       └── deploy.yml      # GitHub Actions deployment
-├── README.md
-├── SETUP.md
-├── .gitignore
-└── CNAME.example
+The curated build preserves the existing paths rather than publishing the entire repository:
+
+- `/` — project hub
+- `/root/` — personal portfolio
+- `/ca2/` — HardLeaf WebXR pavilion, including its models
+- `/bs1/` — building-systems viewer, including `results/` and `older/`
+- `/smdldc/` — urban-heat project, including the review viewer and `review/tiles.json`
+- `/site1/`, `/site2/`, `/site3/` — legacy slots, reachable directly
+- `/privacy/` — privacy page
+- `/assets/` — shared images and locally hosted fonts
+
+## Build and preview
+
+Python 3.10+ and Git are the only build requirements. Run from the repository root:
+
+```sh
+python3 scripts/build_public.py
+python3 -m http.server 8000 --directory public
 ```
 
-> **GymRave** (event site at [gymrave.ch](https://gymrave.ch)) is featured on the hub but lives in a **separate repository**. It is only linked out from `index.html`, not hosted here.
+Open `http://localhost:8000/`. Deployment uploads **only `public/`**, never repository `.`.
 
-## How It Works
+### Publication policy
 
-### URL Structure
-- **Hub**: `https://mistereleven.github.io/StaticWeb/`
-- **Personal Portfolio**: [`feddern.dev`](https://feddern.dev) (custom domain) or `https://mistereleven.github.io/StaticWeb/root/`
-- **HardLeaf (WebXR)**: `https://mistereleven.github.io/StaticWeb/ca2/`
-- **GymRave** (external, separate repo): [`gymrave.ch`](https://gymrave.ch)
+The builder gets its inputs from `git ls-files -z`, then applies a public-path and file-type allowlist. It copies the working-tree contents of tracked files, so local edits are visible without committing. Missing tracked public files fail the build instead of silently removing a route.
 
-`site1/`, `site2/`, `site3/` remain reachable by direct URL but are intentionally not linked from the hub.
+**New files must be added to Git before the normal build will copy them.** This includes `assets/fonts/…`, `privacy/index.html`, and `smdldc/img/social-preview.jpg`. Review new images and PDFs before adding them; untracked files are never swept into the default build. In CI, only files present in the checked-out commit can be published.
 
-### Custom Domains
+For local verification before adding approved files, opt in to exact repository-relative paths:
 
-#### feddern.dev (Personal Portfolio)
-The `root/` directory is configured with a custom domain:
-- **CNAME file**: `root/CNAME` contains `feddern.dev`
-- **DNS Configuration**: Point your domain to GitHub Pages
-  - Type: A records or CNAME
-  - Value: GitHub Pages IPs or `yourusername.github.io`
-- **GitHub Settings**: Enable custom domain in repository settings
+```sh
+python3 scripts/build_public.py \
+  --include privacy/index.html \
+  --include assets/fonts \
+  --include smdldc/img/social-preview.jpg
+```
 
-#### Additional Custom Domains (Optional)
-Each subdirectory can have its own custom domain:
-1. Add a `CNAME` file in the site directory (e.g., `site1/CNAME`)
-2. Configure DNS records to point to GitHub Pages
-3. Enable custom domain in repository settings
+`--include` is repeatable, local-preview-only, and is not used by the workflow. A directory includes its descendants only if **every file** passes the publication policy. Absolute paths, traversal, glob patterns, symlinks, forbidden extensions, and files outside approved public routes are refused. An explicit include cannot bypass the policy or publish a registry such as `experiments.json`.
 
-**Note**: GitHub Pages supports one custom domain per repository by default. For multiple custom domains, consider using DNS redirects or deploying sites as separate repositories.
+At the repository root, only `index.html`, `favicon.svg`, `robots.txt`, `sitemap.xml`, `llms.txt`, and an existing tracked `CNAME` or intentional `.nojekyll` are eligible. Under approved routes, runtime HTML/CSS/JavaScript, images, fonts, models, PDFs, and media are eligible. JSON is limited to `smdldc/review/tiles.json` and the existing `bs1/results/**/{cfd_points_legend,openings}.json` data. Development files and directories, editor metadata, XML/IML/workspace files, Python, Markdown, example configs, and general text documentation are excluded. Public font notices (`assets/fonts/**/LICENSE`, `LICENSE.txt`, `OFL.txt`), legacy `root/codenerve.txt`, and route `CNAME` files are exceptions.
+
+The build uses a temporary staging directory and validates the inventory before swapping it into `public/`. It replaces an existing `public/` **only when** that directory has the builder's `.staticweb-public` ownership marker. An existing unmarked directory, file, or symlink is refused; move it aside yourself after inspecting its contents. Interrupted `.public-stage-*` or `.public-old-*` directories are ignored by Git and are not published. The marker contains only a fixed ownership identifier; no development-file manifest is shipped.
+
+A successful build prints the published file count and a deterministic SHA-256 over sorted public paths and their contents. Repeat the build without input changes to compare the digest. The ownership marker is excluded from that digest. Inspect output paths locally with:
+
+```sh
+find public -type f | sort
+```
 
 ## Deployment
 
-### Automatic Deployment
-This repository uses GitHub Actions to automatically deploy to GitHub Pages on every push to the `main` branch.
+`.github/workflows/deploy.yml` builds and deploys on pushes to `main` or manual dispatch. In repository **Settings → Pages**, set the source to **GitHub Actions**; do not deploy a branch's repository root. The workflow checks out the commit, configures Pages, runs the Python builder, uploads `public/`, and deploys the artifact.
 
-### Manual Setup
-1. Go to repository Settings → Pages
-2. Source: Deploy from a branch
-3. Branch: `gh-pages` (or `main`)
-4. Folder: `/ (root)`
+For a custom domain, add and commit a repository-root `CNAME`, configure its DNS, and configure the domain in Pages settings. GitHub Pages supports one custom domain per repository; a nested `CNAME` does not create another independent domain. Existing nested files are retained for compatibility.
 
-## Adding a New Site
+## Adding or updating content
 
-1. Create a new directory: `mkdir site-name`
-2. Add an `index.html` file
-3. (Optional) Add a `CNAME` file for custom domain
-4. Commit and push changes
-
-## Customization
-
-### Root Landing Page
-Edit `index.html` to customize the main landing page that lists all your sites.
-
-### Individual Sites
-Each site directory is independent and can use:
-- Plain HTML/CSS/JS
-- Static site generators (build output)
-- Any static content
-
-## Custom Domain Configuration
-
-### For Individual Sites
-1. Create `CNAME` file in site directory:
-   ```
-   echo "subdomain.yourdomain.com" > site1/CNAME
-   ```
-
-2. Configure DNS:
-   - Type: CNAME
-   - Name: subdomain
-   - Value: yourusername.github.io
-
-### For Root Domain
-1. Create `CNAME` file in root:
-   ```
-   echo "yourdomain.com" > CNAME
-   ```
-
-2. Configure DNS:
-   - Type: A records pointing to GitHub Pages IPs:
-     - 185.199.108.153
-     - 185.199.109.153
-     - 185.199.110.153
-     - 185.199.111.153
-
-## Use Cases
-
-- **Portfolio**: Multiple project showcases
-- **Documentation**: Different product docs
-- **Landing Pages**: Various marketing pages
-- **Experiments**: Test different designs
-- **Multi-tenant**: Separate sites for different clients/projects
+Edit a site's files in place, build, and preview its existing URL. For a new top-level route or runtime file format, explicitly update the policy in `scripts/build_public.py` after reviewing what should be public. Add approved new files to Git, rebuild **without `--include`**, and verify their output before committing and pushing. Keep source scripts, research registries, notes, and private material outside the publication policy.
 
 ## Technologies
 
-- GitHub Pages (hosting)
-- GitHub Actions (CI/CD)
-- Static HTML/CSS/JS
-
-## License
-
-MIT License - Feel free to use this structure for your projects!
+GitHub Pages, GitHub Actions, and static HTML/CSS/JavaScript.

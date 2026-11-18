@@ -34,6 +34,12 @@ yarn-error.log*
 package-lock.json
 yarn.lock
 
+# Curated Pages build and interrupted staging directories
+/public/
+/.public-stage-*/
+/.public-old-*/
+__pycache__/
+
 # Build outputs (if you add build tools later)
 dist/
 build/
