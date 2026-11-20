@@ -25,23 +25,29 @@
 <title>Bern Heat Islands | Aerial imagery and PET prediction</title>
 <link rel="stylesheet" href="fonts/guide.css">
 <style>
-/* Layout: a single reading column (~68ch) that steps out to full width for maps and the comparison slider; the heat legend itself is the colour system. */
+/* Interface: Baltic Blue, Jet Black, Sea Green, Desert Sand and Clay Soil.
+   Scientific map/legend, error and categorical chart encodings stay independent. */
 :root {
-  --bg: #f7f8f8;
-  --surface: #ffffff;
-  --ink: #15191c;
-  --ink-2: #4a5359;
-  --ink-3: #7a858c;
-  --rule: #dde2e4;
-  --card: #fbfbf7; --muted: #58696c; --teal: #1d6c67; --teal-soft: #d6eae6; --ochre: #9a5a12; --ochre-soft: #f6e8d2;
-  --paper: #eef0ea;
+  --baltic-blue: #41658a;
+  --jet-black: #1f363d;
+  --sea-green: #2d936c;
+  --desert-sand: #d8bfaa;
+  --clay-soil: #804e49;
+  --bg: #eee5dd;
+  --surface: #faf7f3;
+  --ink: var(--jet-black);
+  --ink-2: #3f555b;
+  --ink-3: #52666b;
+  --rule: #c8b8aa;
+  --card: #f3ebe4; --muted: #52666b; --teal: #246e53; --teal-soft: #deebe1; --ochre: var(--clay-soil); --ochre-soft: #edddd1;
+  --paper: #e8dbcf;
   --sans: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  --accent: #c8501f;        /* 39&#8211;40 &#176;C step, darkened for text contrast */
-  --accent-soft: #fbe6da;
-  --cool: #3c6fd6;          /* <23 &#176;C step, for the cool end */
-  --note: #eef3f8;
-  --warn-bg: #fff4e5;
-  --warn-ink: #8a4b00;
+  --accent: var(--baltic-blue);
+  --accent-soft: #dee5e9;
+  --cool: #3c6fd6;
+  --note: #e1e8e7;
+  --warn-bg: #edddd1;
+  --warn-ink: var(--clay-soil);
   --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
   --font-body: "Source Serif 4", Georgia, "Times New Roman", serif;
   --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -53,15 +59,15 @@
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121618; --surface: #1a1f22; --ink: #eef1f2; --ink-2: #b4bdc2; --ink-3: #85919a;
-    --rule: #2c3438; --accent: #f08a55; --accent-soft: #3a2419; --cool: #7fa2f0;
-    --card: #172224; --paper: #0f1718; --muted: #9aa9a7; --teal: #6fc6bc; --teal-soft: #1b3b36; --ochre: #e7a85c; --ochre-soft: #3a2a17; --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
+    --bg: var(--jet-black); --surface: #29434a; --ink: #f4ebe3; --ink-2: #ddcbbb; --ink-3: #c5b8ab;
+    --rule: #5a6d70; --accent: var(--desert-sand); --accent-soft: #37525b; --cool: #7fa2f0;
+    --card: #29434a; --paper: #243d44; --muted: #c5b8ab; --teal: #83c5a5; --teal-soft: #264f43; --ochre: #e2ada1; --ochre-soft: #513c3a; --note: #304c54; --warn-bg: #513c3a; --warn-ink: #edbdb0; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #121618; --surface: #1a1f22; --ink: #eef1f2; --ink-2: #b4bdc2; --ink-3: #85919a;
-  --rule: #2c3438; --accent: #f08a55; --accent-soft: #3a2419; --cool: #7fa2f0;
-  --card: #172224; --paper: #0f1718; --muted: #9aa9a7; --teal: #6fc6bc; --teal-soft: #1b3b36; --ochre: #e7a85c; --ochre-soft: #3a2a17; --note: #1b2530; --warn-bg: #2e2312; --warn-ink: #f2bf73; color-scheme: dark;
+  --bg: var(--jet-black); --surface: #29434a; --ink: #f4ebe3; --ink-2: #ddcbbb; --ink-3: #c5b8ab;
+  --rule: #5a6d70; --accent: var(--desert-sand); --accent-soft: #37525b; --cool: #7fa2f0;
+  --card: #29434a; --paper: #243d44; --muted: #c5b8ab; --teal: #83c5a5; --teal-soft: #264f43; --ochre: #e2ada1; --ochre-soft: #513c3a; --note: #304c54; --warn-bg: #513c3a; --warn-ink: #edbdb0; color-scheme: dark;
 }
 
 * { box-sizing: border-box; }
@@ -242,9 +248,9 @@ footer { color: var(--ink-3); font-size: var(--step--1); font-family: var(--font
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 /* ---- mockup additions ---- */
-:root{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--ok:#1d6b45;--ok-soft:#e1f3e9;--dot:#2a78d6}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--ok:#6fd4a0;--ok-soft:#143125;--dot:#3987e5}}
-:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--ok:#6fd4a0;--ok-soft:#143125;--dot:#3987e5}
+:root{--s1:var(--baltic-blue);--s2:var(--sea-green);--s3:var(--clay-soil);--ok:#246e53;--ok-soft:#deebe1;--dot:var(--s1);--graph-goal:var(--clay-soil)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s1:#9abbd9;--s2:#83c5a5;--s3:#e2ada1;--ok:#83c5a5;--ok-soft:#264f43;--dot:var(--s1);--graph-goal:#e2ada1}}
+:root[data-theme="dark"]{--s1:#9abbd9;--s2:#83c5a5;--s3:#e2ada1;--ok:#83c5a5;--ok-soft:#264f43;--dot:var(--s1);--graph-goal:#e2ada1}
 body{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .stack{display:grid;gap:12px}
 h3{text-wrap:balance}
@@ -309,9 +315,6 @@ td,th,td:last-child,th:last-child{min-width:0}
 .partnav a{color:var(--ink-2);text-decoration:none;border:1px solid var(--rule);padding:5px 12px;border-radius:999px}
 .partnav a:hover{color:var(--ink);border-color:var(--ink-3)}
 img{max-width:100%}
-:root{--bg:#e9edf0;--surface:#ffffff;--ink:#12171a;--ink-2:#40494f;--ink-3:#5a656c;--rule:#d0d7dc;--accent:#c8501f;--accent-soft:#fbe6da;--cool:#3c6fd6;--note:#e2e9ee;--warn-bg:#fff1de;--warn-ink:#8a4b00}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0c1012;--surface:#161b1e;--ink:#eef1f2;--ink-2:#b4bdc2;--ink-3:#8795a0;--rule:#283036;--accent:#f08a55;--accent-soft:#3a2419;--cool:#7fa2f0;--note:#1b2530;--warn-bg:#2e2312;--warn-ink:#f2bf73;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0c1012;--surface:#161b1e;--ink:#eef1f2;--ink-2:#b4bdc2;--ink-3:#8795a0;--rule:#283036;--accent:#f08a55;--accent-soft:#3a2419;--cool:#7fa2f0;--note:#1b2530;--warn-bg:#2e2312;--warn-ink:#f2bf73;color-scheme:dark}
 
 :root{--font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--step-0:1rem}
 body{font-size:1rem;line-height:1.55}
@@ -332,9 +335,9 @@ tr:last-child td{border-bottom:0}
 .seg{background:var(--surface)}
 
 /* ---- mockup additions ---- */
-:root{--s1:#2a78d6;--s2:#eb6834;--s3:#1baf7a;--ok:#1d6b45;--ok-soft:#e1f3e9;--dot:#2a78d6}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s1:#3987e5;--s2:#d95926;--s3:#199e70;--ok:#6fd4a0;--ok-soft:#143125;--dot:#3987e5}}
-:root[data-theme="dark"]{--s1:#3987e5;--s2:#d95926;--s3:#199e70;--ok:#6fd4a0;--ok-soft:#143125;--dot:#3987e5}
+:root{--s1:var(--baltic-blue);--s2:var(--sea-green);--s3:var(--clay-soil);--ok:#246e53;--ok-soft:#deebe1;--dot:var(--s1);--graph-goal:var(--clay-soil)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--s1:#9abbd9;--s2:#83c5a5;--s3:#e2ada1;--ok:#83c5a5;--ok-soft:#264f43;--dot:var(--s1);--graph-goal:#e2ada1}}
+:root[data-theme="dark"]{--s1:#9abbd9;--s2:#83c5a5;--s3:#e2ada1;--ok:#83c5a5;--ok-soft:#264f43;--dot:var(--s1);--graph-goal:#e2ada1}
 body{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 .stack{display:grid;gap:12px}
 h3{text-wrap:balance}
@@ -399,9 +402,6 @@ td,th,td:last-child,th:last-child{min-width:0}
 .partnav a{color:var(--ink-2);text-decoration:none;border:1px solid var(--rule);padding:5px 12px;border-radius:999px}
 .partnav a:hover{color:var(--ink);border-color:var(--ink-3)}
 img{max-width:100%}
-:root{--bg:#e9edf0;--surface:#ffffff;--ink:#12171a;--ink-2:#40494f;--ink-3:#5a656c;--rule:#d0d7dc;--accent:#c8501f;--accent-soft:#fbe6da;--cool:#3c6fd6;--note:#e2e9ee;--warn-bg:#fff1de;--warn-ink:#8a4b00}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0c1012;--surface:#161b1e;--ink:#eef1f2;--ink-2:#b4bdc2;--ink-3:#8795a0;--rule:#283036;--accent:#f08a55;--accent-soft:#3a2419;--cool:#7fa2f0;--note:#1b2530;--warn-bg:#2e2312;--warn-ink:#f2bf73;color-scheme:dark}}
-:root[data-theme="dark"]{--bg:#0c1012;--surface:#161b1e;--ink:#eef1f2;--ink-2:#b4bdc2;--ink-3:#8795a0;--rule:#283036;--accent:#f08a55;--accent-soft:#3a2419;--cool:#7fa2f0;--note:#1b2530;--warn-bg:#2e2312;--warn-ink:#f2bf73;color-scheme:dark}
 
 :root{--font-body:"IBM Plex Sans","Segoe UI",system-ui,sans-serif;--step-0:1rem}
 body{font-size:1rem;line-height:1.55}
@@ -476,7 +476,7 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
   border: 1px solid var(--rule); border-radius: 12px; padding: 10px; background: var(--paper);
 }
 .layer-list li.opt { border-style: dashed; border-color: var(--ochre); }
-.layer-list img { width: 62px; height: 62px; border-radius: 8px; object-fit: cover; border: 1px solid var(--rule); background: #eef0ea; }
+.layer-list img { width: 62px; height: 62px; border-radius: 8px; object-fit: cover; border: 1px solid var(--rule); background: var(--paper); }
 .layer-list .k { font: 600 .66rem/1 var(--sans); letter-spacing: .04em; color: var(--muted); }
 .layer-list h3 { margin: 3px 0 2px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: center; }
 .layer-list p { font-size: .84rem; }
@@ -505,7 +505,7 @@ sup{font-family:var(--font-mono);font-size:.7em;color:var(--ink-3);margin-left:2
 .lad-m { font-family: var(--font-mono); font-size: .8rem; color: var(--ink-2); }
 .lad-d { font-family: var(--font-mono); font-size: .72rem; color: var(--ink-3); }
 .lad-plot { position: relative; height: 30px; }
-.lad-goal { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--accent); opacity: .85; }
+.lad-goal { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--graph-goal); opacity: .85; }
 .lad-span { position: absolute; top: 50%; height: 2px; margin-top: -1px; background: var(--ink-3); opacity: .5; }
 .fd { position: absolute; top: 50%; width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px; border-radius: 50%; background: var(--surface); border: 1.5px solid var(--s2); }
 .lad-mean { position: absolute; top: 50%; width: 15px; height: 15px; margin: -7.5px 0 0 -7.5px; border-radius: 50%; background: var(--s2); border: 2px solid var(--surface); box-shadow: 0 0 0 1px var(--s2); }
@@ -1080,7 +1080,7 @@ main{gap:52px}.reading-routes{margin-block:0}
 
 <section id="layer-results" data-part="comparison"><div class="col stack"><h2>Which physical inputs reduce error?</h2></div>    <div class="col stack"><h3 id="detail-what-each-layer-buys-1" data-toc="sub" data-toc-title="What each layer buys">What each layer buys</h3></div>
     <div id="explorer" class="stack">
-      <p>Regression with the exact target, five spatial folds, seed 0 (the table keeps seed 0 fixed; additional seed coverage is noted below). Each step adds one input to the step above. Large dot: mean over five folds. Small dots: the five folds. The orange line is the 1.5 °C goal.</p>
+      <p>Regression with the exact target, five spatial folds, seed 0 (the table keeps seed 0 fixed; additional seed coverage is noted below). Each step adds one input to the step above. Large dot: mean over five folds. Small dots: the five folds. The vertical goal line marks 1.5 °C.</p>
       <div class="ladder">
         <div class="lad-axis" aria-hidden="true"><span style="left:14.29%">1.5 goal</span><span style="left:28.57%">1.6</span><span style="left:57.14%">1.8</span><span style="left:85.71%">2.0</span></div>
         <div class="lad-row"><div class="lad-lab"><b>Photo only</b><span class="lad-m">1.922 °C</span></div><div class="lad-plot" role="img" aria-label="Photo only: mean 1.92 °C over five folds, folds from 1.78 to 2.02"><i class="lad-goal" style="left:14.29%"></i><i class="lad-span" style="left:54.86%;width:33.29%"></i><i class="fd" style="left:88.14%" title="fold 0: 2.017 °C"></i><i class="fd" style="left:84.29%" title="fold 1: 1.990 °C"></i><i class="fd" style="left:84.14%" title="fold 2: 1.989 °C"></i><i class="fd" style="left:61.14%" title="fold 3: 1.828 °C"></i><i class="fd" style="left:54.86%" title="fold 4: 1.784 °C"></i><i class="lad-mean" style="left:74.57%"></i></div></div>
@@ -1643,7 +1643,8 @@ main{gap:52px}.reading-routes{margin-block:0}
   const sw = SW - sm.l - sm.r, sh = SH - sm.t - sm.b;
   const lo = 1.80, hi = 2.10, sy = v => sm.t + sh - ((v - lo) / (hi - lo)) * sh;
   const sx = (k) => sm.l + (k + 0.5) * (sw / 5);
-  const sCol = ["#3c6fd6", "#c8501f", "#2f8f5b", "#7a4fb0"];
+  const sCol = Array(4).fill("var(--s1)");
+  const seedGlyphs = ["●", "■", "◆", "▲"];
   let ss = `<svg viewBox="0 0 ${SW} ${SH}" role="img" aria-label="Median-decoded MAE per fold for four seeds">`;
   [1.80, 1.85, 1.90, 1.95, 2.00, 2.05, 2.10].forEach(t => {
     ss += `<line class="grid" x1="${sm.l}" x2="${SW - sm.r}" y1="${sy(t)}" y2="${sy(t)}"/>`;
@@ -1654,18 +1655,22 @@ main{gap:52px}.reading-routes{margin-block:0}
   });
   const meanOf = k => seeds.reduce((a, s) => a + s.v[k], 0) / seeds.length;
   [0, 1, 2, 3, 4].forEach(k => {
-    ss += `<line class="marker" x1="${sx(k) - 60}" x2="${sx(k) + 60}" y1="${sy(meanOf(k))}" y2="${sy(meanOf(k))}" style="stroke:var(--ink-2);stroke-dasharray:4 3"/>`;
+    ss += `<line class="marker" x1="${sx(k) - 60}" x2="${sx(k) + 60}" y1="${sy(meanOf(k))}" y2="${sy(meanOf(k))}" style="stroke:var(--ink);stroke-dasharray:4 3"/>`;
   });
   seeds.forEach((s, si) => {
     s.v.forEach((val, k) => {
       const off = (si - 1.5) * 22;
-      ss += `<circle cx="${sx(k) + off}" cy="${sy(val)}" r="5" fill="${sCol[si]}" stroke="var(--surface)" stroke-width="1.5"/>`;
+      const cx=sx(k)+off, cy=sy(val), st=`fill:${sCol[si]};stroke:var(--surface);stroke-width:1.5`, tip=`<title>${s.name}, fold ${k}: ${val.toFixed(3)} °C</title>`;
+      if(si===0) ss+=`<circle cx="${cx}" cy="${cy}" r="5.5" style="${st}">${tip}</circle>`;
+      else if(si===1) ss+=`<rect x="${cx-5.5}" y="${cy-5.5}" width="11" height="11" style="${st}">${tip}</rect>`;
+      else if(si===2) ss+=`<path d="M${cx},${cy-7} L${cx+7},${cy} L${cx},${cy+7} L${cx-7},${cy} Z" style="${st}">${tip}</path>`;
+      else ss+=`<path d="M${cx},${cy-7} L${cx+7},${cy+5.5} L${cx-7},${cy+5.5} Z" style="${st}">${tip}</path>`;
     });
   });
   ss += `<line class="base" x1="${sm.l}" x2="${SW - sm.r}" y1="${sm.t + sh}" y2="${sm.t + sh}"/>`;
   ss += `<text class="axis-label" x="${sm.l + sw / 2}" y="${SH - 6}" text-anchor="middle">Test fold (median-decoded MAE, °C; dashed = mean of four seeds)</text></svg>`;
   sc.innerHTML = ss;
-  sc.insertAdjacentHTML("beforeend", `<div class="legend-row" style="margin-top:8px">${seeds.map((s, i) => `<span><i style="background:${sCol[i]};border-radius:50%;width:10px;height:10px"></i>${s.name}</span>`).join("")}</div>`);
+  sc.insertAdjacentHTML("beforeend", `<div class="legend-row" style="margin-top:8px">${seeds.map((s, i) => `<span><b style="color:${sCol[i]}">${seedGlyphs[i]}</b> ${s.name}</span>`).join("")}</div>`);
 
   // city slider in the case studies: same behaviour as the first comparison slider
   const cc = document.getElementById("compareCity"), rc = document.getElementById("cmpCity");

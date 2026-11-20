@@ -9,20 +9,20 @@
 <style>
 /* Layout: one column of controls over a full-width map; the details sit beside it on wide screens. */
 :root {
-  --bg: #f5f6f4; --panel: #ffffff; --ink: #1b1f1d; --ink-2: #545c57; --rule: #d7dcd8;
-  --accent: #1f6f4f; --accent-ink: #ffffff; --hot: #1f9e66; --cool: #d4733a; --bld: #00aabe;
-  --gap: 16px; --step--1: 12.5px; --step-0: 14px; --step-1: 16px; --step-2: 20px; --frame: #e9ece9;
+  --bg: #eee5dd; --panel: #faf7f3; --ink: #1f363d; --ink-2: #3f555b; --rule: #c8b8aa;
+  --accent: #41658a; --accent-ink: #ffffff; --hot: #1f9e66; --cool: #d4733a; --bld: #00aabe;
+  --gap: 16px; --step--1: 12.5px; --step-0: 14px; --step-1: 16px; --step-2: 20px; --frame: #e8dbcf;
   color-scheme: light;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #121514; --panel: #1b201e; --ink: #eef2ef; --ink-2: #a9b3ad; --rule: #2d3531;
-    --accent: #7fd1a8; --accent-ink: #0f1412; --hot: #22a86a; --cool: #d97a3a; --bld: #3fd6e8; --frame: #0c0f0e; color-scheme: dark;
+    --bg: #1f363d; --panel: #29434a; --ink: #f4ebe3; --ink-2: #ddcbbb; --rule: #5a6d70;
+    --accent: #d8bfaa; --accent-ink: #1f363d; --hot: #22a86a; --cool: #d97a3a; --bld: #3fd6e8; --frame: #243d44; color-scheme: dark;
   }
 }
 :root[data-theme="dark"] {
-  --bg: #121514; --panel: #1b201e; --ink: #eef2ef; --ink-2: #a9b3ad; --rule: #2d3531;
-  --accent: #7fd1a8; --accent-ink: #0f1412; --hot: #22a86a; --cool: #d97a3a; --bld: #3fd6e8; --frame: #0c0f0e; color-scheme: dark;
+  --bg: #1f363d; --panel: #29434a; --ink: #f4ebe3; --ink-2: #ddcbbb; --rule: #5a6d70;
+  --accent: #d8bfaa; --accent-ink: #1f363d; --hot: #22a86a; --cool: #d97a3a; --bld: #3fd6e8; --frame: #243d44; color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--bg); color: var(--ink); font: 14px/1.45 system-ui, -apple-system, "Segoe UI", sans-serif; }
