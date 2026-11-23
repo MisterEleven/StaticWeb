@@ -1049,7 +1049,7 @@ main{gap:52px}.reading-routes{margin-block:0}
         <p class="small muted">Treats a miss by one level and a miss by ten levels as equally wrong, but its per-class scores show where it fails.</p></div>
       <div class="opt"><span class="pill base">Owner: Chenjie</span><h3>Ordinal</h3>
         <dl><dt>Output</dt><dd>13 ordered yes/no outputs: is the level above k?</dd><dt>Loss</dt><dd>Binary cross-entropy; heads CORAL (shared thresholds) and CORN (conditional outputs)</dd><dt>Decoding</dt><dd>Median (count of outputs above 0.5); argmax stored with each run</dd><dt>Owner</dt><dd>Chenjie</dd></dl>
-        <p class="small muted">Respects the order of the levels. A one-level miss costs little, a ten-level miss costs a lot.</p></div>
+        <p class="small muted">Respects the order of the levels. With CORAL, a ten-level miss gets ten of the yes/no answers wrong and costs far more than a one-level miss. CORN asks each pixel only the questions up to its true level, so overshooting by one level or by ten costs the same single wrong answer.</p></div>
       <div class="opt"><span class="pill base">Owner: Timo</span><h3>Regression</h3>
         <dl><dt>Output</dt><dd>One number per pixel in °C; clamp depends on the recorded experiment</dd><dt>Loss</dt><dd>L1 in degrees</dd><dt>Decoding</dt><dd>None: the output is the prediction</dd><dt>Owner</dt><dd>Timo</dd></dl>
         <p class="small muted">Simplest output. It has two target versions: level midpoints, and exact degrees from the 5 m raster.</p></div>
@@ -1219,7 +1219,7 @@ main{gap:52px}.reading-routes{margin-block:0}
     <div class="subsec" id="ord-setup">
       <h3 id="ord-setup-h" data-toc="sub" data-toc-title="Setup">Setup</h3>
       <div class="options">
-        <div class="opt"><span class="pill base">Head</span><h3>CORAL</h3><p class="small muted">One score per pixel plus 13 shared ordered thresholds, so P(level &gt; k) cannot rise with k. The curve shape is shared, which makes it rigid.</p></div>
+        <div class="opt"><span class="pill base">Head</span><h3>CORAL</h3><p class="small muted">One score per pixel plus 13 shared, learned thresholds. P(level &gt; k) falls with k as long as the thresholds stay sorted; nothing forces them to. They start sorted (from the training-set shares) and stayed sorted in all five folds, so the running-minimum safeguard never acted. The curve shape is shared, which makes it rigid.</p></div>
         <div class="opt"><span class="pill base">Head</span><h3>CORN</h3><p class="small muted">13 conditional outputs P(level &gt; k | level &gt; k−1), multiplied up. Consistent by construction and more flexible, with less data for the hot end.</p></div>
       </div>
       <div class="col stack"><ul class="clean">
@@ -1239,7 +1239,7 @@ main{gap:52px}.reading-routes{margin-block:0}
       </figure>
       <div class="col stack"><ul class="clean">
         <li><b>CORN ties Classification</b> (1.976 against 1.975 °C), and the folds match within 0.03 °C. The output head does not move the overall error here.</li>
-        <li><b>CORN beats CORAL on all five folds</b>, by 0.08 to 0.11 °C. CORAL's shared curve looks too rigid for this two-peaked target.</li>
+        <li><b>CORN beats CORAL on all five folds</b>, by 0.08 to 0.11 °C. A possible reason, not yet tested: CORAL's shared curve may be too rigid for this two-peaked target. Consistent with this, CORAL loses far more under argmax decoding (2.433 against 2.070 °C) than CORN does (2.121 against 1.976 °C).</li>
         <li><b>The land-cover mask is a trade-off.</b> Against CORN with the base mask, unflagged pixels improve by 0.06 °C, green and hot gets worse by 0.98 °C and all pixels by 0.02 °C. Recommendation: base mask for the main result.</li>
       </ul></div>
       <div class="tablewrap col wide"><table>
